@@ -1,0 +1,15 @@
+<figure *ngIf="picture">
+    <img [src]="picture.url" [alt]="picture.explanation">
+    <figcaption>Автор: {{ picture.copyright }}</figcaption>
+</figure>
+
+<div *ngIf="error">
+    <p> Что-то пошло не так. </p>
+    <button
+        (click)="getPicture()"
+    >
+        Попробуйте ещё раз
+    </button>
+</div>
+
+<p *ngIf="loading">Ожидайте...</p>
