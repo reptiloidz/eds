@@ -8,3 +8,8 @@ export interface DailySpacePicture {
     title: string,
     url: string
 }
+
+export interface User {
+    email: string,
+    password: string
+}
