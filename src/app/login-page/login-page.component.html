@@ -1,0 +1,33 @@
+<form
+    [formGroup]="form"
+    (submit)="submit()"
+>
+    <input
+        type="text"
+        placeholder="Email"
+        formControlName="email"
+    >
+    <input
+        type="text"
+        placeholder="Password"
+        formControlName="password"
+    >
+    <p *ngIf="form.controls['password'].errors && form.controls['password'].dirty ">
+        <span *ngIf="form.controls['password'].errors?.['required']">
+            Password can't be empty
+        </span>
+        <span *ngIf="form.controls['password'].errors['minlength']">
+            Password can't be shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
+        </span>
+        <span *ngIf="form.controls['password'].errors['pattern']">
+            The password must contain uppercase, lowercase English letters and numbers.
+            Other characters are not allowed
+        </span>
+    </p>
+    <button
+        type="submit"
+        [disabled]="form.invalid"
+    >
+        Login
+    </button>
+</form>

@@ -1,6 +1,14 @@
 <figure *ngIf="picture">
-    <img [src]="picture.url" [alt]="picture.explanation">
-    <figcaption>Автор: {{ picture.copyright }}</figcaption>
+    <img
+        [src]="picture.url"
+        [alt]="picture.explanation"
+    >
+    <figcaption>
+        <p *ngIf="picture.copyright">Автор: {{ picture.copyright }}</p>
+        <p *ngIf="picture.explanation">
+            {{ picture.explanation }}
+        </p>
+    </figcaption>
 </figure>
 
 <div *ngIf="error">
