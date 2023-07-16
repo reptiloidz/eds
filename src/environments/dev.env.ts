@@ -1,6 +1,7 @@
 import { Environment } from "./interface";
 
-export const nasaDevKey: Environment =  {
+export const environment: Environment =  {
     production: false,
-    key: 'DEMO_KEY'
+    nasaKey: 'DEMO_KEY',
+    firebaseKey: ''
 }

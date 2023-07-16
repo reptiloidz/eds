@@ -17,4 +17,8 @@ export class HeaderComponent {
     signUpPage() {
 
     }
+
+    homePage() {
+        this.router.navigate(['']);
+    }
 }

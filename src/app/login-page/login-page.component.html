@@ -16,7 +16,7 @@
         </span>
     </p>
     <input
-        type="text"
+        type="password"
         placeholder="Password"
         formControlName="password"
     >
@@ -39,3 +39,5 @@
         Log in
     </button>
 </form>
+
+<p *ngIf="error">{{ errorMessage }}</p>

@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
-import { nasaKey } from "src/keys/nasaKey";
+import { environment } from "src/environments/prod.env";
 
 @Injectable({
     providedIn: 'root'
@@ -12,6 +12,6 @@ export class NasaService {
     ) {}
 
     getDailyPicture() {
-        return this.http.get(`https://api.nasa.gov/planetary/apod?api_key=${nasaKey.apiKey}`)
+        return this.http.get(`https://api.nasa.gov/planetary/apod?api_key=${environment.nasaKey}`)
     }
 }

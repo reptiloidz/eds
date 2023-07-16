@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../services/authService';
+import { User } from '../shared/interface';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
     selector: 'app-login-page',
@@ -7,6 +10,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class LoginPageComponent implements OnInit {
     form: FormGroup;
+    error: HttpErrorResponse;
+    errorMessage: string = '';
+
+    constructor(
+        private authService: AuthService
+    ) {}
 
     ngOnInit() {
         this.form = new FormGroup({
@@ -20,6 +29,26 @@ export class LoginPageComponent implements OnInit {
     }
 
     submit() {
-        console.log(this.form.controls['password']);
+
+        const user: User = {
+            email: this.form.controls['email'].value,
+            password: this.form.controls['password'].value
+        }
+
+        this.authService.login(user).subscribe({
+            next: response => {
+                this.form.reset();
+            },
+            error: error => {
+                this.error = error;
+
+                if(error.status === 400) {
+                    this.errorMessage = 'Wrong email or password'
+                } else {
+                    this.errorMessage = 'We are sorry. Try later...'
+                }
+            }
+        });
+
     }
 }
