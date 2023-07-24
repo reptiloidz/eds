@@ -1,0 +1,49 @@
+<form [formGroup]="form">
+    <input
+        formControlName="email"
+        type="email"
+        placeholder="Email"
+    >
+    <p *ngIf="form.controls['email'].errors && form.controls['email'].dirty">
+        <span *ngIf="form.controls['email'].errors['required']">
+            Email can't be empty
+        </span>
+        <span *ngIf="form.controls['email'].errors['email']">
+            Not valid email
+        </span>
+    </p>
+    <input
+        formControlName="name"
+        type="text"
+        placeholder="Name"
+    >
+    <p *ngIf="form.controls['name'].errors && form.controls['name'].touched">
+        Email can't be empty
+    </p>
+    <input
+        formControlName="pass"
+        type="text"
+        placeholder="Password"
+    >
+    <p *ngIf="form.controls['password'].errors && form.controls['password'].dirty">
+        <span *ngIf="form.controls['password'].errors?.['required']">
+            Password can't be empty
+        </span>
+        <span *ngIf="form.controls['password'].errors['minlength']">
+            Password can't be shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
+        </span>
+        <span *ngIf="form.controls['password'].errors['pattern']">
+            The password must contain uppercase, lowercase English letters and numbers.
+            Other characters are not allowed
+        </span>
+    </p>
+    <input
+        formControlName="confirmPass"
+        type="text"
+        placeholder="Confirm password"
+    >
+
+    <button type="submit">
+        Submit
+    </button>
+</form>

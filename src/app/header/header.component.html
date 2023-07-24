@@ -4,10 +4,19 @@
     Home
 </button>
 <button
+    *ngIf="!authService.idAuthenticated(); else logOutTemplate"
     (click)="loginPage()"
 >
     Log in
 </button>
+<ng-template #logOutTemplate>
+    <button
+        (click)="logOut()"
+    >
+        Log out
+    </button>
+</ng-template>
+
 <button
     (click)="signUpPage()"
 >

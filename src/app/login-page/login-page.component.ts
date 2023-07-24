@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/authService';
 import { User } from '../shared/interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-login-page',
@@ -14,7 +15,8 @@ export class LoginPageComponent implements OnInit {
     errorMessage: string = '';
 
     constructor(
-        private authService: AuthService
+        private authService: AuthService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -38,9 +40,11 @@ export class LoginPageComponent implements OnInit {
         this.authService.login(user).subscribe({
             next: response => {
                 this.form.reset();
+                this.router.navigate(['/']);
             },
             error: error => {
                 this.error = error;
+                console.log(this.error);
 
                 if(error.status === 400) {
                     this.errorMessage = 'Wrong email or password'
@@ -49,6 +53,5 @@ export class LoginPageComponent implements OnInit {
                 }
             }
         });
-
     }
 }
