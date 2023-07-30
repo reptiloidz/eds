@@ -11,7 +11,8 @@ export interface DailySpacePicture {
 
 export interface User {
     email: string,
-    password: string
+    password: string,
+    name?: string
 }
 
 export interface firebaseAuthResponse {
@@ -21,4 +22,16 @@ export interface firebaseAuthResponse {
     expiresIn: string,
     localId: string,
     registered: boolean
+}
+
+export interface DbUser {
+    id: string,
+    email: string,
+    name: string,
+    posts?: Array<Post>
+}
+
+export interface Post {
+    date: Date,
+    text: string
 }

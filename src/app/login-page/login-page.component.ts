@@ -1,18 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/authService';
 import { User } from '../shared/interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-login-page',
     templateUrl: './login-page.component.html'
 })
-export class LoginPageComponent implements OnInit {
+export class LoginPageComponent implements OnInit, OnDestroy {
     form: FormGroup;
     error: HttpErrorResponse;
     errorMessage: string = '';
+    subscription: Subscription;
 
     constructor(
         private authService: AuthService,
@@ -30,6 +32,12 @@ export class LoginPageComponent implements OnInit {
         })
     }
 
+    ngOnDestroy(): void {
+        if(this.subscription) {
+            this.subscription.unsubscribe();
+        }
+    }
+
     submit() {
 
         const user: User = {
@@ -37,10 +45,11 @@ export class LoginPageComponent implements OnInit {
             password: this.form.controls['password'].value
         }
 
-        this.authService.login(user).subscribe({
+        this.subscription = this.authService.login(user).subscribe({
             next: response => {
                 this.form.reset();
                 this.router.navigate(['/']);
+                console.log(response);
             },
             error: error => {
                 this.error = error;

@@ -1,14 +1,15 @@
-<button
-    (click)="homePage()"
+<a
+    [routerLink]="['/']"
 >
     Home
-</button>
-<button
+</a>
+
+<a
+    [routerLink]="['login']"
     *ngIf="!authService.idAuthenticated(); else logOutTemplate"
-    (click)="loginPage()"
 >
     Log in
-</button>
+</a>
 <ng-template #logOutTemplate>
     <button
         (click)="logOut()"
@@ -17,8 +18,9 @@
     </button>
 </ng-template>
 
-<button
-    (click)="signUpPage()"
+<a
+    *ngIf="!authService.idAuthenticated()"
+    [routerLink]="['signup']"
 >
     Sign up
-</button>
+</a>

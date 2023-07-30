@@ -5,5 +5,6 @@ import { firebaseKey } from "src/keys/firebaseKey"
 export const environment: Environment = {
     production: true,
     nasaKey: nasaKey.apiKey,
-    firebaseKey: firebaseKey.key
+    firebaseKey: firebaseKey.key,
+    firebaseProjectID: firebaseKey.projectID
 }

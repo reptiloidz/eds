@@ -46,8 +46,17 @@ export class AuthService {
         );
     }
 
+    signup(user: User) {
+        return this.http.post(
+            `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`,
+            user
+        ).pipe(
+            tap(this.setToken)
+        );
+    }
+
     logout() {
-        this.setToken(null)
+        this.setToken(null);
     }
 
     idAuthenticated(): boolean {
