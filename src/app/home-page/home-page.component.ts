@@ -12,6 +12,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     error: Error;
     loading: boolean = true;
     pictureSub: Subscription;
+    picturesListSub: Subscription;
+    picturesList: object;
 
     constructor(
         private nasaService: NasaService
@@ -19,10 +21,13 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.getPicture();
+        this.getPicturesList();
     }
 
     ngOnDestroy(): void {
-        this.pictureSub.unsubscribe();
+        if(this.picture) {
+            this.pictureSub.unsubscribe();
+        }
     }
 
     getPicture() {
@@ -34,5 +39,25 @@ export class HomePageComponent implements OnInit, OnDestroy {
             },
             error: error => this.error = error
         });
+    }
+
+    getPicturesList() {
+        const endDate = new Date().
+            toLocaleDateString().
+            split('.').
+            reverse().
+            join('-');
+
+        const startDate = new Date(+(new Date()) - ((8.64e+7) * 4)).
+            toLocaleDateString().
+            split('.').
+            reverse().
+            join('-');
+
+        this.picturesListSub = this.nasaService.getLastFivePictures(startDate, endDate).subscribe({
+            next: response => {
+                this.picturesList = response;
+            }
+        })
     }
 }

@@ -1,10 +1,17 @@
+
 <div style="display: flex; width: 100%">
     <figure *ngIf="picture" style="width: 50%">
-        <img
-            [src]="picture.url"
-            [alt]="picture.explanation"
-            style="width: 100%"
+        <a
+            [href]="picture.hdurl"
+            target="_blank"
         >
+            <img
+                [src]="picture.url"
+                [alt]="picture.explanation"
+                style="width: 100%"
+            >
+        </a
+       >
         <figcaption>
             <p *ngIf="picture.copyright">Автор: {{ picture.copyright }}</p>
             <p *ngIf="picture.explanation">

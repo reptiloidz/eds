@@ -52,8 +52,7 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     submit() {
         const user: User = {
             email: this.form.controls['email'].value,
-            password: this.form.controls['password'].value,
-            name: this.form.controls['name'].value
+            password: this.form.controls['password'].value
         }
 
         this.error = null;

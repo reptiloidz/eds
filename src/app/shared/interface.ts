@@ -11,8 +11,7 @@ export interface DailySpacePicture {
 
 export interface User {
     email: string,
-    password: string,
-    name?: string
+    password: string
 }
 
 export interface firebaseAuthResponse {
