@@ -10,8 +10,16 @@ export interface DailySpacePicture {
 }
 
 export interface User {
-    email: string,
-    password: string
+    email?: string,
+    idToken?: string,
+    password?: string,
+    displayName?: string,
+    photoUrl?: string,
+    returnSecureToken?: boolean,
+    refreshToken?: string,
+    expiresIn?: string,
+    localId?: string,
+    registered?: boolean
 }
 
 export interface firebaseAuthResponse {
@@ -23,14 +31,6 @@ export interface firebaseAuthResponse {
     registered: boolean
 }
 
-export interface DbUser {
-    id: string,
-    email: string,
-    name: string,
-    posts?: Array<Post>
-}
-
-export interface Post {
-    date: Date,
-    text: string
+export interface Users {
+    users: [User]
 }

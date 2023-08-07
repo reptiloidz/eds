@@ -1,7 +1,8 @@
+import { AccountService } from './../services/account.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/authService';
-import { User } from '../shared/interface';
+import { User, Users } from '../shared/interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -18,7 +19,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     constructor(
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private accountService: AccountService,
     ) {}
 
     ngOnInit() {
@@ -49,7 +51,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             next: response => {
                 this.form.reset();
                 this.router.navigate(['/']);
-                console.log(response);
+
+                this.accountService.getProfile(response).subscribe({
+                    next: response => {
+                        this.accountService.user$.next((response as Users).users[0]);
+                        this.accountService.user$.subscribe();
+                    },
+                    error: error => {
+                        console.log(error);
+                    }
+                });
             },
             error: error => {
                 this.error = error;

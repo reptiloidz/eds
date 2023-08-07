@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/authService';
 import { passwordMismatchValidator } from '../shared/validators';
-import { DbUser, User } from '../shared/interface';
+import { User } from '../shared/interface';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { ProfileService } from '../services/profile.service';
+import { AccountService } from '../services/account.service';
 
 @Component({
     selector: 'app-signup-page',
@@ -21,7 +21,7 @@ export class SignupPageComponent implements OnInit, OnDestroy {
     constructor(
         private authService: AuthService,
         private router: Router,
-        private profileService: ProfileService
+        private accountService: AccountService,
     ) {}
 
     ngOnInit(): void {
@@ -47,6 +47,9 @@ export class SignupPageComponent implements OnInit, OnDestroy {
         if(this.signupSubscribe) {
             this.signupSubscribe.unsubscribe();
         }
+        if(this.newUserSubscribe) {
+            this.newUserSubscribe.unsubscribe();
+        }
     }
 
     submit() {
@@ -60,26 +63,26 @@ export class SignupPageComponent implements OnInit, OnDestroy {
 
         this.signupSubscribe = this.authService.signup(user).subscribe({
             next: response => {
-                this.form.reset();
-                this.router.navigate(['/']);
-                this.loading = false;
+                const newUser: User = {
+                    idToken: response.idToken,
+                    displayName: this.form.controls['name'].value
+                }
 
                 console.log(response);
-                // const newUser: DbUser = {
-                //     id: response.localId,
-                //     email: this.form.controls['email'].value,
-                //     name: this.form.controls['name'].value
-                // }
 
-                // this.newUserSubscribe = this.profileService.newUser(newUser).subscribe({
-                //     next: response => {
-                //         console.log(response);
-                //     },
-                //     error: error => {
-                //         console.log(error);
-                //         this.loading = false;
-                //     }
-                // });
+                this.newUserSubscribe = this.accountService.updateProfile(newUser).subscribe({
+                    next: response => {
+                        console.log(response);
+                        this.form.reset();
+                        this.loading = false;
+                        this.router.navigate(['/']);
+                    },
+                    error: error => {
+                        console.log(error);
+                        this.loading = false;
+                    }
+                });
+
             },
             error: error => {
                 if(error.error.error.message === 'EMAIL_EXISTS') {

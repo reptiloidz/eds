@@ -38,6 +38,7 @@ export class AuthService {
     }
 
     login(user: User):Observable<any> {
+        user.returnSecureToken = true;
         return this.http.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`,
             user
@@ -47,6 +48,7 @@ export class AuthService {
     }
 
     signup(user: User) {
+        user.returnSecureToken = true;
         return this.http.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`,
             user
