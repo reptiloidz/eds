@@ -72,7 +72,6 @@ export class SignupPageComponent implements OnInit, OnDestroy {
 
                 this.newUserSubscribe = this.accountService.updateProfile(newUser).subscribe({
                     next: response => {
-                        console.log(response);
                         this.form.reset();
                         this.loading = false;
                         this.router.navigate(['/']);

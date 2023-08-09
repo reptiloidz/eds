@@ -11,7 +11,7 @@ export interface DailySpacePicture {
 
 export interface User {
     email?: string,
-    idToken?: string,
+    idToken?: string | null,
     password?: string,
     displayName?: string,
     photoUrl?: string,

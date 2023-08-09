@@ -14,7 +14,8 @@ export class AuthService {
         private http: HttpClient
     ) {}
 
-    authorized$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+    readonly authorized$ = new BehaviorSubject<boolean>(false);
+    readonly idToken$ = new BehaviorSubject<string | null>(null);
 
     get token(): boolean {
         const expDate = new Date(localStorage.getItem('fb-token-exp') as string);
@@ -22,6 +23,7 @@ export class AuthService {
         if (new Date() > expDate) {
             this.logout();
         }
+
         this.authorized$.next(!!localStorage.getItem('fb-token'));
         return this.authorized$.getValue();
     }
@@ -34,6 +36,7 @@ export class AuthService {
             localStorage.setItem('fb-token-exp', expDate.toString());
         } else {
             localStorage.clear();
+            this.authorized$.next(false);
         }
     }
 
@@ -59,9 +62,5 @@ export class AuthService {
 
     logout() {
         this.setToken(null);
-    }
-
-    idAuthenticated(): boolean {
-        return this.token;
     }
 }

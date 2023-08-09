@@ -1,12 +1,10 @@
-<a
-    [routerLink]="['/']"
->
+<a [routerLink]="['/']">
     Home
 </a>
 
 <a
     [routerLink]="['login']"
-    *ngIf="!authService.idAuthenticated(); else logOutTemplate"
+    *ngIf="!authService.token; else logOutTemplate"
 >
     Log in
 </a>
@@ -19,12 +17,12 @@
 </ng-template>
 
 <a
-    *ngIf="!authService.idAuthenticated()"
+    *ngIf="!authService.token"
     [routerLink]="['signup']"
 >
     Sign up
 </a>
 
-<p>
-   {{ user | json }}
+<p *ngIf="user">
+   {{ user.displayName }}
 </p>
