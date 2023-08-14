@@ -1,3 +1,11 @@
+<ng-container *ngFor="let item of picturesList; index as i">
+    <button
+        (click)="switchPicture(i)"
+        [disabled]="currentPicture === i"
+    >
+        {{ item.date | date:'dd.MM' }}
+    </button>
+</ng-container>
 
 <div style="display: flex; width: 100%">
     <figure *ngIf="picture" style="width: 50%">
@@ -13,19 +21,21 @@
         </a
        >
         <figcaption>
-            <p *ngIf="picture.copyright">Автор: {{ picture.copyright }}</p>
+            <p *ngIf="picture.copyright">
+                Автор: {{ picture.copyright }}
+            </p>
             <p *ngIf="picture.explanation">
                 {{ picture.explanation }}
             </p>
         </figcaption>
     </figure>
-    <app-comments style="width: 50%"></app-comments>
+    <app-comments-list style="width: 50%"></app-comments-list>
 </div>
 
 <div *ngIf="error">
     <p> Что-то пошло не так. </p>
     <button
-        (click)="getPicture()"
+        (click)="getPicturesList()"
     >
         Попробуйте ещё раз
     </button>

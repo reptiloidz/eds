@@ -34,3 +34,9 @@ export interface firebaseAuthResponse {
 export interface Users {
     users: [User]
 }
+
+export interface Comment {
+    date: Date,
+    author: string,
+    text: string
+}

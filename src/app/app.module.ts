@@ -8,8 +8,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { LoginPageComponent } from './login-page/login-page.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HeaderComponent } from './header/header.component';
-import { CommentsComponent } from './comments/comments.component';
+import { CommentsListComponent } from './comments-list/comments-list.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
+import { CommentComponent } from './comment/comment.component';
 
 @NgModule({
     declarations: [
@@ -17,8 +18,9 @@ import { SignupPageComponent } from './signup-page/signup-page.component';
         HomePageComponent,
         LoginPageComponent,
         HeaderComponent,
-        CommentsComponent,
-        SignupPageComponent
+        CommentsListComponent,
+        SignupPageComponent,
+        CommentComponent
     ],
     imports: [
         BrowserModule,

@@ -1,0 +1,10 @@
+<input type="text">
+<button
+    [disabled]="!authService.token"
+>
+    comment
+</button>
+<ng-container *ngFor="let comment of comments">
+    <app-comment [comment]="comment"></app-comment>
+</ng-container>
+

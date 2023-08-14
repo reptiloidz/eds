@@ -1,4 +1,4 @@
-import { Observer, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -8,40 +8,31 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
     templateUrl: './home-page.component.html'
 })
 export class HomePageComponent implements OnInit, OnDestroy {
-    picture: DailySpacePicture | any;
+    picture: DailySpacePicture | undefined;
     error: Error;
     loading: boolean = true;
     pictureSub: Subscription;
     picturesListSub: Subscription;
-    picturesList: object;
+    picturesList: Array<DailySpacePicture>;
+    currentPicture: number;
 
     constructor(
         private nasaService: NasaService
     ) {}
 
     ngOnInit(): void {
-        this.getPicture();
         this.getPicturesList();
     }
 
     ngOnDestroy(): void {
-        if(this.picture) {
-            this.pictureSub.unsubscribe();
+        if(this.picturesList) {
+            this.picturesListSub.unsubscribe();
         }
     }
 
-    getPicture() {
-        this.loading = true;
-        this.pictureSub =  this.nasaService.getDailyPicture().subscribe({
-            next: result => {
-                this.picture = result;
-                this.loading = false;
-            },
-            error: error => this.error = error
-        });
-    }
-
     getPicturesList() {
+        this.loading = true;
+
         const endDate = new Date().
             toLocaleDateString().
             split('.').
@@ -56,8 +47,17 @@ export class HomePageComponent implements OnInit, OnDestroy {
 
         this.picturesListSub = this.nasaService.getLastFivePictures(startDate, endDate).subscribe({
             next: response => {
-                this.picturesList = response;
-            }
+                this.loading = false;
+                this.picturesList = response as Array<DailySpacePicture>;
+                this.currentPicture = this.picturesList.length - 1;
+                this.picture = this.picturesList.at(-1);
+            },
+            error: error => this.error = error
         })
+    }
+
+    switchPicture(index: number) {
+        this.currentPicture = index;
+        this.picture = this.picturesList[index];
     }
 }
