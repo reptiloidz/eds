@@ -3,6 +3,7 @@ import { AuthService } from '../services/authService';
 import { AccountService } from '../services/account.service';
 import { User, Users } from '../shared/interface';
 import { distinctUntilChanged } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-header',
@@ -13,7 +14,8 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         public authService: AuthService,
-        private accountService: AccountService
+        private accountService: AccountService,
+        private router: Router
     ) {}
 
     ngOnInit() {
@@ -45,5 +47,6 @@ export class HeaderComponent implements OnInit {
 
     logOut() {
         this.authService.logout();
+        this.router.navigate(['']);
     }
 }

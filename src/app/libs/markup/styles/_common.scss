@@ -1,0 +1,40 @@
+// ===============================================
+// COMMON
+// ===============================================
+
+
+body,
+html {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+body {
+    color: var(--gray-200);
+    background-color: var(--dark-gray);
+    font-family: 'Play';
+    font-weight: normal;
+    font-size: 16px;
+    // background-image:
+    //     linear-gradient(
+    //         to top,
+    //         var(--blue-100),
+    //         var(--blue-200) 1%,
+    //         var(--blue-300) 2%,
+    //         var(--blue-400) 6%,
+    //         var(--dark-gray) 10%,
+    //         transparent 40%
+    //     );
+}
+
+input {
+    padding: 12px 8px;
+    border: 1px solid var(--white);
+}
+
+hr {
+    height: 1px;
+    background-color: var(--white);
+    margin: 8px 0;
+}

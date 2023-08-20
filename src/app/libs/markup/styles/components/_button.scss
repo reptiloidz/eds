@@ -1,0 +1,16 @@
+// ===============================================
+// BUTTON
+// ===============================================
+
+
+.btn {
+    padding: 12px 20px;
+    border: 1px solid var(--white);
+    cursor: pointer;
+
+    &:disabled {
+        color: var(--gray-500);
+        border-color: var(--gray-500);
+        cursor: default;
+    }
+}

@@ -1,7 +1,8 @@
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { PostService } from '../services/posts.service';
 
 @Component({
     selector: 'app-home-page',
@@ -15,9 +16,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     picturesListSub: Subscription;
     picturesList: Array<DailySpacePicture>;
     currentPicture: number;
+    comments: Array<Comment> | Array<undefined>;
 
     constructor(
-        private nasaService: NasaService
+        private nasaService: NasaService,
+        private postService: PostService
     ) {}
 
     ngOnInit(): void {
@@ -33,17 +36,11 @@ export class HomePageComponent implements OnInit, OnDestroy {
     getPicturesList() {
         this.loading = true;
 
-        const endDate = new Date().
-            toLocaleDateString().
-            split('.').
-            reverse().
-            join('-');
+        const today = new Date();
+        const fiveDaysEgo = new Date(+today - ((8.64e+7) * 4));
 
-        const startDate = new Date(+(new Date()) - ((8.64e+7) * 4)).
-            toLocaleDateString().
-            split('.').
-            reverse().
-            join('-');
+        const endDate = `${today.getFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()}`;
+        const startDate = `${fiveDaysEgo.getFullYear()}-${fiveDaysEgo.getUTCMonth() + 1}-${fiveDaysEgo.getUTCDate()}`;
 
         this.picturesListSub = this.nasaService.getLastFivePictures(startDate, endDate).subscribe({
             next: response => {
@@ -51,13 +48,24 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 this.picturesList = response as Array<DailySpacePicture>;
                 this.currentPicture = this.picturesList.length - 1;
                 this.picture = this.picturesList.at(-1);
+                this.getPosts(this.picture?.date);
             },
             error: error => this.error = error
         })
     }
 
+    getPosts(pictureDate: string | undefined) {
+        this.postService.getPosts().pipe(
+            map(data => Object.keys(data).map(k => data[k]).filter(item => item.pictureDate === pictureDate))
+        ).subscribe({
+            next: result => this.comments = result,
+            error: error => console.log(error)
+        });
+    }
+
     switchPicture(index: number) {
         this.currentPicture = index;
         this.picture = this.picturesList[index];
+        this.getPosts(this.picture?.date);
     }
 }

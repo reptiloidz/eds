@@ -36,7 +36,8 @@ export interface Users {
 }
 
 export interface Comment {
-    date: Date,
+    pictureDate: string | undefined,
+    date: number,
     author: string,
     text: string
 }

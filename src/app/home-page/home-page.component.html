@@ -1,5 +1,6 @@
 <ng-container *ngFor="let item of picturesList; index as i">
     <button
+        class="btn"
         (click)="switchPicture(i)"
         [disabled]="currentPicture === i"
     >
@@ -29,12 +30,18 @@
             </p>
         </figcaption>
     </figure>
-    <app-comments-list style="width: 50%"></app-comments-list>
+    <app-comments-list
+        style="width: 50%"
+        [comments]="comments"
+        [picture]="picture"
+        (onPush)="getPosts(picture?.date)"
+    ></app-comments-list>
 </div>
 
 <div *ngIf="error">
-    <p> Что-то пошло не так. </p>
+    <p>Что-то пошло не&nbsp;так.</p>
     <button
+        class="btn"
         (click)="getPicturesList()"
     >
         Попробуйте ещё раз
@@ -42,3 +49,10 @@
 </div>
 
 <p *ngIf="loading">Ожидайте...</p>
+<!-- <p>Что-то пошло не&\u00A0;так</p>
+<p>Что-то пошло не\u00A0так</p>
+<p>Что-то пошло не'\u00A0'так</p>
+<p>Что-то пошло не"\u00A0"так</p>
+<p>Что-то пошло не&#160;так</p>
+<p>Что-то пошло не&#xa0;так</p>
+<p>Что-то пошло не&nbsp;так</p> -->

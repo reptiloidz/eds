@@ -1,10 +1,15 @@
-<input type="text">
+<input type="text" [formControl]="commentInput">
 <button
-    [disabled]="!authService.token"
+    class="btn"
+    [disabled]="!authService.token || commentInput.errors"
+    type="button"
+    (click)="post()"
 >
     comment
 </button>
-<ng-container *ngFor="let comment of comments">
-    <app-comment [comment]="comment"></app-comment>
-</ng-container>
 
+<div class="comments-list">
+    <ng-container *ngFor="let comment of comments">
+        <app-comment [comment]="comment"></app-comment>
+    </ng-container>
+</div>

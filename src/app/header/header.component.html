@@ -1,28 +1,47 @@
-<a [routerLink]="['/']">
-    Home
-</a>
+<div class="header">
+    <h3 class="header__logo">
+        <a [routerLink]="['/']">
+            EveryDaySpace
+        </a>
+    </h3>
 
-<a
-    [routerLink]="['login']"
-    *ngIf="!authService.token; else logOutTemplate"
->
-    Log in
-</a>
-<ng-template #logOutTemplate>
-    <button
-        (click)="logOut()"
-    >
-        Log out
-    </button>
-</ng-template>
-
-<a
-    *ngIf="!authService.token"
-    [routerLink]="['signup']"
->
-    Sign up
-</a>
-
-<p *ngIf="user">
-   {{ user.displayName }}
-</p>
+    <nav class="header__nav">
+        <ul class="header__nav-list">
+            <li>
+                <a
+                    class="btn"
+                    [routerLink]="['login']"
+                    *ngIf="!authService.token; else logOutTemplate"
+                >
+                    Log in
+                </a>
+                <ng-template #logOutTemplate>
+                    <button
+                        class="btn"
+                        (click)="logOut()"
+                    >
+                        Log out
+                    </button>
+                </ng-template>
+            </li>
+            <li>
+                <a
+                    class="btn"
+                    *ngIf="!authService.token"
+                    [routerLink]="['signup']"
+                >
+                    Sign up
+                </a>
+            </li>
+            <li>
+                <a
+                    class="btn"
+                    *ngIf="user"
+                    [routerLink]="['profile']"
+                >
+                {{ user.displayName }}
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

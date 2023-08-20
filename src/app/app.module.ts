@@ -11,6 +11,7 @@ import { HeaderComponent } from './header/header.component';
 import { CommentsListComponent } from './comments-list/comments-list.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { CommentComponent } from './comment/comment.component';
+import { ProfilePageComponent } from './profile-page/profile-page.component';
 
 @NgModule({
     declarations: [
@@ -20,7 +21,8 @@ import { CommentComponent } from './comment/comment.component';
         HeaderComponent,
         CommentsListComponent,
         SignupPageComponent,
-        CommentComponent
+        CommentComponent,
+        ProfilePageComponent
     ],
     imports: [
         BrowserModule,

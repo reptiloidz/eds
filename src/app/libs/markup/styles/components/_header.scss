@@ -1,0 +1,21 @@
+// ===============================================
+// HEADER
+// ===============================================
+
+
+.header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+    &__logo {
+        font-size: 32px;
+    }
+
+    &__nav-list {
+        display: flex;
+        align-items: center;
+    }
+}
