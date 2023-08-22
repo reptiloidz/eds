@@ -1,9 +1,9 @@
 import { inject } from "@angular/core";
-import { ActivatedRouteSnapshot, CanActivateChildFn, Router, RouterStateSnapshot } from "@angular/router";
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from "@angular/router";
 import { Observable } from "rxjs";
 import { AuthService } from "src/app/services/authService";
 
-export const AuthGuard: CanActivateChildFn = (
+export const AuthGuard: CanActivateFn = (
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
 ): Observable<boolean> | Promise<boolean> | boolean => {
