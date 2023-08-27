@@ -12,6 +12,7 @@ import { CommentsListComponent } from './comments-list/comments-list.component';
 import { SignupPageComponent } from './signup-page/signup-page.component';
 import { CommentComponent } from './comment/comment.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
+import { DayComponent } from './day/day.component';
 
 @NgModule({
     declarations: [
@@ -22,7 +23,8 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
         CommentsListComponent,
         SignupPageComponent,
         CommentComponent,
-        ProfilePageComponent
+        ProfilePageComponent,
+        DayComponent
     ],
     imports: [
         BrowserModule,

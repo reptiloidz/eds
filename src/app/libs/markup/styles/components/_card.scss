@@ -1,0 +1,15 @@
+// ===============================================
+// CARD
+// ===============================================
+
+
+.card {
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+    border: 1px solid var(--white);
+
+    &__caption {
+        margin-top: auto;
+    }
+}
