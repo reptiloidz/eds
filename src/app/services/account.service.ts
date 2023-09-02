@@ -37,4 +37,26 @@ export class AccountService {
             })
         )
     }
+
+    updateEmail(user: User) {
+        return this.http.post(
+            `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseKey}`,
+            user
+        ).pipe(
+            tap(response => {
+                this.user$.next(response)
+            })
+        )
+    }
+
+    updatePass(user: User) {
+        return this.http.post(
+            `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseKey}`,
+            user
+        ).pipe(
+            tap(
+                response => this.user$.next(response)
+            )
+        )
+    }
 }

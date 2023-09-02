@@ -6,6 +6,7 @@ import { User } from '../shared/interface';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AccountService } from '../services/account.service';
+import { passValidator } from '../shared/validators/passValidator';
 
 @Component({
     selector: 'app-signup-page',
@@ -31,7 +32,7 @@ export class SignupPageComponent implements OnInit, OnDestroy {
             password: new FormControl('', [
                 Validators.required,
                 Validators.minLength(6),
-                Validators.pattern(/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]+$/)
+                passValidator()
             ]),
             confirmPass: new FormControl('', [
                 Validators.required,

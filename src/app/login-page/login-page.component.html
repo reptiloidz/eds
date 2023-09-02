@@ -6,6 +6,7 @@
         type="text"
         placeholder="Email"
         formControlName="email"
+        autocomplete="email"
     >
     <p *ngIf="form.controls['email'].errors && form.controls['email'].dirty">
         <span *ngIf="form.controls['email'].errors['required']">
@@ -19,6 +20,7 @@
         type="password"
         placeholder="Password"
         formControlName="password"
+        autocomplete="off"
     >
     <p *ngIf="form.controls['password'].errors && form.controls['password'].dirty">
         <span *ngIf="form.controls['password'].errors?.['required']">
@@ -27,7 +29,7 @@
         <span *ngIf="form.controls['password'].errors['minlength']">
             Password can't be shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
         </span>
-        <span *ngIf="form.controls['password'].errors['pattern']">
+        <span *ngIf="form.controls['password'].errors['passwordStrength']">
             The password must contain uppercase, lowercase English letters and numbers.
             Other characters are not allowed
         </span>

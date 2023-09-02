@@ -1,12 +1,100 @@
-<div>
-    <p><span>Name: </span>{{user?.displayName}}</p>
-    <button class="btn">Change name</button>
+<div class="input-group">
+    <label>
+        Name:
+    </label>
+    <div class="d-flex">
+        <input
+            [formControl]="name"
+            type="text"
+            [placeholder]="user?.displayName"
+            name="name"
+        >
+        <button
+            *ngIf="name.disabled"
+            class="btn"
+            title="edit"
+            (click)="enableNameInput()"
+        >
+            🖍
+        </button>
+        <ng-container *ngIf="!name.disabled">
+            <button
+                class="btn"
+                (click)="cancelEdit()"
+            >Cancel</button>
+            <button
+                class="btn"
+                [disabled]="name.errors"
+                (click)="changeName()"
+            >Save</button>
+        </ng-container>
+    </div>
 </div>
-<div>
-    <p><span>Email: </span>{{user?.email}}</p>
-    <button class="btn">Change email</button>
+
+<div class="input-group">
+    <label>
+        Email:
+    </label>
+    <div>
+        <input
+            [formControl]="email"
+            type="email"
+            [placeholder]="user?.email"
+            name="name"
+        >
+        <button
+            *ngIf="email.disabled"
+            class="btn"
+            title="edit"
+            (click)="enableEmailInput()"
+        >
+            🖍
+        </button>
+        <ng-container *ngIf="!email.disabled">
+            <button
+                class="btn"
+                (click)="cancelEdit()"
+            >Cancel</button>
+            <button
+                class="btn"
+                [disabled]="email.errors"
+                (click)="changeEmail()"
+            >Save</button>
+        </ng-container>
+    </div>
 </div>
-<button class="btn">Change password</button>
+<div class="input-group">
+    <label>
+        Password:
+    </label>
+    <div>
+        <input
+            [formControl]="pass"
+            placeholder="......"
+        >
+        <button
+            *ngIf="pass.disabled"
+            class="btn"
+            title="edit"
+            (click)="enablePassInput()"
+        >
+            🖍
+        </button>
+
+        <ng-container *ngIf="!pass.disabled">
+            <button
+                class="btn"
+                (click)="cancelEdit()"
+            >Cancel</button>
+            <button
+                class="btn"
+                [disabled]="pass.errors"
+                (click)="changePass()"
+            >Save</button>
+
+        </ng-container>
+    </div>
+</div>
 
 <h3>My posts</h3>
 <!-- <ul *ngFor="let comment of comments">

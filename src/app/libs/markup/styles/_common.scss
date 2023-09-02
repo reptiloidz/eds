@@ -29,8 +29,14 @@ body {
 }
 
 input {
-    padding: 12px 8px;
+    height: 44px;
+    padding: 0 8px;
     border: 1px solid var(--white);
+
+    &:disabled {
+        color: var(--gray-500);
+        border-color: var(--gray-500);
+    }
 }
 
 hr {

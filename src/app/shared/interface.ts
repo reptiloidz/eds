@@ -10,10 +10,10 @@ export interface DailySpacePicture {
 }
 
 export interface User {
-    email?: string,
+    email?: string | null | undefined,
     idToken?: string | null,
-    password?: string,
-    displayName?: string,
+    password?: string | null | undefined,
+    displayName?: string | null | undefined,
     photoUrl?: string,
     returnSecureToken?: boolean,
     refreshToken?: string,
@@ -38,6 +38,6 @@ export interface Users {
 export interface Comment {
     pictureDate: string | undefined,
     date: number,
-    author: string,
+    author: string | null | undefined,
     text: string
 }

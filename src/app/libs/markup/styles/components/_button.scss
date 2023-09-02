@@ -4,10 +4,13 @@
 
 
 .btn {
-    display: inline-block;
-    padding: 12px 20px;
+    display: inline-flex;
+    align-items: center;
+    height: 44px;
+    padding: 0 20px;
     border: 1px solid var(--white);
     cursor: pointer;
+    overflow: hidden;
 
     &:disabled {
         color: var(--gray-500);
