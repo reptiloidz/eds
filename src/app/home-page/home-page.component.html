@@ -4,16 +4,30 @@
             class="card"
             [routerLink]="['day/' + item.date]"
         >
-            <figure>
-                <img
-                    [src]="item.url"
-                    [alt]="item.explanation"
-                >
-            </figure>
-            <figcaption class="card__caption">
-                {{ item.date }}
-            </figcaption>
+            <div *ngIf="item.media_type === 'video'; else imageTemplate">
+                <iframe
+                    width="100%"
+                    [src]="item.url | sanitizer"
+                    [title]="item.explanation"
+                    frameborder="0"
+                    allowfullscreen
+                ></iframe>
+                <p class="card__caption">{{ item.date }}</p>
+            </div>
+
+            <ng-template #imageTemplate>
+                <figure>
+                    <img
+                        [src]="item.url"
+                        [alt]="item.explanation"
+                    >
+                </figure>
+                <figcaption class="card__caption">
+                    {{ item.date }}
+                </figcaption>
+            </ng-template>
         </a>
     </ng-container>
 </div>
 <p *ngIf="loading">Loading...</p>
+<div>{{date | date:'dd/MM/yyyy'}}</div>

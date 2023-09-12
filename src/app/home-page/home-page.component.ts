@@ -1,8 +1,7 @@
-import { Subscription, map } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { PostService } from '../services/posts.service';
 
 @Component({
     selector: 'app-home-page',
@@ -13,14 +12,16 @@ export class HomePageComponent implements OnInit, OnDestroy {
     picturesListSub: Subscription;
     picturesList: Array<DailySpacePicture>;
     error: Error;
+    date: any;
 
     constructor(
-        private nasaService: NasaService,
-        private postService: PostService
+        private nasaService: NasaService
     ) {}
 
     ngOnInit(): void {
         this.getPicturesList();
+
+        this.date = new Date().setDate(0)
     }
 
     ngOnDestroy(): void {
@@ -44,6 +45,6 @@ export class HomePageComponent implements OnInit, OnDestroy {
                 this.picturesList = response as Array<DailySpacePicture>;
             },
             error: error => this.error = error
-        })
+        });
     }
 }

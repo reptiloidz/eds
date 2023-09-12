@@ -13,6 +13,7 @@ import { SignupPageComponent } from './signup-page/signup-page.component';
 import { CommentComponent } from './comment/comment.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { DayComponent } from './day/day.component';
+import { SanitizerPipe } from './shared/pipes/sanitizer.pipe';
 
 @NgModule({
     declarations: [
@@ -24,7 +25,8 @@ import { DayComponent } from './day/day.component';
         SignupPageComponent,
         CommentComponent,
         ProfilePageComponent,
-        DayComponent
+        DayComponent,
+        SanitizerPipe,
     ],
     imports: [
         BrowserModule,

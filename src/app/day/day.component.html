@@ -2,31 +2,49 @@
     Home
 </a>
 <div style="display: flex; width: 100%">
-    <figure *ngIf="picture" style="width: 50%">
+    <figure
+        *ngIf="item && item.media_type === 'image'; else videoTemplate"
+        style="width: 50%"
+    >
         <a
-            [href]="picture.hdurl"
+            [href]="item.hdurl"
             target="_blank"
         >
             <img
-                [src]="picture.url"
-                [alt]="picture.explanation"
+                [src]="item.url"
+                [alt]="item.explanation"
                 style="width: 100%"
             >
         </a
        >
         <figcaption>
-            <p *ngIf="picture.copyright">
-                Author: {{ picture.copyright }}
+            <p *ngIf="item.copyright">
+                Author: {{ item.copyright }}
             </p>
-            <p *ngIf="picture.explanation">
-                {{ picture.explanation }}
+            <p *ngIf="item.explanation">
+                {{ item.explanation }}
             </p>
         </figcaption>
     </figure>
+    <ng-template #videoTemplate>
+        <iframe
+            width="100%"
+            [src]="item.url | sanitizer"
+            [title]="item.explanation"
+            frameborder="0"
+            allowfullscreen
+        ></iframe>
+        <p *ngIf="item.copyright">
+            Author: {{ item.copyright }}
+        </p>
+        <p *ngIf="item.explanation">
+            {{ item.explanation }}
+        </p>
+    </ng-template>
     <app-comments-list
         style="width: 50%"
         [comments]="comments"
-        [picture]="picture"
-        (onPush)="getComments(picture.date)"
+        [picture]="item"
+        (onPush)="getComments(item.date)"
     ></app-comments-list>
 </div>

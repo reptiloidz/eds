@@ -9,7 +9,7 @@ import { map } from 'rxjs';
     templateUrl: './day.component.html'
 })
 export class DayComponent implements OnInit {
-    picture: DailySpacePicture;
+    item: DailySpacePicture;
     comments: Array<Comment> | Array<undefined>;
     error: Error | undefined = undefined;
     date: string | undefined = undefined;
@@ -22,8 +22,8 @@ export class DayComponent implements OnInit {
     ngOnInit(): void {
         this.activatedRoute.data.subscribe({
             next: data => {
-                this.picture = data['day'];
-                this.getComments(this.picture.date);
+                this.item = data['day'];
+                this.getComments(this.item.date);
             },
             error: error => console.log(error)
         });
