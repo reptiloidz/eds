@@ -44,6 +44,12 @@ hr {
     background-color: var(--white);
     margin: 8px 0;
 }
+table {
+    td {
+        padding: 8px;
+        border: 1px solid var(--white);
+    }
+}
 
 .d-flex {
     display: flex;

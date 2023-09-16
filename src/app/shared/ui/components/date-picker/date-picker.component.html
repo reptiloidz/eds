@@ -1,0 +1,27 @@
+<!-- <ul>
+    <li *ngFor="let month of months as Array"></li>
+</ul> -->
+<table>
+    <thead>
+        <tr>
+            <td>Mon</td>
+            <td>Tue</td>
+            <td>Wed</td>
+            <td>Thu</td>
+            <td>Fri</td>
+            <td>Sat</td>
+            <td>Sun</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let week of row; let i = index">
+            <td *ngFor="let day of [].constructor(7); let j = index">
+                <button class="btn">
+                    <span>
+                        {{week[j]?.getDay()}} / {{j}}
+                    </span>
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>

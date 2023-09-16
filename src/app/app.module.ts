@@ -14,6 +14,8 @@ import { CommentComponent } from './comment/comment.component';
 import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { DayComponent } from './day/day.component';
 import { SanitizerPipe } from './shared/pipes/sanitizer.pipe';
+import { DatePickerComponent } from './shared/ui/components/date-picker/date-picker.component';
+import { DropdownComponent } from './shared/ui/components/dropdown/dropdown/dropdown.component';
 
 @NgModule({
     declarations: [
@@ -27,6 +29,8 @@ import { SanitizerPipe } from './shared/pipes/sanitizer.pipe';
         ProfilePageComponent,
         DayComponent,
         SanitizerPipe,
+        DatePickerComponent,
+        DropdownComponent
     ],
     imports: [
         BrowserModule,
