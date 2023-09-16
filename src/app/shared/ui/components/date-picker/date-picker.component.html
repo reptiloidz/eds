@@ -1,6 +1,11 @@
 <!-- <ul>
     <li *ngFor="let month of months as Array"></li>
 </ul> -->
+<app-dropdown
+    [options]="months"
+    (selectedOption)="getMonth($event)"
+    defaultSelectedOption=""
+></app-dropdown>
 <table>
     <thead>
         <tr>
@@ -14,12 +19,15 @@
         </tr>
     </thead>
     <tbody>
-        <tr *ngFor="let week of row; let i = index">
-            <td *ngFor="let day of [].constructor(7); let j = index">
-                <button class="btn">
-                    <span>
-                        {{week[j]?.getDay()}} / {{j}}
-                    </span>
+        <tr *ngFor="let week of weeks">
+            <td *ngFor="let day of week">
+                <button
+                    class="btn"
+                    *ngIf="day"
+                    (click)="setDate(day.date)"
+                    [disabled]="day.disabled"
+                >
+                    {{ day.date.getDate() }}
                 </button>
             </td>
         </tr>

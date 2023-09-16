@@ -1,0 +1,11 @@
+<button>
+    {{ _selectedValue.getValue() }}
+</button>
+
+<ul>
+    <li *ngFor="let option of options">
+        <button (click)="setValue(option)">
+            {{ option }}
+        </button>
+    </li>
+</ul>

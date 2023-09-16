@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CalendarMonths } from 'src/app/shared/enums/calendar.enum';
+import { DatePickerDay } from './interface/date-picker.interface';
 
 @Component({
     selector: 'app-date-picker',
@@ -8,32 +9,83 @@ import { CalendarMonths } from 'src/app/shared/enums/calendar.enum';
 export class DatePickerComponent implements OnInit {
 
     // months = CalendarMonths;
-    dates:Array<Date> = [];
-    row:Array<Array<Date>> = [[],[],[],[],[],[]];
-    disabledDay = new Date().getDate();
+    // Массив дат месяца
+    dates:Array<DatePickerDay>;
+
+    // Массив дат месяца, разбитый на недели
+    weeks:Array<Array<DatePickerDay | null>>;
+
+    months = Object.values(CalendarMonths).filter((v) => isNaN(Number(v))) as Array<string>;
+
+    month = new Date().getMonth();
 
     ngOnInit(): void {
-        let d  = new Date(2023,1,4);
-        let today = new Date(2023,1,4);
+        this.generateDates(2023, this.month);
+    }
 
-        for (let index = 1; index <= 31; index++) {
-            if (today.getMonth() === new Date(d.setDate(index)).getMonth()) {
-                this.dates.push(new Date(d.setDate(index)));
+    generateDates(year: number, month: number) {
+        this.dates = [];
+        this.weeks = [[],[],[],[],[],[]];
+
+        // Переменная для установки дат
+        const startDate  = new Date(year, month, 1);
+
+        // Номер месяца для фильтрации дат
+        const compareMonth = new Date(year, month, 1).getMonth();
+
+        // Индекс недели в массиве дат
+        let weekIndex = 0;
+
+        // Генерируем массив дат с 1 по 31
+        for (let i = 1; i <= 31; i++) {
+
+            // Фильтруем даты, в массив попадают только дни заданного месяца
+            if (compareMonth === new Date(startDate.setDate(i)).getMonth()) {
+
+                this.dates.push({
+                    date: new Date(startDate.setDate(i)),
+                    disabled: false
+                });
+
+                // Фильтруем ещё не наступившие даты и устанавливаем им значение
+                // disabled = true
+                if (((+this.dates[i - 1]?.date) - Date.now()) > 0 ) {
+                    this.dates[i - 1].disabled = true;
+                }
             }
         }
 
-
-        let j = 0;
-
+        // Разбиваем массив дат на подмассивы - недели
         for (let i = 0; i < this.dates.length; i++) {
-            this.row[j].push(this.dates[i]);
-            if (this.dates[i].getDay() === 0) {
-                j++;
-                console.log(this.dates[i]);
+            this.weeks[weekIndex].push(this.dates[i]);
+
+            // Переключаем на следующую неделю. Конечный день - воскресенье (индекс === 0)
+            if (this.dates[i].date.getDay() === 0) {
+                weekIndex++;
             }
-            // console.log(this.dates[i]);
         }
 
-        // console.log(this.row);
+        // Если первая неделя начинается не с понедельника,
+        // то добавляем вместо недостающий дней null
+        if (this.weeks[0].length != 7) {
+            const firstWeekLength = this.weeks[0].length;
+
+            for (let i = 0; i < (7 - firstWeekLength); i++) {
+                this.weeks[0].unshift(null);
+            }
+        }
+    }
+
+    setDate(date: Date) {
+        alert(date);
+    }
+
+    getMonth(event: string) {
+        this.months.forEach((value, index) => {
+            if (event === value) {
+                this.generateDates(2023, index);
+            }
+        })
+
     }
 }
