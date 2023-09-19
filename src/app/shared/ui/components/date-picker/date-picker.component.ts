@@ -1,12 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, HostBinding, OnInit, Output } from '@angular/core';
 import { CalendarMonths } from 'src/app/shared/enums/calendar.enum';
 import { DatePickerDay } from './interface/date-picker.interface';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Component({
     selector: 'app-date-picker',
     templateUrl: './date-picker.component.html'
 })
 export class DatePickerComponent implements OnInit {
+
+    @HostBinding('class') class = 'date-picker';
+
+    @Output('selectedDate') selectedDate = new EventEmitter();
 
     // months = CalendarMonths;
     // Массив дат месяца
@@ -18,6 +23,8 @@ export class DatePickerComponent implements OnInit {
     months = Object.values(CalendarMonths).filter((v) => isNaN(Number(v))) as Array<string>;
 
     month = new Date().getMonth();
+
+    public selectedDay$ = new BehaviorSubject('');
 
     ngOnInit(): void {
         this.generateDates(2023, this.month);
@@ -76,8 +83,9 @@ export class DatePickerComponent implements OnInit {
         }
     }
 
-    setDate(date: Date) {
-        alert(date);
+    setDate(day: Date) {
+        this.selectedDate.emit(day);
+        this.selectedDay$.next(day.toString());
     }
 
     getMonth(event: string) {

@@ -49,4 +49,8 @@ export class HeaderComponent implements OnInit {
         this.authService.logout();
         this.router.navigate(['']);
     }
+
+    test(event: Event) {
+        // console.log(event);
+    }
 }

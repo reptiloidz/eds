@@ -2,6 +2,7 @@ import { Subscription } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-home-page',
@@ -15,7 +16,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     date: any;
 
     constructor(
-        private nasaService: NasaService
+        private nasaService: NasaService,
+        private router: Router,
     ) {}
 
     ngOnInit(): void {
@@ -46,5 +48,19 @@ export class HomePageComponent implements OnInit, OnDestroy {
             },
             error: error => this.error = error
         });
+    }
+
+    getPictureByDate(date: Date) {
+        const dateMonth = date.getMonth() + 1;
+        let month = '';
+
+        if (dateMonth > 0 && dateMonth < 10) {
+            month = `0${dateMonth}`;
+        } else {
+            month = dateMonth.toString();
+        }
+
+        const dateString = `${date.getFullYear()}-${month}-${date.getDate()}`;
+        this.router.navigate([`day/${dateString}`]);
     }
 }

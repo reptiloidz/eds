@@ -8,6 +8,13 @@
     <nav class="header__nav">
         <ul class="header__nav-list">
             <li>
+                <app-dropdown
+                    (selectedOption)="test($event)"
+                >
+                    <app-date-picker></app-date-picker>
+                </app-dropdown>
+            </li>
+            <li>
                 <a
                     class="btn"
                     [routerLink]="['login']"
@@ -39,7 +46,7 @@
                     *ngIf="user"
                     [routerLink]="['profile']"
                 >
-                {{ user.displayName }}
+                    {{ user.displayName }}
                 </a>
             </li>
         </ul>

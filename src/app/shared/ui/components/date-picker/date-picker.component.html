@@ -1,10 +1,7 @@
-<!-- <ul>
-    <li *ngFor="let month of months as Array"></li>
-</ul> -->
 <app-dropdown
     [options]="months"
     (selectedOption)="getMonth($event)"
-    defaultSelectedOption=""
+    [defaultSelectedOption]="month"
 ></app-dropdown>
 <table>
     <thead>
@@ -22,7 +19,11 @@
         <tr *ngFor="let week of weeks">
             <td *ngFor="let day of week">
                 <button
-                    class="btn"
+                    class="btn date-picker__day"
+                    [ngClass]="{
+                        'date-picker__day--selected' :
+                        selectedDay$.getValue() === day.date.toString()
+                    }"
                     *ngIf="day"
                     (click)="setDate(day.date)"
                     [disabled]="day.disabled"

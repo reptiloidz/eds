@@ -1,0 +1,13 @@
+// ===============================================
+// DATE PICKER
+// ===============================================
+
+
+.date-picker {
+    &__day {
+        &--selected {
+            background-color: var(--white);
+            color: var(--black);
+        }
+    }
+}

@@ -1,11 +1,23 @@
-<button>
+<button
+    class="drop__trigger"
+    (click)="toggleDrop()"
+>
     {{ _selectedValue.getValue() }}
 </button>
 
-<ul>
-    <li *ngFor="let option of options">
-        <button (click)="setValue(option)">
-            {{ option }}
-        </button>
-    </li>
-</ul>
+<div
+    @toggleDrop
+    class="drop__list"
+    *ngIf="listOpened"
+>
+    <ul *ngIf="listOpened && options.length; else defaultContent">
+        <li *ngFor="let option of options">
+            <button (click)="setValue(option)">
+                {{ option }}
+            </button>
+        </li>
+    </ul>
+    <ng-template #defaultContent>
+        <ng-content></ng-content>
+    </ng-template>
+</div>
