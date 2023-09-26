@@ -1,5 +1,5 @@
 import { style, transition, trigger, animate } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -23,6 +23,8 @@ export class DropdownComponent implements OnInit {
 
     @Input('options') options: Array<string> = [];
     @Input('defaultSelectedOption') defaultSelectedOption = 0;
+    @Input('value') value: string | null = null;
+    @Input('triggerClass') triggerClass: string;
 
     @Output('selectedOption') selectedOption = new EventEmitter();
 
@@ -32,28 +34,45 @@ export class DropdownComponent implements OnInit {
         }
     }
 
+    @ViewChild('dropList') dropList: ElementRef;
+
     public _selectedValue = new BehaviorSubject('');
 
     listOpened = false;
+    // dropList = ElementRef
 
     constructor(
         private eRef: ElementRef
     ) {}
 
     ngOnInit(): void {
-        this._selectedValue.next(
-            this.defaultSelectedOption ? this.options[this.defaultSelectedOption] : this.options[0]
-        );
+        if (!this.value) {
+            this._selectedValue.next(
+                this.defaultSelectedOption ? this.options[this.defaultSelectedOption] : this.options[0]
+            );
+        } else {
+            this._selectedValue.next(this.value);
+        }
 
-        this._selectedValue.subscribe(resolve => this.selectedOption.emit(resolve));
+        this._selectedValue.subscribe(resolve => {
+            this.selectedOption.emit(resolve);
+        });
     }
 
     setValue(value: string) {
         this._selectedValue.next(value);
-        this.toggleDrop();
+
+        if(this.listOpened) {
+            this.toggleDrop();
+        }
     }
 
     toggleDrop() {
         this.listOpened = !this.listOpened;
+        console.log(this.dropList);
     }
+
+    // setPosition() {
+    //     const 
+    // }
 }

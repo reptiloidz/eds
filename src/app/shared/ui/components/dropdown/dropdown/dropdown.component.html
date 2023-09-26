@@ -1,16 +1,18 @@
 <button
     class="drop__trigger"
     (click)="toggleDrop()"
+    [ngClass]="triggerClass"
 >
-    {{ _selectedValue.getValue() }}
+    {{ _selectedValue | async }}
 </button>
 
 <div
+    #dropList
     @toggleDrop
     class="drop__list"
     *ngIf="listOpened"
 >
-    <ul *ngIf="listOpened && options.length; else defaultContent">
+    <ul *ngIf="options.length; else defaultContent">
         <li *ngFor="let option of options">
             <button (click)="setValue(option)">
                 {{ option }}

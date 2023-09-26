@@ -15,7 +15,7 @@ export class HeaderComponent implements OnInit {
     constructor(
         public authService: AuthService,
         private accountService: AccountService,
-        private router: Router
+        private router: Router,
     ) {}
 
     ngOnInit() {
@@ -50,7 +50,17 @@ export class HeaderComponent implements OnInit {
         this.router.navigate(['']);
     }
 
-    test(event: Event) {
-        // console.log(event);
+    getPictureByDate(date: Date) {
+        const dateMonth = date.getMonth() + 1;
+        let month = '';
+
+        if (dateMonth > 0 && dateMonth < 10) {
+            month = `0${dateMonth}`;
+        } else {
+            month = dateMonth.toString();
+        }
+
+        const dateString = `${date.getFullYear()}-${month}-${date.getDate()}`;
+        this.router.navigate([`day/${dateString}`]);
     }
 }

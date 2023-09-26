@@ -9,9 +9,12 @@
         <ul class="header__nav-list">
             <li>
                 <app-dropdown
-                    (selectedOption)="test($event)"
+                    value="Select Day"
+                    triggerClass="btn"
                 >
-                    <app-date-picker></app-date-picker>
+                    <app-date-picker
+                        (selectedDate)="getPictureByDate($event)"
+                    ></app-date-picker>
                 </app-dropdown>
             </li>
             <li>
