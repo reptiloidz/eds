@@ -7,10 +7,10 @@
 </button>
 
 <div
-    #dropList
     @toggleDrop
     class="drop__list"
     *ngIf="listOpened"
+    #dropList
 >
     <ul *ngIf="options.length; else defaultContent">
         <li *ngFor="let option of options">

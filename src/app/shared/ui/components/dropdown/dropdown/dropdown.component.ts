@@ -34,12 +34,10 @@ export class DropdownComponent implements OnInit {
         }
     }
 
-    @ViewChild('dropList') dropList: ElementRef;
-
     public _selectedValue = new BehaviorSubject('');
 
     listOpened = false;
-    // dropList = ElementRef
+    @ViewChild('dropList') dropList: ElementRef<HTMLElement> | undefined;
 
     constructor(
         private eRef: ElementRef
@@ -69,7 +67,9 @@ export class DropdownComponent implements OnInit {
 
     toggleDrop() {
         this.listOpened = !this.listOpened;
-        console.log(this.dropList);
+        requestAnimationFrame(() => {
+            this.dropList?.nativeElement.style.setProperty('right', '0');
+        })
     }
 
     // setPosition() {
