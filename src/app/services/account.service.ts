@@ -59,4 +59,15 @@ export class AccountService {
             )
         )
     }
+
+    deleteAccount(user: User) {
+        return this.http.post(
+            `https://identitytoolkit.googleapis.com/v1/accounts:delete?key=${environment.firebaseKey}`,
+            user
+        ).pipe(
+            tap(
+                () => this.user$.next(null)
+            )
+        );
+    }
 }

@@ -19,9 +19,13 @@
         formControlName="name"
         type="text"
         placeholder="Name"
+        (input)="checkAvailableName()"
     >
     <p *ngIf="form.controls['name'].errors && form.controls['name'].touched">
-        Email can&rsquo;t be&nbsp;empty
+        Name can&rsquo;t be&nbsp;empty
+    </p>
+    <p *ngIf="nameExist">
+        This name already exist
     </p>
     <input
         formControlName="password"

@@ -50,7 +50,7 @@ export class AuthService {
         );
     }
 
-    signup(user: User) {
+    signup(user: User):Observable<any> {
         user.returnSecureToken = true;
         return this.http.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`,
@@ -58,6 +58,17 @@ export class AuthService {
         ).pipe(
             tap(this.setToken)
         );
+    }
+
+    addNewName(name: Object):Observable<any> {
+        return this.http.post(
+            'https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json',
+            name
+        );
+    }
+
+    getNames():Observable<any> {
+        return this.http.get('https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json');
     }
 
     logout() {

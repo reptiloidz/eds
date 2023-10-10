@@ -7,11 +7,12 @@ import { ProfilePageComponent } from './profile-page/profile-page.component';
 import { AuthGuard } from './shared/guards/auth.guard';
 import { DayComponent } from './day/day.component';
 import { DayResolver } from './shared/day.resolver';
+import { LoginGuard } from './shared/guards/login.guard';
 
 const routes: Routes = [
     { path: '', component: HomePageComponent },
-    { path: 'login', component: LoginPageComponent },
-    { path: 'signup', component: SignupPageComponent },
+    { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
+    { path: 'signup', component: SignupPageComponent, canActivate: [LoginGuard] },
     { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
     { path: 'day/:date', component: DayComponent, resolve: { day: DayResolver } }
 ];

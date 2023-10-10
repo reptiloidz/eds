@@ -96,7 +96,30 @@
     </div>
 </div>
 
-<h3>My posts</h3>
-<!-- <ul *ngFor="let comment of comments">
-    <li>{{ comment.text }}</li>
-</ul> -->
+<button
+    class="btn"
+    style="color: red;"
+    type="button"
+>
+    Delete account
+</button>
+
+<app-popup>
+    <ng-template #content>
+        <h3>Are you shure?</h3>
+    </ng-template>
+    <ng-template #controls>
+        <button
+            class="btn"
+            type="button"
+        >
+            Yes
+        </button>
+        <button
+            class="btn"
+            type="button"
+        >
+            No
+        </button>
+    </ng-template>
+</app-popup>

@@ -1,10 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/authService';
 import { passwordMismatchValidator } from '../shared/validators';
 import { User } from '../shared/interface';
 import { Router } from '@angular/router';
-import { Subscription } from 'rxjs';
 import { AccountService } from '../services/account.service';
 import { passValidator } from '../shared/validators/passValidator';
 
@@ -12,12 +11,12 @@ import { passValidator } from '../shared/validators/passValidator';
     selector: 'app-signup-page',
     templateUrl: './signup-page.component.html'
 })
-export class SignupPageComponent implements OnInit, OnDestroy {
+export class SignupPageComponent implements OnInit {
     form: FormGroup;
-    signupSubscribe: Subscription;
-    newUserSubscribe: Subscription;
     loading = false;
     error: string | null = null;
+    names: Array<any>;
+    nameExist = false;
 
     constructor(
         private authService: AuthService,
@@ -38,19 +37,15 @@ export class SignupPageComponent implements OnInit, OnDestroy {
                 Validators.required,
                 Validators.minLength(6)
             ])
-        },
-        {
-            validators: passwordMismatchValidator
-        })
-    }
+            },
+            {
+                validators: passwordMismatchValidator
+            }
+        );
 
-    ngOnDestroy(): void {
-        if(this.signupSubscribe) {
-            this.signupSubscribe.unsubscribe();
-        }
-        if(this.newUserSubscribe) {
-            this.newUserSubscribe.unsubscribe();
-        }
+        this.authService.getNames().subscribe(
+            response => this.names = response
+        );
     }
 
     submit() {
@@ -62,16 +57,17 @@ export class SignupPageComponent implements OnInit, OnDestroy {
         this.error = null;
         this.loading = true;
 
-        this.signupSubscribe = this.authService.signup(user).subscribe({
+        this.authService.signup(user).subscribe({
             next: response => {
                 const newUser: User = {
                     idToken: response.idToken,
                     displayName: this.form.controls['name'].value
                 }
 
-                console.log(response);
+                this.authService.addNewName({displayName: this.form.controls['name'].value})
+                    .subscribe();
 
-                this.newUserSubscribe = this.accountService.updateProfile(newUser).subscribe({
+                this.accountService.updateProfile(newUser).subscribe({
                     next: response => {
                         this.form.reset();
                         this.loading = false;
@@ -82,7 +78,6 @@ export class SignupPageComponent implements OnInit, OnDestroy {
                         this.loading = false;
                     }
                 });
-
             },
             error: error => {
                 if(error.error.error.message === 'EMAIL_EXISTS') {
@@ -92,6 +87,16 @@ export class SignupPageComponent implements OnInit, OnDestroy {
                 this.loading = false;
             }
         });
+    }
 
+    checkAvailableName() {
+        let inputName = this.form.controls['name'].value;
+        this.nameExist = false;
+
+        Object.values(this.names).find(item => {
+            if (item['displayName'] === inputName) {
+                this.nameExist = true;
+            }
+        });
     }
 }

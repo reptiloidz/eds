@@ -50,10 +50,11 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             next: result => {
                 this.commentInput.reset();
                 this.onPush.emit();
+                console.log(result);
             },
             error: error => console.log(error)
         });
 
-        this.subscribes.add(postSubscribe)
+        this.subscribes.add(postSubscribe);
     }
 }

@@ -17,6 +17,7 @@ import { SanitizerPipe } from './shared/pipes/sanitizer.pipe';
 import { DatePickerComponent } from './shared/ui/components/date-picker/date-picker.component';
 import { DropdownComponent } from './shared/ui/components/dropdown/dropdown/dropdown.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { PopupComponent } from './shared/ui/components/popup/popup.component';
 
 @NgModule({
     declarations: [
@@ -31,7 +32,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
         DayComponent,
         SanitizerPipe,
         DatePickerComponent,
-        DropdownComponent
+        DropdownComponent,
+        PopupComponent
     ],
     imports: [
         BrowserModule,
