@@ -16,6 +16,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     user: User | null = null;
     newUserData: User | null = null;
     idToken: string | null = null;
+    popup = false;
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -121,5 +122,21 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         });
 
         this.subscribes.add(changePassSub);
+    }
+
+    switchPopup() {
+        this.popup = !this.popup;
+    }
+
+    delProfile() {
+        const user: User = {
+            idToken: localStorage.getItem('fb-token')
+        }
+        this.accountService.deleteAccount(user).subscribe(
+            () => {
+                this.authService.logout();
+                this.router.navigate(['']);
+            }
+        );
     }
 }

@@ -100,11 +100,12 @@
     class="btn"
     style="color: red;"
     type="button"
+    (click)="switchPopup()"
 >
     Delete account
 </button>
 
-<app-popup>
+<app-popup [opened]="popup" (onClose)="switchPopup()">
     <ng-template #content>
         <h3>Are you shure?</h3>
     </ng-template>
@@ -112,12 +113,14 @@
         <button
             class="btn"
             type="button"
+            (click)="delProfile()"
         >
             Yes
         </button>
         <button
             class="btn"
             type="button"
+            (click)="switchPopup()"
         >
             No
         </button>
