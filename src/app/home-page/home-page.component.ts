@@ -1,8 +1,8 @@
+import { style } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, HostBinding, OnDestroy, OnInit } from '@angular/core';
 
 @Component({
     selector: 'app-home-page',
@@ -14,6 +14,8 @@ export class HomePageComponent implements OnInit, OnDestroy {
     picturesList: Array<DailySpacePicture>;
     error: Error;
     date: any;
+
+    @HostBinding('class') class = 'd-flex flex-column h-100p'
 
     constructor(
         private nasaService: NasaService,

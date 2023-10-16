@@ -29,4 +29,11 @@
         </a>
     </ng-container>
 </div>
+<app-dropdown
+    style="margin-top: auto;"
+    value="Select Day"
+    triggerClass="btn"
+    [options]="['1','2','3','4','5','6']"
+>
+</app-dropdown>
 <p *ngIf="loading">Loading...</p>

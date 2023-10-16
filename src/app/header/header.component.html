@@ -1,4 +1,12 @@
 <div class="header">
+    <app-dropdown
+        value="Select Day"
+        triggerClass="btn"
+    >
+        <app-date-picker
+            (selectedDate)="getPictureByDate($event)"
+        ></app-date-picker>
+    </app-dropdown>
     <h3 class="header__logo">
         <a [routerLink]="['/']">
             EveryDaySpace

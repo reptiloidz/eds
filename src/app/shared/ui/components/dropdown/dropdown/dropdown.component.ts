@@ -1,5 +1,5 @@
 import { style, transition, trigger, animate } from '@angular/animations';
-import { Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Component({
@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
     animations: [
         trigger('toggleDrop', [
             transition('void => *', [
-                style({ opacity: 0, transform: 'translateY(-20px)' }),
+                style({ opacity: 0,  }),
                 animate('.5s', style({ opacity: 1, transform: 'translateY(0)' })),
             ]),
             transition('* => void', [
@@ -37,10 +37,12 @@ export class DropdownComponent implements OnInit {
     public _selectedValue = new BehaviorSubject('');
 
     listOpened = false;
+
     @ViewChild('dropList') dropList: ElementRef<HTMLElement> | undefined;
 
     constructor(
-        private eRef: ElementRef
+        private eRef: ElementRef,
+        private changeDetector: ChangeDetectorRef,
     ) {}
 
     ngOnInit(): void {
@@ -67,12 +69,43 @@ export class DropdownComponent implements OnInit {
 
     toggleDrop() {
         this.listOpened = !this.listOpened;
-        requestAnimationFrame(() => {
-            this.dropList?.nativeElement.style.setProperty('right', '0');
-        })
+        this.changeDetector.detectChanges();
+
+        if (this.listOpened) {
+            this.setPosition();
+        }
+
+        // requestAnimationFrame(() => {
+        //     this.setPosition()
+        // });
     }
 
-    // setPosition() {
-    //     const 
-    // }
+    setPosition() {
+        if (this.dropList) {
+            const elPosition = this.dropList?.nativeElement.getBoundingClientRect();
+            const pageWidth = screen.width;
+            const pageHeight = screen.height;
+            const offsetX = pageWidth - elPosition.x - elPosition.width;
+            const offsetY = pageHeight - elPosition.bottom - elPosition.height;
+
+            if (elPosition.x < 0) {
+                this.dropList.nativeElement.style.left = '0';
+            }
+            console.log(elPosition.right > pageWidth);
+            if (elPosition.right > pageWidth) {
+                this.dropList.nativeElement.style.right = '0';
+            }
+
+            if (elPosition.y < 0) {
+                this.dropList.nativeElement.style.top = '0';
+            }
+
+            if (offsetY < 0) {
+                this.dropList.nativeElement.style.bottom = '0';
+            }
+
+            console.log(pageWidth, pageHeight);
+            console.log(elPosition);
+        }
+    }
 }
