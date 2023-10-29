@@ -11,6 +11,7 @@ import {
     Output,
     ViewChild
 } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject } from 'rxjs';
 import { PlatformDetector } from 'src/app/services/platformDetect.service';
 
@@ -57,6 +58,7 @@ export class DropdownComponent implements OnInit {
         private eRef: ElementRef,
         private changeDetector: ChangeDetectorRef,
         private platformDetector: PlatformDetector,
+        private deviceService: DeviceDetectorService
     ) {}
 
     ngOnInit(): void {
@@ -96,19 +98,27 @@ export class DropdownComponent implements OnInit {
 
     setPosition() {
         const triggerHeight = getComputedStyle(this.dropTrigger?.nativeElement).height;
-        console.log(this.platformDetector.getDevicePlatform());
+        const isDesktop = this.deviceService.isDesktop();
+        let pageWidth = 0;
+        let pageHeight = 0;
+        console.log(isDesktop);
+
+        if (isDesktop) {
+            pageWidth = window.innerWidth;
+            pageHeight = window.innerHeight;
+        } else {
+            pageWidth = screen.width;
+            pageHeight = screen.height;
+        }
 
         if (this.dropList) {
             const elPosition = this.dropList?.nativeElement.getBoundingClientRect();
-            const pageWidth = screen.width;
-            const pageHeight = screen.height;
             const offsetX = pageWidth - elPosition.x - elPosition.width;
             const offsetY = pageHeight - elPosition.bottom - elPosition.height;
 
-            if (elPosition.x < 0) {
+            if (offsetX > 0) {
                 this.dropList.nativeElement.style.left = '0';
             }
-            console.log(elPosition.right > pageWidth);
             if (elPosition.right > pageWidth) {
                 this.dropList.nativeElement.style.right = '0';
             }
@@ -120,9 +130,6 @@ export class DropdownComponent implements OnInit {
             if (offsetY < 0) {
                 this.dropList.nativeElement.style.bottom = '0' + triggerHeight;
             }
-
-            console.log(pageWidth, pageHeight);
-            console.log(elPosition);
         }
     }
 }
