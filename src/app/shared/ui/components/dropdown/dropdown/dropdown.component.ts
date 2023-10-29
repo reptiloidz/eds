@@ -1,6 +1,18 @@
 import { style, transition, trigger, animate } from '@angular/animations';
-import { AfterViewInit, ChangeDetectorRef, Component, ElementRef, EventEmitter, HostBinding, HostListener, Input, OnChanges, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    ElementRef,
+    EventEmitter,
+    HostBinding,
+    HostListener,
+    Input,
+    OnInit,
+    Output,
+    ViewChild
+} from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { PlatformDetector } from 'src/app/services/platformDetect.service';
 
 @Component({
     selector: 'app-dropdown',
@@ -39,10 +51,12 @@ export class DropdownComponent implements OnInit {
     listOpened = false;
 
     @ViewChild('dropList') dropList: ElementRef<HTMLElement> | undefined;
+    @ViewChild('dropTrigger') dropTrigger: ElementRef<HTMLElement>;
 
     constructor(
         private eRef: ElementRef,
         private changeDetector: ChangeDetectorRef,
+        private platformDetector: PlatformDetector,
     ) {}
 
     ngOnInit(): void {
@@ -81,6 +95,9 @@ export class DropdownComponent implements OnInit {
     }
 
     setPosition() {
+        const triggerHeight = getComputedStyle(this.dropTrigger?.nativeElement).height;
+        console.log(this.platformDetector.getDevicePlatform());
+
         if (this.dropList) {
             const elPosition = this.dropList?.nativeElement.getBoundingClientRect();
             const pageWidth = screen.width;
@@ -101,7 +118,7 @@ export class DropdownComponent implements OnInit {
             }
 
             if (offsetY < 0) {
-                this.dropList.nativeElement.style.bottom = '0';
+                this.dropList.nativeElement.style.bottom = '0' + triggerHeight;
             }
 
             console.log(pageWidth, pageHeight);
