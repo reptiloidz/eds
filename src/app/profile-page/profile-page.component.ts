@@ -107,7 +107,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
 
         const changePassSub = this.accountService.updatePass(newPass).subscribe({
-            next: response => {
+            next: () => {
                 this.pass.disable();
                 this.pass.reset();
                 this.authService.logout();

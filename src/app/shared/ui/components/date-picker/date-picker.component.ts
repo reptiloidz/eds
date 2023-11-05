@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostBinding, OnInit, Output } from '@angular/core';
 import { CalendarMonths } from 'src/app/shared/enums/calendar.enum';
 import { DatePickerDay } from './interface/date-picker.interface';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
     selector: 'app-date-picker',

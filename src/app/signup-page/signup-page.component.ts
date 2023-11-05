@@ -68,7 +68,7 @@ export class SignupPageComponent implements OnInit {
                     .subscribe();
 
                 this.accountService.updateProfile(newUser).subscribe({
-                    next: response => {
+                    next: () => {
                         this.form.reset();
                         this.loading = false;
                         this.router.navigate(['/']);
@@ -90,7 +90,7 @@ export class SignupPageComponent implements OnInit {
     }
 
     checkAvailableName() {
-        let inputName = this.form.controls['name'].value;
+        const inputName = this.form.controls['name'].value;
         this.nameExist = false;
 
         Object.values(this.names).find(item => {

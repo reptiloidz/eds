@@ -1,7 +1,7 @@
 <a class="btn" routerLink="">
     Home
 </a>
-<div style="display: flex; width: 100%">
+<div style="display: flex; width: 100%" *ngIf="item">
     <figure
         *ngIf="item && item.media_type === 'image'; else videoTemplate"
         style="width: 50%"

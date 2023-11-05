@@ -1,4 +1,4 @@
-import { Comment } from '../shared/interface';
+// import { Comment } from '../shared/interface';
 
 // export const Comments: Array<Comment> = [
 //     {

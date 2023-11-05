@@ -40,7 +40,7 @@ export class AuthService {
         }
     }
 
-    login(user: User):Observable<any> {
+    login(user: User): Observable<any> {
         user.returnSecureToken = true;
         return this.http.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`,
@@ -50,7 +50,7 @@ export class AuthService {
         );
     }
 
-    signup(user: User):Observable<any> {
+    signup(user: User): Observable<any> {
         user.returnSecureToken = true;
         return this.http.post(
             `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`,
@@ -60,14 +60,14 @@ export class AuthService {
         );
     }
 
-    addNewName(name: Object):Observable<any> {
+    addNewName(name: any): Observable<any> {
         return this.http.post(
             'https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json',
             name
         );
     }
 
-    getNames():Observable<any> {
+    getNames(): Observable<any> {
         return this.http.get('https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json');
     }
 

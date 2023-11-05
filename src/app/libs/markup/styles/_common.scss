@@ -14,9 +14,10 @@ body {
     padding: 0 20px;
     color: var(--gray-200);
     background-color: var(--dark-gray);
-    font-family: 'Play';
+    font-family: Play, sans-serif;
     font-weight: normal;
     font-size: 16px;
+
     // background-image:
     //     linear-gradient(
     //         to top,
@@ -45,6 +46,7 @@ hr {
     background-color: var(--white);
     margin: 8px 0;
 }
+
 table {
     td {
         border: 1px solid var(--white);

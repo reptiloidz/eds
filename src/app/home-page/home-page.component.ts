@@ -1,4 +1,3 @@
-import { style } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { DailySpacePicture } from '../shared/interface';
 import { NasaService } from './../services/nasa.service';

@@ -5,7 +5,6 @@ import {
     HostBinding,
     TemplateRef,
     Input,
-    OnChanges,
     HostListener,
     Output,
     EventEmitter
@@ -26,7 +25,7 @@ export class PopupComponent {
     @HostBinding('class') class = 'popup';
     @HostBinding('@modalAnimation') get getCondition(): string {
         return this.opened ? 'open' : 'close';
-    };
+    }
 
     @ContentChild('content') content: TemplateRef<any>;
     @ContentChild('controls') controls: TemplateRef<any>;

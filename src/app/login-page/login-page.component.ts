@@ -47,7 +47,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         }
 
         this.subscription = this.authService.login(user).subscribe({
-            next: response => {
+            next: () => {
                 this.form.reset();
                 this.router.navigate(['/']);
             },
