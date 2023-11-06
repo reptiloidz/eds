@@ -13,7 +13,6 @@ import {
 } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BehaviorSubject } from 'rxjs';
-import { PlatformDetector } from 'src/app/services/platformDetect.service';
 
 @Component({
     selector: 'app-dropdown',
@@ -57,7 +56,6 @@ export class DropdownComponent implements OnInit {
     constructor(
         private eRef: ElementRef,
         private changeDetector: ChangeDetectorRef,
-        private platformDetector: PlatformDetector,
         private deviceService: DeviceDetectorService
     ) {}
 
