@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/auth.service';
 import { AccountService } from '../services/account.service';
 import { User, Users } from '../shared/interface';
 import { distinctUntilChanged } from 'rxjs';

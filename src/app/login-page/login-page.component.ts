@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/auth.service';
 import { User } from '../shared/interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';

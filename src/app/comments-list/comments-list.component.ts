@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/auth.service';
 import { Comment, DailySpacePicture, User } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';

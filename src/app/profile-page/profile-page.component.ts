@@ -4,7 +4,7 @@ import { AccountService } from './../services/account.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { passValidator } from '../shared/validators/passValidator';
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
