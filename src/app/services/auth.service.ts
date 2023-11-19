@@ -71,6 +71,16 @@ export class AuthService {
         return this.http.get('https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json');
     }
 
+    resetPass(user: Pick<User, 'email'>): Observable<any> {
+        return this.http.post(
+            `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${environment.firebaseKey}`,
+            {
+                ...user,
+                requestType: 'PASSWORD_RESET'
+            }
+        );
+    }
+
     logout() {
         this.setToken(null);
     }

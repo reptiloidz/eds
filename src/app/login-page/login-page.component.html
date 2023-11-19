@@ -1,5 +1,5 @@
 <form
-    [formGroup]="form"
+    [formGroup]="loginForm"
     (submit)="submit()"
 >
     <input
@@ -8,11 +8,11 @@
         formControlName="email"
         autocomplete="email"
     >
-    <p *ngIf="form.controls['email'].errors && form.controls['email'].dirty">
-        <span *ngIf="form.controls['email'].errors['required']">
-            Email can't be empty
+    <p *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].dirty">
+        <span *ngIf="loginForm.controls['email'].errors['required']">
+            Email can&rsquo;t be&nbsp;empty
         </span>
-        <span *ngIf="form.controls['email'].errors['email']">
+        <span *ngIf="loginForm.controls['email'].errors['email']">
             Not valid email
         </span>
     </p>
@@ -22,14 +22,14 @@
         formControlName="password"
         autocomplete="off"
     >
-    <p *ngIf="form.controls['password'].errors && form.controls['password'].dirty">
-        <span *ngIf="form.controls['password'].errors?.['required']">
-            Password can't be empty
+    <p *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].dirty">
+        <span *ngIf="loginForm.controls['password'].errors?.['required']">
+           Password can&rsquo;t be&nbsp;empty
         </span>
-        <span *ngIf="form.controls['password'].errors['minlength']">
-            Password can't be shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
+        <span *ngIf="loginForm.controls['password'].errors['minlength']">
+            Password can&rsquo;t be&nbsp;shorter then {{ loginForm.controls['password'].errors['minlength']['requiredLength'] }}
         </span>
-        <span *ngIf="form.controls['password'].errors['passwordStrength']">
+        <span *ngIf="loginForm.controls['password'].errors['passwordStrength']">
             The password must contain uppercase, lowercase English letters and numbers.
             Other characters are not allowed
         </span>
@@ -37,10 +37,70 @@
     <button
         class="btn"
         type="submit"
-        [disabled]="form.invalid"
+        [disabled]="loginForm.invalid"
     >
-        Log in
+        Log&nbsp;in
+    </button>
+    <button
+        (click)="togglePassReset()"
+        class="link"
+    >
+        Forgot password
     </button>
 </form>
+<app-popup
+    [opened]="isOpen"
+    (onClose)="togglePassReset()"
+>
+    <ng-template #content>
+        <form
+            *ngIf="!resetFormIsSended; else resetSuccess"
+            [formGroup]="resetForm"
+        >
+            <div class="input-group">
+                <label>
+                    Your email:
+                </label>
+                <input
+                    formControlName="resetEmail"
+                    type="email"
+                    placeholder="Email"
+                >
+            </div>
+            <p *ngIf="resetForm.controls['resetEmail'].errors && resetForm.controls['resetEmail'].dirty">
+                <span *ngIf="resetForm.controls['resetEmail'].errors?.['required']">
+                    Email can&rsquo;t be&nbsp;empty
+                </span>
+                <span *ngIf="resetForm.controls['resetEmail'].errors?.['email']">
+                    Not valid email
+                </span>
+            </p>
+        </form>
+        <ng-template #resetSuccess>
+            <h3>We&nbsp;are send reset link&nbsp;on {{resetForm.controls['resetEmail'].value}}</h3>
+        </ng-template>
+
+        <p *ngIf="resetError">
+            This email is&nbsp;not registered
+        </p>
+    </ng-template>
+    <ng-template #controls>
+        <button
+            class="btn"
+            type="button"
+            (click)="submitReset()"
+            [disabled]="resetFormIsSended"
+        >
+            Reset password
+        </button>
+        <button
+            class="btn"
+            type="button"
+            (click)="togglePassReset()"
+        >
+            Close
+        </button>
+    </ng-template>
+</app-popup>
 
 <p *ngIf="error">{{ errorMessage }}</p>
