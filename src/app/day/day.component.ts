@@ -6,16 +6,17 @@ import { map } from 'rxjs';
 
 @Component({
     selector: 'app-day',
-    templateUrl: './day.component.html'
+    templateUrl: './day.component.html',
 })
 export class DayComponent implements OnInit {
-    item: DailySpacePicture;
+    item: DailySpacePicture | null = null;
     comments: Array<Comment> | Array<undefined>;
     error: Error | undefined = undefined;
     date: string | undefined = undefined;
     prev: string = '';
     next: string = '';
     isLast: boolean = false;
+    loading = true;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -27,12 +28,13 @@ export class DayComponent implements OnInit {
         this.activatedRoute.data.subscribe({
             next: data => {
                 this.item = data['day'];
-                this.getComments(this.item.date);
+                this.getComments(this.item?.date);
+                this.calculateDates();
+                this.loading = false;
+
             },
             error: error => console.log(error)
         });
-
-        this.calculateDates();
     }
 
     getComments(pictureDate: string | undefined): void {
@@ -45,6 +47,8 @@ export class DayComponent implements OnInit {
     }
 
     calculateDates(): void {
+        if (!this.item) return;
+
         const date = this.item.date.split('-');
         const day = new Date(+date[0], +date[1]-1, +date[2]);
 
@@ -54,12 +58,10 @@ export class DayComponent implements OnInit {
         const prev = new Date(+day - 86400000);
         const next = new Date(+day + 86400000);
 
-        this.prev = prev.getUTCFullYear() + '-' + prev.getUTCMonth() + '-' + prev.getUTCDate();
-        this.next = next.getUTCFullYear() + '-' + next.getUTCMonth() + '-' + next.getUTCDate();
+        this.prev = prev.getFullYear() + '-' + (prev.getMonth() + 1) + '-' + prev.getDate();
+        this.next = next.getFullYear() + '-' + (next.getMonth() + 1) + '-' + next.getDate();
 
         this.isLast = +day === +today ? true : false;
-
-        console.log(date);
     }
 
     onPrevious(): void {

@@ -19,7 +19,7 @@
 >
     next
 </button>
-<div style="display: flex; width: 100%" *ngIf="item">
+<div style="display: flex; width: 100%" *ngIf="item && !loading; else loadingTemplate">
     <figure
         *ngIf="item && item.media_type === 'image'; else videoTemplate"
         style="width: 50%"
@@ -32,6 +32,8 @@
                 [src]="item.url"
                 [alt]="item.explanation"
                 style="width: 100%"
+                defaultImage="/assets/loader.png"
+                [lazyLoad]="item.url"
             >
         </a
        >
@@ -66,3 +68,6 @@
         (onPush)="getComments(item.date)"
     ></app-comments-list>
 </div>
+<ng-template #loadingTemplate>
+    <p>...loading</p>
+</ng-template>

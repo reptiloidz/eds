@@ -18,6 +18,7 @@ import { DatePickerComponent } from './shared/ui/components/date-picker/date-pic
 import { DropdownComponent } from './shared/ui/components/dropdown/dropdown/dropdown.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PopupComponent } from './shared/ui/components/popup/popup.component';
+import { LazyLoadImageModule } from 'ng-lazyload-image';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,7 @@ import { PopupComponent } from './shared/ui/components/popup/popup.component';
         SanitizerPipe,
         DatePickerComponent,
         DropdownComponent,
-        PopupComponent
+        PopupComponent,
     ],
     imports: [
         BrowserModule,
@@ -42,6 +43,7 @@ import { PopupComponent } from './shared/ui/components/popup/popup.component';
         FormsModule,
         ReactiveFormsModule,
         BrowserAnimationsModule,
+        LazyLoadImageModule,
     ],
     providers: [],
     bootstrap: [AppComponent]
