@@ -1,0 +1,14 @@
+// ===============================================
+// LINK
+// ===============================================
+
+
+.link {
+    cursor: pointer;
+    text-decoration: underline;
+
+    &:focus {
+        text-decoration: none;
+        box-shadow: 0 0 1px 1px var(--white);
+    }
+}

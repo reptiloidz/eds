@@ -7,7 +7,7 @@
 
     <nav class="header__nav">
         <ul class="header__nav-list">
-            <li>
+            <li class="header__nav-item">
                 <app-dropdown
                     value="Select Day"
                     triggerClass="btn"
@@ -17,7 +17,7 @@
                     ></app-date-picker>
                 </app-dropdown>
             </li>
-            <li>
+            <li class="header__nav-item">
                 <a
                     class="btn"
                     [routerLink]="['login']"
@@ -34,7 +34,7 @@
                     </button>
                 </ng-template>
             </li>
-            <li>
+            <li class="header__nav-item">
                 <a
                     class="btn"
                     *ngIf="!authService.token"
@@ -43,7 +43,7 @@
                     Sign up
                 </a>
             </li>
-            <li>
+            <li class="header__nav-item">
                 <a
                     class="btn"
                     *ngIf="user"

@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
     templateUrl: './profile-page.component.html'
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
-    subscribes: Subscription;
+    subscribes!: Subscription;
     user: User | null = null;
     newUserData: User | null = null;
     idToken: string | null = null;
@@ -132,11 +132,23 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         const user: User = {
             idToken: localStorage.getItem('fb-token')
         }
-        this.accountService.deleteAccount(user).subscribe(
+
+        const getNames = this.authService.getNames().subscribe(
+            result => Object.entries(result).forEach(([key, value]) => {
+                if ((value as User).displayName === this.user?.displayName) {
+                    this.authService.deleteName(key).subscribe()
+                }
+            })
+        );
+
+        const delAccount = this.accountService.deleteAccount(user).subscribe(
             () => {
                 this.authService.logout();
                 this.router.navigate(['']);
             }
         );
+
+        this.subscribes.add(getNames);
+        this.subscribes.add(delAccount);
     }
 }

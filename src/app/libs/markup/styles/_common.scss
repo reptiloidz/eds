@@ -61,6 +61,23 @@ table {
     flex-direction: column;
 }
 
+.flex-center {
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-jc-between {
+    justify-content: space-between;
+}
+
 .h-100p {
     height: 100%;
+}
+
+.mt-auto {
+    margin-top: auto;
+}
+
+.mb-auto {
+    margin-bottom: auto;
 }

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, HostBinding } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { User } from '../shared/interface';
@@ -20,6 +20,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     isOpen: boolean = false;
     resetFormIsSended: boolean = false;
     resetError: Error | null;
+
+    @HostBinding('class') class = 'd-flex flex-center h-100p';
 
     constructor(
         private authService: AuthService,

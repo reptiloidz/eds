@@ -81,6 +81,12 @@ export class AuthService {
         );
     }
 
+    deleteName(id: any): Observable<any> {
+        return this.http.delete(
+            `https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users/${id}.json`
+        );
+    }
+
     logout() {
         this.setToken(null);
     }

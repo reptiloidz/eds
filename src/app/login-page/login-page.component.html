@@ -1,52 +1,69 @@
 <form
     [formGroup]="loginForm"
     (submit)="submit()"
+    class="form"
 >
-    <input
-        type="text"
-        placeholder="Email"
-        formControlName="email"
-        autocomplete="email"
-    >
-    <p *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].dirty">
-        <span *ngIf="loginForm.controls['email'].errors['required']">
-            Email can&rsquo;t be&nbsp;empty
-        </span>
-        <span *ngIf="loginForm.controls['email'].errors['email']">
-            Not valid email
-        </span>
-    </p>
-    <input
-        type="password"
-        placeholder="Password"
-        formControlName="password"
-        autocomplete="off"
-    >
-    <p *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].dirty">
-        <span *ngIf="loginForm.controls['password'].errors?.['required']">
-           Password can&rsquo;t be&nbsp;empty
-        </span>
-        <span *ngIf="loginForm.controls['password'].errors['minlength']">
-            Password can&rsquo;t be&nbsp;shorter then {{ loginForm.controls['password'].errors['minlength']['requiredLength'] }}
-        </span>
-        <span *ngIf="loginForm.controls['password'].errors['passwordStrength']">
-            The password must contain uppercase, lowercase English letters and numbers.
-            Other characters are not allowed
-        </span>
-    </p>
-    <button
-        class="btn"
-        type="submit"
-        [disabled]="loginForm.invalid"
-    >
-        Log&nbsp;in
-    </button>
-    <button
-        (click)="togglePassReset()"
-        class="link"
-    >
-        Forgot password
-    </button>
+    <div class="form__input-group">
+        <!-- <input
+            type="text"
+            placeholder="Email"
+            formControlName="email"
+            autocomplete="email"
+            class="form__input"
+        > -->
+        <app-text-input formControlName="email"></app-text-input>
+        <p
+            class="form__hint"
+            *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].dirty"
+        >
+            <span *ngIf="loginForm.controls['email'].errors['required']">
+                Email can&rsquo;t be&nbsp;empty
+            </span>
+            <span *ngIf="loginForm.controls['email'].errors['email']">
+                Not valid email
+            </span>
+        </p>
+    </div>
+
+    <div class="form__input-group">
+        <input
+            type="password"
+            placeholder="Password"
+            formControlName="password"
+            autocomplete="off"
+            class="form__input"
+        >
+        <p
+            class="form__hint"
+            *ngIf="loginForm.controls['password'].errors && loginForm.controls['password'].dirty"
+        >
+            <span *ngIf="loginForm.controls['password'].errors?.['required']">
+               Password can&rsquo;t be&nbsp;empty
+            </span>
+            <span *ngIf="loginForm.controls['password'].errors['minlength']">
+                Password can&rsquo;t be&nbsp;shorter then {{ loginForm.controls['password'].errors['minlength']['requiredLength'] }}
+            </span>
+            <span *ngIf="loginForm.controls['password'].errors['passwordStrength']">
+                The password must contain uppercase, lowercase English letters and numbers.
+                Other characters are not allowed
+            </span>
+        </p>
+    </div>
+    <div class="d-flex flex-jc-between">
+        <button
+            (click)="togglePassReset()"
+            class="link mb-auto"
+        >
+            Forgot password
+        </button>
+        <button
+            class="btn"
+            type="submit"
+            [disabled]="loginForm.invalid"
+        >
+            Log&nbsp;in
+        </button>
+    </div>
 </form>
 <app-popup
     [opened]="isOpen"

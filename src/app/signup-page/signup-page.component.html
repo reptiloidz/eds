@@ -56,6 +56,7 @@
     <button
         [disabled]="!form.valid || loading"
         type="submit"
+        class="btn"
     >
         <span *ngIf="!loading; else loader">
             Submit
