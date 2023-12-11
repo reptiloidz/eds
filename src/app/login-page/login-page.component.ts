@@ -106,4 +106,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             }
         });
     }
+
+    onTest() {
+        console.log(this.loginForm);
+    }
 }

@@ -1,0 +1,8 @@
+<input
+    [type]="type"
+    [placeholder]="placeholder"
+    autocomplete="email"
+    class="form__input"
+    [(ngModel)]="value"
+    (ngModelChange)="changeHandler($event)"
+>

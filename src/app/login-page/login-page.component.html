@@ -3,15 +3,11 @@
     (submit)="submit()"
     class="form"
 >
-    <div class="form__input-group">
-        <!-- <input
-            type="text"
-            placeholder="Email"
+<div class="form__input-group">
+        <app-text-input
             formControlName="email"
-            autocomplete="email"
-            class="form__input"
-        > -->
-        <app-text-input formControlName="email"></app-text-input>
+            placeholder="Email"
+        ></app-text-input>
         <p
             class="form__hint"
             *ngIf="loginForm.controls['email'].errors && loginForm.controls['email'].dirty"

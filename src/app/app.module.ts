@@ -19,7 +19,7 @@ import { DropdownComponent } from './shared/ui/components/dropdown/dropdown/drop
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PopupComponent } from './shared/ui/components/popup/popup.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
-import { TextInputComponent } from './text-input/text-input.component';
+import { TextInputComponent } from './shared/ui/components/text-input/text-input.component';
 
 @NgModule({
     declarations: [
