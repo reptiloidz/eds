@@ -1,8 +1,24 @@
-<input
-    [type]="type"
-    [placeholder]="placeholder"
-    autocomplete="email"
-    class="form__input"
-    [(ngModel)]="value"
-    (ngModelChange)="changeHandler($event)"
->
+<div class="d-flex">
+    <input
+        [type]="type"
+        [placeholder]="placeholder"
+        [class]="inputClass"
+        [(ngModel)]="value"
+        (ngModelChange)="changeHandler($event)"
+    >
+    <button
+        *ngIf="passSwitch"
+        type="button"
+        class="btn"
+        (click)="onPassSwitch()"
+    >
+        <svg class="icon icon--md">
+            <ng-container *ngIf="isPassVisible; else invisible">
+                <use xlink:href="assets/svg/sprite.svg#moon"></use>
+            </ng-container>
+            <ng-template #invisible>
+                <use xlink:href="assets/svg/sprite.svg#sun"></use>
+            </ng-template>
+        </svg>
+    </button>
+</div>

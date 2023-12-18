@@ -1,57 +1,82 @@
+<h2 class="h2">Create account</h2>
 <form
+    class="form"
     [formGroup]="form"
     (submit)="submit()"
 >
-    <input
-        formControlName="email"
-        type="email"
-        placeholder="Email"
-    >
-    <p *ngIf="form.controls['email'].errors && form.controls['email'].dirty">
-        <span *ngIf="form.controls['email'].errors['required']">
-           Email can&rsquo;t be&nbsp;empty
-        </span>
-        <span *ngIf="form.controls['email'].errors['email']">
-            Not valid email
-        </span>
-    </p>
-    <input
-        formControlName="name"
-        type="text"
-        placeholder="Name"
-        (input)="checkAvailableName()"
-    >
-    <p *ngIf="form.controls['name'].errors && form.controls['name'].touched">
-        Name can&rsquo;t be&nbsp;empty
-    </p>
-    <p *ngIf="nameExist">
-        This name already exist
-    </p>
-    <input
-        formControlName="password"
-        type="text"
-        placeholder="Password"
-    >
-    <p *ngIf="form.controls['password'].errors && form.controls['password'].dirty">
-        <span *ngIf="form.controls['password'].errors?.['required']">
-            Password can&rsquo;t be&nbsp;empty
-        </span>
-        <span *ngIf="form.controls['password'].errors['minlength']">
-           Password can&rsquo;t be&nbsp;shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
-        </span>
-        <span *ngIf="form.controls['password'].errors['passwordStrength']">
-            The password must contain uppercase, lowercase English letters and numbers.
-            Other characters are not allowed
-        </span>
-    </p>
-    <input
-        formControlName="confirmPass"
-        type="text"
-        placeholder="Confirm password"
-    >
-    <p *ngIf="form.errors?.['passwordMismatch'] && form.controls['confirmPass'].dirty">
-        Password mismatch
-    </p>
+    <div class="form__input-group">
+        <app-text-input
+            formControlName="email"
+            placeholder="Email"
+            type="email"
+        ></app-text-input>
+        <p
+            class="form__hint"
+            *ngIf="form.controls['email'].errors && form.controls['email'].dirty"
+        >
+            <span *ngIf="form.controls['email'].errors['required']">
+               Email can&rsquo;t be&nbsp;empty
+            </span>
+            <span *ngIf="form.controls['email'].errors['email']">
+                Not valid email
+            </span>
+        </p>
+    </div>
+    <div class="form__input-group">
+        <app-text-input
+            formControlName="name"
+            placeholder="Name"
+        ></app-text-input>
+        <p
+            class="form__hint"
+            *ngIf="form.controls['name'].errors && form.controls['name'].touched"
+        >
+            Name can&rsquo;t be&nbsp;empty
+        </p>
+        <p
+            *ngIf="nameExist"
+            class="form__hint"
+        >
+            This name already exist
+        </p>
+    </div>
+    <div class="form__input-group">
+        <app-text-input
+            formControlName="password"
+            placeholder="Password"
+            type="password"
+            [passSwitch]="true"
+        ></app-text-input>
+        <p
+            class="form__hint"
+            *ngIf="form.controls['password'].errors && form.controls['password'].dirty"
+        >
+            <span *ngIf="form.controls['password'].errors?.['required']">
+                Password can&rsquo;t be&nbsp;empty
+            </span>
+            <span *ngIf="form.controls['password'].errors['minlength']">
+               Password can&rsquo;t be&nbsp;shorter then {{ form.controls['password'].errors['minlength']['requiredLength'] }}
+            </span>
+            <span *ngIf="form.controls['password'].errors['passwordStrength']">
+                The password must contain uppercase, lowercase English letters and numbers.
+                Other characters are not allowed
+            </span>
+        </p>
+    </div>
+    <div class="form__input-group">
+        <app-text-input
+            formControlName="confirmPass"
+            placeholder="Confirm password"
+            type="password"
+            [passSwitch]="true"
+        ></app-text-input>
+        <p
+            *ngIf="form.errors?.['passwordMismatch'] && form.controls['confirmPass'].dirty"
+            class="form__hint"
+        >
+            Password mismatch
+        </p>
+    </div>
 
     <button
         [disabled]="!form.valid || loading"

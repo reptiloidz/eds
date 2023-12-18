@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
 import { passwordMismatchValidator } from '../shared/validators';
@@ -17,6 +17,8 @@ export class SignupPageComponent implements OnInit {
     error: string | null = null;
     names: Array<any>;
     nameExist = false;
+
+    @HostBinding('class') class = 'd-flex flex-column flex-center h-100p';
 
     constructor(
         private authService: AuthService,

@@ -21,7 +21,7 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     resetFormIsSended: boolean = false;
     resetError: Error | null;
 
-    @HostBinding('class') class = 'd-flex flex-center h-100p';
+    @HostBinding('class') class = 'd-flex flex-column flex-center h-100p';
 
     constructor(
         private authService: AuthService,

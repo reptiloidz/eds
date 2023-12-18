@@ -1,0 +1,14 @@
+// ===============================================
+// ICON
+// ===============================================
+
+
+.icon {
+    /* stylelint-disable-next-line value-keyword-case */
+    fill: currentColor;
+
+    &--md {
+        width: 28px;
+        height: 28px;
+    }
+}

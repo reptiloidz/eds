@@ -16,16 +16,17 @@ import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 export class TextInputComponent implements ControlValueAccessor, OnInit {
     @Input('type') type = 'text';
     @Input('placeholder') placeholder = '';
+    @Input('inputClass') inputClass = 'form__input';
+    @Input('passSwitch') passSwitch = false;
 
-    private onChange = (_: string | number | null) => {};
+    private onChange = (_: string | number | null) => {_};
 	private onTouched = () => {};
-
     private control: UntypedFormControl | null = null;
 
     value: string | number | null = '';
-
     fieldValue$ = new BehaviorSubject<string | null>(null);
     fieldValue = this.fieldValue$.asObservable().pipe(distinctUntilChanged());
+    isPassVisible = false;
 
     constructor(
         private injector: Injector,
@@ -66,4 +67,9 @@ export class TextInputComponent implements ControlValueAccessor, OnInit {
     changeHandler(value: string) {
 		this.fieldValue$.next(value);
 	}
+
+    onPassSwitch() {
+        this.isPassVisible = !this.isPassVisible;
+        this.type = this.isPassVisible ? 'text' : 'password';
+    }
 }
