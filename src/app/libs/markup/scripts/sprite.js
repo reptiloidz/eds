@@ -35,8 +35,8 @@ for (file of svgFiles) {
 spriter.compile((error, result) => {
     for (const mode in result) {
         for (const resource in result[mode]) {
-            fs.mkdirSync(cwd, { recursive: true });
-            fs.writeFileSync(path.resolve(cwd, 'sprite.svg'), result[mode][resource].contents);
+            fs.mkdirSync(path.resolve(__dirname, '../images/sprite'), { recursive: true });
+            fs.writeFileSync(path.resolve(path.resolve(__dirname, '../images/sprite'), 'sprite.svg'), result[mode][resource].contents);
         }
     }
 });
