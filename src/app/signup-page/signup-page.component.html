@@ -1,4 +1,4 @@
-<h2 class="h2">Create account</h2>
+<h2 class="h2">Create an account</h2>
 <form
     class="form"
     [formGroup]="form"
@@ -81,7 +81,7 @@
     <button
         [disabled]="!form.valid || loading"
         type="submit"
-        class="btn"
+        class="btn ml-auto"
     >
         <span *ngIf="!loading; else loader">
             Submit
