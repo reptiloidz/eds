@@ -3,12 +3,11 @@
         Name:
     </label>
     <div class="d-flex">
-        <input
+        <app-text-input
             [formControl]="name"
-            type="text"
+            [disabled]="name.disabled"
             [placeholder]="user?.displayName"
-            name="name"
-        >
+        ></app-text-input>
         <button
             *ngIf="name.disabled"
             class="btn"
@@ -21,12 +20,16 @@
             <button
                 class="btn"
                 (click)="cancelEdit()"
-            >Cancel</button>
+            >
+                Cancel
+            </button>
             <button
                 class="btn"
                 [disabled]="name.errors"
                 (click)="changeName()"
-            >Save</button>
+            >
+                Save
+            </button>
         </ng-container>
     </div>
 </div>
@@ -35,13 +38,13 @@
     <label>
         Email:
     </label>
-    <div>
-        <input
+    <div class="d-flex">
+        <app-text-input
             [formControl]="email"
-            type="email"
+            [disabled]="email.disabled"
             [placeholder]="user?.email"
-            name="name"
-        >
+            type="email"
+        ></app-text-input>
         <button
             *ngIf="email.disabled"
             class="btn"
@@ -67,11 +70,14 @@
     <label>
         Password:
     </label>
-    <div>
-        <input
+    <div class="d-flex">
+        <app-text-input
             [formControl]="pass"
+            [disabled]="pass.disabled"
             placeholder="......"
-        >
+            type="password"
+            [passSwitch]="!pass.disabled"
+        ></app-text-input>
         <button
             *ngIf="pass.disabled"
             class="btn"

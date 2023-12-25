@@ -15,9 +15,10 @@ import { BehaviorSubject, distinctUntilChanged } from 'rxjs';
 })
 export class TextInputComponent implements ControlValueAccessor, OnInit {
     @Input('type') type = 'text';
-    @Input('placeholder') placeholder = '';
+    @Input('placeholder') placeholder: string | null | undefined = '';
     @Input('inputClass') inputClass = 'form__input';
     @Input('passSwitch') passSwitch = false;
+    @Input('disabled') disabled = false;
 
     private onChange = (_: string | number | null) => {_};
 	private onTouched = () => {};

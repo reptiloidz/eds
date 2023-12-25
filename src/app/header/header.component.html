@@ -17,36 +17,44 @@
                     ></app-date-picker>
                 </app-dropdown>
             </li>
-            <li class="header__nav-item">
+            <li
+                class="header__nav-item"
+                *ngIf="!authService.token; else logOutTemplate"
+            >
                 <a
                     class="btn"
                     [routerLink]="['login']"
-                    *ngIf="!authService.token; else logOutTemplate"
                 >
                     Log in
                 </a>
-                <ng-template #logOutTemplate>
+            </li>
+            <ng-template #logOutTemplate>
+                <li class="header__nav-item">
                     <button
                         class="btn"
                         (click)="logOut()"
                     >
                         Log out
                     </button>
-                </ng-template>
-            </li>
-            <li class="header__nav-item">
+                </li>
+            </ng-template>
+            <li
+                class="header__nav-item"
+                *ngIf="!authService.token"
+            >
                 <a
                     class="btn"
-                    *ngIf="!authService.token"
                     [routerLink]="['signup']"
                 >
                     Sign up
                 </a>
             </li>
-            <li class="header__nav-item">
+            <li
+                class="header__nav-item"
+                *ngIf="user"
+            >
                 <a
                     class="btn"
-                    *ngIf="user"
                     [routerLink]="['profile']"
                 >
                     {{ user.displayName }}

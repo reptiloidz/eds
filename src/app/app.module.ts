@@ -20,6 +20,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { PopupComponent } from './shared/ui/components/popup/popup.component';
 import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { TextInputComponent } from './shared/ui/components/text-input/text-input.component';
+import { FooterComponent } from './footer/footer.component';
+import { AboutPageComponent } from './about-page/about-page.component';
 
 @NgModule({
     declarations: [
@@ -37,6 +39,8 @@ import { TextInputComponent } from './shared/ui/components/text-input/text-input
         DropdownComponent,
         PopupComponent,
         TextInputComponent,
+        FooterComponent,
+        AboutPageComponent,
     ],
     imports: [
         BrowserModule,
