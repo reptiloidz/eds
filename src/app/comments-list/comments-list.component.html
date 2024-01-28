@@ -14,6 +14,7 @@
         <app-comment
             [comment]="comment"
             [user]="user"
+            (deleteHandler)="delete(comment)"
         ></app-comment>
     </ng-container>
 </div>

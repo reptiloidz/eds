@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Comment, DailySpacePicture, User } from '../shared/interface';
+import { Comment, CommentsNames, DailySpacePicture, User } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
@@ -14,7 +14,8 @@ import { Subscription } from 'rxjs';
 export class CommentsListComponent implements OnInit, OnDestroy {
     @Input() comments: Array<any>;
     @Input() picture: DailySpacePicture | undefined;
-    @Output() onPush = new EventEmitter();
+    @Input() commentsNames: CommentsNames;
+    @Output() onChange = new EventEmitter();
 
     subscribes: Subscription;
     commentInput: FormControl | any;
@@ -32,6 +33,8 @@ export class CommentsListComponent implements OnInit, OnDestroy {
         this.subscribes = this.accountService.user$.subscribe(
             user => this.user = user
         );
+
+        console.log(this.commentsNames);
     }
 
     ngOnDestroy(): void {
@@ -49,12 +52,25 @@ export class CommentsListComponent implements OnInit, OnDestroy {
         const postSubscribe = this.postService.addNewPost(this.comment).subscribe({
             next: result => {
                 this.commentInput.reset();
-                this.onPush.emit();
-                console.log(result);
+                this.onChange.emit();
+                console.log(result.name);
             },
             error: error => console.log(error)
         });
 
         this.subscribes.add(postSubscribe);
+    }
+
+    delete(comment: Comment) {
+        const name = Object.entries(this.commentsNames).find(
+            item => item[1].date === comment.date
+        );
+
+        if (name) {
+            const delSubscribe = this.postService.delPost(name[0]).subscribe({
+                next: () => this.onChange.emit()
+            });
+            this.subscribes.add(delSubscribe);
+        }
     }
 }

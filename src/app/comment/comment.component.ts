@@ -13,7 +13,7 @@ export class CommentComponent {
     @Output() editHandler = new EventEmitter();
 
     onDelete() {
-        this.deleteHandler.emit();
+        this.deleteHandler.emit(this.comment);
     }
 
     onEdit() {

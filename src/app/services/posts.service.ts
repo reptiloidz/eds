@@ -19,4 +19,8 @@ export class PostService {
     addNewPost(comment: Comment): Observable<any> {
         return this.http.post(`https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/posts.json`, comment)
     }
+
+    delPost(post: string): Observable<any> {
+        return this.http.delete(`https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/posts/${post}.json`)
+    }
 }

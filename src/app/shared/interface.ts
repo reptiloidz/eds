@@ -42,3 +42,7 @@ export interface Comment {
     author: string | null | undefined,
     text: string
 }
+
+export interface CommentsNames {
+    name: Comment
+}

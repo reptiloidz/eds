@@ -65,7 +65,8 @@
         style="width: 50%"
         [comments]="comments"
         [picture]="item"
-        (onPush)="getComments(item.date)"
+        (onChange)="getComments(item.date)"
+        [commentsNames]="commentsNames"
     ></app-comments-list>
 </div>
 <ng-template #loadingTemplate>

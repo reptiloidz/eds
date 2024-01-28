@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { DailySpacePicture } from '../shared/interface';
+import { CommentsNames, DailySpacePicture } from '../shared/interface';
 import { PostService } from '../services/posts.service';
-import { map } from 'rxjs';
+import { map, tap } from 'rxjs';
 
 @Component({
     selector: 'app-day',
@@ -11,12 +11,14 @@ import { map } from 'rxjs';
 export class DayComponent implements OnInit {
     item: DailySpacePicture | null = null;
     comments: Array<Comment> | Array<undefined>;
+    commentsNames: CommentsNames;
     error: Error | undefined = undefined;
     date: string | undefined = undefined;
     prev: string = '';
     next: string = '';
     isLast: boolean = false;
     loading = true;
+
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -39,6 +41,7 @@ export class DayComponent implements OnInit {
 
     getComments(pictureDate: string | undefined): void {
         this.postService.getPosts().pipe(
+            tap(data => this.commentsNames = data),
             map(data => Object.keys(data).map(k => data[k]).filter(item => item.pictureDate === pictureDate))
         ).subscribe({
             next: result => this.comments = result,
