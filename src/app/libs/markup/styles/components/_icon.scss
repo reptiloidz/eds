@@ -7,6 +7,11 @@
     /* stylelint-disable-next-line value-keyword-case */
     fill: currentColor;
 
+    &--sm {
+        width: 18px;
+        height: 18px;
+    }
+
     &--md {
         width: 28px;
         height: 28px;

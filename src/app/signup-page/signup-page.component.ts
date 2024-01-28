@@ -6,6 +6,7 @@ import { User } from '../shared/interface';
 import { Router } from '@angular/router';
 import { AccountService } from '../services/account.service';
 import { passValidator } from '../shared/validators/passValidator';
+import { usernameValidator } from '../shared/validators/usernameValidator';
 
 @Component({
     selector: 'app-signup-page',
@@ -29,7 +30,12 @@ export class SignupPageComponent implements OnInit {
     ngOnInit(): void {
         this.form = new FormGroup({
             email: new FormControl('', [Validators.required, Validators.email]),
-            name: new FormControl('', [Validators.required]),
+            name: new FormControl('', [
+                Validators.required,
+                Validators.maxLength(30),
+                Validators.minLength(3),
+                usernameValidator()
+            ]),
             password: new FormControl('', [
                 Validators.required,
                 Validators.minLength(6),

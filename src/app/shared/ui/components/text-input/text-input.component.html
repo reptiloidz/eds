@@ -12,6 +12,7 @@
         type="button"
         class="btn"
         (click)="onPassSwitch()"
+        [disabled]="!value"
     >
         <svg class="icon icon--md">
             <ng-container *ngIf="isPassVisible; else invisible">

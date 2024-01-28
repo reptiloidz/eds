@@ -27,12 +27,35 @@
             formControlName="name"
             placeholder="Name"
         ></app-text-input>
-        <p
-            class="form__hint"
-            *ngIf="form.controls['name'].errors && form.controls['name'].touched"
+        <ng-container
+            *ngIf="form.controls['name'].errors && form.controls['name'].dirty"
         >
-            Name can&rsquo;t be&nbsp;empty
-        </p>
+            <p
+                *ngIf="form.controls['name'].errors['minlength']"
+                class="form__hint"
+            >
+                Name is&nbsp;too short
+            </p>
+            <p
+                *ngIf="form.controls['name'].errors['maxlength']"
+                class="form__hint"
+            >
+                Name is&nbsp;too long
+            </p>
+            <p
+                *ngIf="form.controls['name'].errors['usernameInvalid']"
+                class="form__hint"
+            >
+                Name is&nbsp;not valid
+            </p>
+            <p
+                *ngIf="form.controls['name'].errors['required']"
+                class="form__hint"
+            >
+                Name can&rsquo;t be&nbsp;empty
+            </p>
+        </ng-container>
+
         <p
             *ngIf="nameExist"
             class="form__hint"

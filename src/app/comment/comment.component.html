@@ -1,3 +1,17 @@
 <p>{{ comment.text }}</p>
 <p>{{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}</p>
+<ng-container *ngIf="user?.displayName === comment.author">
+    <button
+        class="btn"
+        (click)="onEdit()"
+    >
+        edit
+    </button>
+    <button
+        class="btn"
+        (click)="onDelete()"
+    >
+        del
+    </button>
+</ng-container>
 <hr>
