@@ -1,13 +1,13 @@
-import { animate, state, style, transition, trigger } from '@angular/animations';
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
     Component,
     ContentChild,
-    HostBinding,
     TemplateRef,
     Input,
     HostListener,
     Output,
-    EventEmitter
+    EventEmitter,
+    ViewEncapsulation
 } from '@angular/core';
 
 @Component({
@@ -15,18 +15,25 @@ import {
     templateUrl: './popup.component.html',
     animations: [
         trigger('modalAnimation', [
-            state('open', style({ opacity: '1'})),
-            state('close', style({ opacity: '0', display: 'none'})),
-            transition('close <=> open', animate(300))
+            transition(':enter', [
+                style({ opacity: 0}),
+                animate(
+                    "500ms ease-in-out",
+                    style({ opacity: 1})
+                )
+            ]),
+            transition(':leave', [
+                style({ opacity: 1}),
+                animate(
+                    "500ms ease-in-out",
+                    style({ opacity: 0})
+                )
+            ]),
         ])
-    ]
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export class PopupComponent {
-    @HostBinding('class') class = 'popup';
-    @HostBinding('@modalAnimation') get getCondition(): string {
-        return this.opened ? 'open' : 'close';
-    }
-
     @ContentChild('content') content: TemplateRef<any>;
     @ContentChild('controls') controls: TemplateRef<any>;
 

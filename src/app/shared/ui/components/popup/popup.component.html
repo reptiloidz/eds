@@ -1,5 +1,17 @@
-<div class="popup__container">
-    <ng-container *ngTemplateOutlet="content"></ng-container>
-    <ng-container *ngTemplateOutlet="controls"></ng-container>
+<div
+    class="popup"
+    *ngIf="opened"
+    @modalAnimation
+    aria-modal="true"
+    role="dialog"
+>
+    <div
+        class="popup__container"
+    >
+        <ng-container *ngTemplateOutlet="content"></ng-container>
+        <ng-container *ngTemplateOutlet="controls"></ng-container>
+    </div>
+    <div
+        class="popup__overlay"
+    ></div>
 </div>
-<div class="popup__overlay"></div>
