@@ -5,6 +5,7 @@ import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
 import { Subscription } from 'rxjs';
+import * as uniqid from 'uniqid';
 
 @Component({
     selector: 'app-comments-list',
@@ -33,8 +34,6 @@ export class CommentsListComponent implements OnInit, OnDestroy {
         this.subscribes = this.accountService.user$.subscribe(
             user => this.user = user
         );
-
-        console.log(this.commentsNames);
     }
 
     ngOnDestroy(): void {
@@ -46,14 +45,14 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             date: + new Date(),
             pictureDate: this.picture?.date,
             author: this.user?.displayName,
-            text: this.commentInput.value
-        }
+            text: this.commentInput.value,
+            id: uniqid(),
+        };
 
         const postSubscribe = this.postService.addNewPost(this.comment).subscribe({
-            next: result => {
+            next: () => {
                 this.commentInput.reset();
                 this.onChange.emit();
-                console.log(result.name);
             },
             error: error => console.log(error)
         });
@@ -62,15 +61,19 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     }
 
     delete(comment: Comment) {
-        const name = Object.entries(this.commentsNames).find(
-            item => item[1].date === comment.date
+        const post = Object.entries(this.commentsNames).find(
+            item => item[1].id === comment.id
         );
 
-        if (name) {
-            const delSubscribe = this.postService.delPost(name[0]).subscribe({
+        if (post) {
+            const delSubscribe = this.postService.delPost(post[0]).subscribe({
                 next: () => this.onChange.emit()
             });
             this.subscribes.add(delSubscribe);
         }
     }
+
+    // edit(comment: Comment) {
+
+    // }
 }

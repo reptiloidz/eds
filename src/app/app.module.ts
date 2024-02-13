@@ -22,6 +22,15 @@ import { LazyLoadImageModule } from 'ng-lazyload-image';
 import { TextInputComponent } from './shared/ui/components/text-input/text-input.component';
 import { FooterComponent } from './footer/footer.component';
 import { AboutPageComponent } from './about-page/about-page.component';
+import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
+import { getDatabase, provideDatabase } from '@angular/fire/database';
+import { environment } from 'src/environments/prod.env';
+
+const firebaseAppConfig = {
+    apiKey: environment.firebaseKey,
+    authDomain: "blog-962bb-default-rtdb.europe-west1.firebasedatabase.app",
+    databaseURL: "https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app",
+}
 
 @NgModule({
     declarations: [
@@ -50,6 +59,8 @@ import { AboutPageComponent } from './about-page/about-page.component';
         ReactiveFormsModule,
         BrowserAnimationsModule,
         LazyLoadImageModule,
+        provideFirebaseApp(() => initializeApp(firebaseAppConfig)),
+        provideDatabase(() => getDatabase()),
     ],
     providers: [],
     bootstrap: [AppComponent]

@@ -45,7 +45,10 @@ export class DayComponent implements OnInit {
             map(data => Object.keys(data).map(k => data[k]).filter(item => item.pictureDate === pictureDate))
         ).subscribe({
             next: result => this.comments = result,
-            error: error => console.log(error)
+            error: error => {
+                this.comments = [];
+                console.log(error)
+            }
         });
     }
 

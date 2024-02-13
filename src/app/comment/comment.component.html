@@ -1,17 +1,66 @@
-<p>{{ comment.text }}</p>
-<p>{{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}</p>
-<ng-container *ngIf="user?.displayName === comment.author">
+<p *ngIf="!canEdit">{{ comment.text }}</p>
+<p *ngIf="!canEdit">{{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}</p>
+
+<form
+    *ngIf="canEdit"
+    [formGroup]="form"
+>
+    <app-text-input
+        formControlName="comment"
+        type="text"
+        [placeholder]="comment.text"
+    ></app-text-input>
+
     <button
         class="btn"
         (click)="onEdit()"
+    >
+        Save
+    </button>
+    <button
+        class="btn"
+        (click)="editSwitch()"
+    >
+        Cancel
+    </button>
+</form>
+<ng-container *ngIf="user?.displayName === comment.author && !canEdit">
+    <button
+        class="btn"
+        (click)="editSwitch()"
     >
         edit
     </button>
     <button
         class="btn"
-        (click)="onDelete()"
+        (click)="togglePopup()"
     >
         del
     </button>
 </ng-container>
 <hr>
+
+<app-popup
+    [opened]="popupIsOpen"
+    (onClose)="togglePopup()"
+>
+    <ng-template #content>
+        <h2>Are you shure?</h2>
+    </ng-template>
+    <ng-template #controls>
+        <button
+            class="btn"
+            type="button"
+            (click)="onDelete()"
+        >
+            Yes
+        </button>
+        <button
+            class="btn"
+            type="button"
+            (click)="togglePopup()"
+        >
+            No
+        </button>
+    </ng-template>
+</app-popup>

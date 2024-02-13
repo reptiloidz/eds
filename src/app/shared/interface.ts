@@ -40,7 +40,8 @@ export interface Comment {
     pictureDate: string | undefined,
     date: number,
     author: string | null | undefined,
-    text: string
+    text: string,
+    id: string | null | undefined,
 }
 
 export interface CommentsNames {
