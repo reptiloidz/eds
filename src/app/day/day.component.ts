@@ -2,14 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentsNames, DailySpacePicture } from '../shared/interface';
 import { PostService } from '../services/posts.service';
-import { map, tap } from 'rxjs';
 
 @Component({
     selector: 'app-day',
     templateUrl: './day.component.html',
 })
 export class DayComponent implements OnInit {
-    item: DailySpacePicture | null = null;
+    item: DailySpacePicture;
     comments: Array<Comment> | Array<undefined>;
     commentsNames: CommentsNames;
     error: Error | undefined = undefined;
@@ -30,7 +29,7 @@ export class DayComponent implements OnInit {
         this.activatedRoute.data.subscribe({
             next: data => {
                 this.item = data['day'];
-                this.getComments(this.item?.date);
+                this.getComments(this.item.date);
                 this.calculateDates();
                 this.loading = false;
 
@@ -39,17 +38,16 @@ export class DayComponent implements OnInit {
         });
     }
 
-    getComments(pictureDate: string | undefined): void {
-        this.postService.getPosts().pipe(
-            tap(data => this.commentsNames = data),
-            map(data => Object.keys(data).map(k => data[k]).filter(item => item.pictureDate === pictureDate))
-        ).subscribe({
-            next: result => this.comments = result,
-            error: error => {
+    getComments(pictureDate: string): void {
+        this.postService.getPosts(pictureDate).then(
+            result => {
                 this.comments = [];
-                console.log(error)
-            }
-        });
+                if (result.val()) {
+                    this.comments = Object.values(result.val()) as Array<Comment>;
+                }
+            },
+            error => console.log(error)
+        );
     }
 
     calculateDates(): void {
