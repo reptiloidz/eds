@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { Observable } from "rxjs";
-import { Database, DataSnapshot, equalTo, get, orderByChild, query } from '@angular/fire/database';
+import { Database, DataSnapshot, equalTo, get, orderByChild, push, query, remove, update } from '@angular/fire/database';
 import { ref } from "firebase/database";
 import { Comment } from "../shared/interface";
 
@@ -10,18 +9,18 @@ import { Comment } from "../shared/interface";
 })
 
 export class PostService {
-    constructor(
-        private http: HttpClient
-    ) {}
-
     private db = inject(Database);
 
-    addNewPost(comment: Comment): Observable<any> {
-        return this.http.post(`https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/posts.json`, comment)
+    addNewPost(comment: Comment) {
+        return push(ref(this.db, 'posts'), comment);
     }
 
-    delPost(post: string): Observable<any> {
-        return this.http.delete(`https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/posts/${post}.json`)
+    editPost(postId: string, comment: Comment): Promise<void> {
+        return update(ref(this.db, `posts/${postId}`), comment);
+    }
+
+    delPost(postId: string): Promise<void> {
+        return remove(ref(this.db, `posts/${postId}`));
     }
 
     getPosts(date: string): Promise<DataSnapshot> {

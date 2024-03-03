@@ -13,12 +13,15 @@
 
     <button
         class="btn"
+        type="button"
         (click)="onEdit()"
+        [disabled]="!form.controls['comment'].value"
     >
         Save
     </button>
     <button
         class="btn"
+        type="button"
         (click)="editSwitch()"
     >
         Cancel
@@ -27,12 +30,14 @@
 <ng-container *ngIf="user?.displayName === comment.author && !canEdit">
     <button
         class="btn"
+        type="button"
         (click)="editSwitch()"
     >
         edit
     </button>
     <button
         class="btn"
+        type="button"
         (click)="togglePopup()"
     >
         del

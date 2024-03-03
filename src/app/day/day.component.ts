@@ -43,6 +43,7 @@ export class DayComponent implements OnInit {
             result => {
                 this.comments = [];
                 if (result.val()) {
+                    this.commentsNames = result.val() as CommentsNames;
                     this.comments = Object.values(result.val()) as Array<Comment>;
                 }
             },

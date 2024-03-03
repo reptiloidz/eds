@@ -49,31 +49,49 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             id: uniqid(),
         };
 
-        const postSubscribe = this.postService.addNewPost(this.comment).subscribe({
-            next: () => {
+        this.postService.addNewPost(this.comment).then(
+            () => {
                 this.commentInput.reset();
                 this.onChange.emit();
-            },
-            error: error => console.log(error)
-        });
-
-        this.subscribes.add(postSubscribe);
+            }
+        );
     }
 
-    delete(comment: Comment) {
+    onDelete(comment: Comment) {
         const post = Object.entries(this.commentsNames).find(
             item => item[1].id === comment.id
         );
 
         if (post) {
-            const delSubscribe = this.postService.delPost(post[0]).subscribe({
-                next: () => this.onChange.emit()
-            });
-            this.subscribes.add(delSubscribe);
+            this.postService.delPost(post[0]).then(
+                () => {
+                    this.onChange.emit();
+                },
+                err => {
+                    console.log(err);
+                }
+            );
         }
     }
 
-    // edit(comment: Comment) {
+    edit(event: any) {
+        const post = Object.entries(this.commentsNames).find(
+            item => item[1].id === event.comment.id
+        );
 
-    // }
+        if (post) {
+            const postId = post[0];
+            post[1].date = + new Date();
+            post[1].text = event.newText;
+
+            this.postService.editPost(postId, post[1]).then(
+                () => {
+                   this.onChange.emit()
+                },
+                err => {
+                    console.log(err);
+                }
+            )
+        }
+    }
 }

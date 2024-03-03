@@ -28,6 +28,12 @@ export class CommentComponent implements OnInit {
     }
 
     onEdit() {
+        const data = {
+            comment: this.comment,
+            newText: this.form.controls['comment'].value
+        };
+
+        this.editHandler.emit(data);
         this.canEdit = !this.canEdit;
     }
 
