@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Comment, User } from '../shared/interface';
+import { Comment, CommentsNames, User } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -19,7 +19,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     newUserData: User | null = null;
     idToken: string | null = null;
     popup = false;
-    comments: Array<Comment>
+    comments: Array<Comment>;
+    commentsNames: Array<string>;
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -38,13 +39,24 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.subscribes = this.accountService.user$.subscribe(
-            user => this.user = user
+            user => {
+                this.user = user;
+                this.postService.getPosts(PostsSorting.byAuthor, (user?.displayName as string))
+                    .then(
+                        response => {
+                            if (response.val()) {
+                                this.comments =  Object.values(response.val()) as Array<Comment>;
+                                console.log(Object.keys(response.val()));
+                                // this.commentsNames = Object.keys(response.val()) as Array<CommentsNames>;
+                            }
+                        }
+                    );
+            }
         );
 
         if (this.user) {
             this.postService.getPosts(PostsSorting.byAuthor, (this.user.displayName as string))
                 .then(
-
                     response => {
                         if (response.val()) {
                             this.comments = Object.values(response.val()) as Array<Comment>;
@@ -167,4 +179,42 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         this.subscribes.add(getNames);
         this.subscribes.add(delAccount);
     }
+
+    // onDelete(comment: Comment) {
+    //     const post = Object.entries(this.commentsNames).find(
+    //         item => item[1].id === comment.id
+    //     );
+
+    //     if (post) {
+    //         this.postService.delPost(post[0]).then(
+    //             () => {
+    //                 this.onChange.emit();
+    //             },
+    //             err => {
+    //                 console.log(err);
+    //             }
+    //         );
+    //     }
+    // }
+
+    // onEdit(event: any) {
+    //     const post = Object.entries(this.commentsNames).find(
+    //         item => item[1].id === event.comment.id
+    //     );
+
+    //     if (post) {
+    //         const postId = post[0];
+    //         post[1].date = + new Date();
+    //         post[1].text = event.newText;
+
+    //         this.postService.editPost(postId, post[1]).then(
+    //             () => {
+    //                this.onChange.emit()
+    //             },
+    //             err => {
+    //                 console.log(err);
+    //             }
+    //         )
+    //     }
+    // }
 }

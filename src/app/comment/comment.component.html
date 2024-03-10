@@ -32,15 +32,27 @@
         class="btn"
         type="button"
         (click)="editSwitch()"
+        title="Edit"
     >
-        edit
+        <svg
+            class="icon icon--md"
+            aria-hidden="true"
+        >
+            <use xlink:href="assets/sprite/sprite.svg#pen"></use>
+        </svg>
     </button>
     <button
         class="btn"
         type="button"
         (click)="togglePopup()"
+        title="Delete"
     >
-        del
+        <svg
+            class="icon icon--md"
+            aria-hidden="true"
+        >
+            <use xlink:href="assets/sprite/sprite.svg#trash"></use>
+        </svg>
     </button>
 </ng-container>
 <hr>

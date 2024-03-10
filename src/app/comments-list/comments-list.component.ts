@@ -74,7 +74,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
         }
     }
 
-    edit(event: any) {
+    onEdit(event: any) {
         const post = Object.entries(this.commentsNames).find(
             item => item[1].id === event.comment.id
         );

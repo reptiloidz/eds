@@ -116,10 +116,19 @@
 >
     Delete account
 </button>
+<br>
 
-<app-comments-list
-    [comments]="comments"
-></app-comments-list>
+<ng-container *ngFor="let comment of comments">
+    <a [routerLink]="['/day/' + comment.pictureDate]">
+        {{ comment.pictureDate }}
+    </a>
+    <app-comment
+        [comment]="comment"
+        [user]="user"
+        (deleteHandler)=""
+        (editHandler)=""
+    ></app-comment>
+</ng-container>
 <app-popup [opened]="popup" (onClose)="switchPopup()">
     <ng-template #content>
         <h3>Are you shure?</h3>
