@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommentsNames, DailySpacePicture } from '../shared/interface';
 import { PostService } from '../services/posts.service';
+import { PostsSorting } from '../services/posts.enum';
 
 @Component({
     selector: 'app-day',
@@ -39,7 +40,7 @@ export class DayComponent implements OnInit {
     }
 
     getComments(pictureDate: string): void {
-        this.postService.getPosts(pictureDate).then(
+        this.postService.getPosts(PostsSorting.byPictureDate, pictureDate).then(
             result => {
                 this.comments = [];
                 if (result.val()) {

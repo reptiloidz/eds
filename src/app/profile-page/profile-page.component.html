@@ -117,6 +117,9 @@
     Delete account
 </button>
 
+<app-comments-list
+    [comments]="comments"
+></app-comments-list>
 <app-popup [opened]="popup" (onClose)="switchPopup()">
     <ng-template #content>
         <h3>Are you shure?</h3>

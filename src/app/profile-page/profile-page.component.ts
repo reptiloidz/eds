@@ -1,11 +1,13 @@
 import { Subscription } from 'rxjs';
-import { User } from '../shared/interface';
+import { Comment, User } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { passValidator } from '../shared/validators/passValidator';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
+import { PostService } from '../services/posts.service';
+import { PostsSorting } from '../services/posts.enum';
 
 @Component({
     selector: 'app-profile-page',
@@ -17,6 +19,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     newUserData: User | null = null;
     idToken: string | null = null;
     popup = false;
+    comments: Array<Comment>
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -29,13 +32,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     constructor(
         private accountService: AccountService,
         private authService: AuthService,
-        private router: Router
+        private router: Router,
+        private postService: PostService,
     ) {}
 
     ngOnInit(): void {
         this.subscribes = this.accountService.user$.subscribe(
             user => this.user = user
         );
+
+        if (this.user) {
+            this.postService.getPosts(PostsSorting.byAuthor, (this.user.displayName as string))
+                .then(
+
+                    response => {
+                        if (response.val()) {
+                            this.comments = Object.values(response.val()) as Array<Comment>;
+                        }
+                    }
+                );
+        }
     }
 
     ngOnDestroy(): void {

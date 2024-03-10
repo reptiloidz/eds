@@ -1,4 +1,3 @@
-import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { Database, DataSnapshot, equalTo, get, orderByChild, push, query, remove, update } from '@angular/fire/database';
 import { ref } from "firebase/database";
@@ -23,7 +22,7 @@ export class PostService {
         return remove(ref(this.db, `posts/${postId}`));
     }
 
-    getPosts(date: string): Promise<DataSnapshot> {
-        return get(query(ref(this.db, 'posts'), orderByChild('pictureDate'), equalTo(date)));
+    getPosts(orderBy: string, equal: string): Promise<DataSnapshot> {
+        return get(query(ref(this.db, 'posts'), orderByChild(orderBy), equalTo(equal)));
     }
 }
