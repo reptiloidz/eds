@@ -1,5 +1,5 @@
 import { Subscription } from 'rxjs';
-import { Comment, CommentsNames, User } from '../shared/interface';
+import { Comment, User } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -46,24 +46,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                         response => {
                             if (response.val()) {
                                 this.comments =  Object.values(response.val()) as Array<Comment>;
-                                console.log(Object.keys(response.val()));
-                                // this.commentsNames = Object.keys(response.val()) as Array<CommentsNames>;
+                                this.commentsNames = Object.keys(response.val());
                             }
                         }
                     );
             }
         );
-
-        if (this.user) {
-            this.postService.getPosts(PostsSorting.byAuthor, (this.user.displayName as string))
-                .then(
-                    response => {
-                        if (response.val()) {
-                            this.comments = Object.values(response.val()) as Array<Comment>;
-                        }
-                    }
-                );
-        }
     }
 
     ngOnDestroy(): void {
@@ -180,22 +168,28 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         this.subscribes.add(delAccount);
     }
 
-    // onDelete(comment: Comment) {
-    //     const post = Object.entries(this.commentsNames).find(
-    //         item => item[1].id === comment.id
-    //     );
+    onDelete(index: number) {
+        const post = this.commentsNames[index];
 
-    //     if (post) {
-    //         this.postService.delPost(post[0]).then(
-    //             () => {
-    //                 this.onChange.emit();
-    //             },
-    //             err => {
-    //                 console.log(err);
-    //             }
-    //         );
-    //     }
-    // }
+        if (post) {
+            this.postService.delPost(post).then(
+                () => {
+                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
+                        .then(
+                            response => {
+                                if (response.val()) {
+                                    this.comments =  Object.values(response.val()) as Array<Comment>;
+                                    this.commentsNames = Object.keys(response.val());
+                                }
+                            }
+                        );
+                },
+                err => {
+                    console.log(err);
+                }
+            );
+        }
+    }
 
     // onEdit(event: any) {
     //     const post = Object.entries(this.commentsNames).find(

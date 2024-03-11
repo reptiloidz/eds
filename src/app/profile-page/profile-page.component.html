@@ -61,12 +61,16 @@
             <button
                 class="btn"
                 (click)="cancelEdit()"
-            >Cancel</button>
+            >
+                Cancel
+            </button>
             <button
                 class="btn"
                 [disabled]="email.errors"
                 (click)="changeEmail()"
-            >Save</button>
+            >
+                Save
+            </button>
         </ng-container>
     </div>
 </div>
@@ -97,12 +101,16 @@
             <button
                 class="btn"
                 (click)="cancelEdit()"
-            >Cancel</button>
+            >
+                Cancel
+            </button>
             <button
                 class="btn"
                 [disabled]="pass.errors"
                 (click)="changePass()"
-            >Save</button>
+            >
+                Save
+            </button>
 
         </ng-container>
     </div>
@@ -118,15 +126,14 @@
 </button>
 <br>
 
-<ng-container *ngFor="let comment of comments">
+<ng-container *ngFor="let comment of comments; index as i;">
     <a [routerLink]="['/day/' + comment.pictureDate]">
         {{ comment.pictureDate }}
     </a>
     <app-comment
         [comment]="comment"
         [user]="user"
-        (deleteHandler)=""
-        (editHandler)=""
+        (deleteHandler)="onDelete(i)"
     ></app-comment>
 </ng-container>
 <app-popup [opened]="popup" (onClose)="switchPopup()">
