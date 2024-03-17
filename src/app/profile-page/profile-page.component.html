@@ -127,13 +127,24 @@
 <br>
 
 <ng-container *ngFor="let comment of comments; index as i;">
-    <a [routerLink]="['/day/' + comment.pictureDate]">
+    <a
+        class="d-flex flex-column"
+        [routerLink]="['/day/' + comment.pictureDate]"
+    >
+        <img
+            [src]="comment.pictureUrl"
+            alt=""
+            aria-hidden="true"
+            width="200"
+            height="150"
+        >
         {{ comment.pictureDate }}
     </a>
     <app-comment
         [comment]="comment"
         [user]="user"
         (deleteHandler)="onDelete(i)"
+        (editHandler)="onEdit($event, i)"
     ></app-comment>
 </ng-container>
 <app-popup [opened]="popup" (onClose)="switchPopup()">

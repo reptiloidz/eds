@@ -47,6 +47,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             author: this.user?.displayName,
             text: this.commentInput.value,
             id: uniqid(),
+            pictureUrl: this.picture?.url,
         };
 
         this.postService.addNewPost(this.comment).then(

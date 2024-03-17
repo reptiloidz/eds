@@ -38,6 +38,26 @@
         </a
        >
         <figcaption>
+            <a [href]="item.hdurl" download>
+                <svg class="icon icon--md">
+                    <use xlink:href="assets/sprite/sprite.svg#download"></use>
+                </svg>
+                Download image
+            </a>
+            <button
+                type="button"
+                class="btn"
+                (click)="addLike()"
+            >
+                likes - 
+            </button>
+            <button
+                type="button"
+                class="btn"
+                (click)="addDislike()"
+            >
+                dislikes - 
+            </button>
             <p *ngIf="item.copyright">
                 Author: {{ item.copyright }}
             </p>

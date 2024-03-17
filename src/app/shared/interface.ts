@@ -6,7 +6,7 @@ export interface DailySpacePicture {
     media_type: string,
     service_version: string
     title: string,
-    url: string
+    url: string,
 }
 
 export interface User {
@@ -42,8 +42,16 @@ export interface Comment {
     author: string | null | undefined,
     text: string,
     id: string | null | undefined,
+    pictureUrl: string | undefined,
+    reaction?: boolean | null,
 }
 
 export interface CommentsNames {
     name: Comment
+}
+
+export interface ImageLikes {
+    pictureDate: string,
+    likes: number,
+    dislikes: number,
 }

@@ -180,6 +180,8 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
                                 if (response.val()) {
                                     this.comments =  Object.values(response.val()) as Array<Comment>;
                                     this.commentsNames = Object.keys(response.val());
+                                } else {
+                                    this.comments = [];
                                 }
                             }
                         );
@@ -191,24 +193,26 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
         }
     }
 
-    // onEdit(event: any) {
-    //     const post = Object.entries(this.commentsNames).find(
-    //         item => item[1].id === event.comment.id
-    //     );
+    onEdit(event: any, index: number) {
+        const commentID = this.commentsNames[index];
+        const comment = this.comments[index];
 
-    //     if (post) {
-    //         const postId = post[0];
-    //         post[1].date = + new Date();
-    //         post[1].text = event.newText;
-
-    //         this.postService.editPost(postId, post[1]).then(
-    //             () => {
-    //                this.onChange.emit()
-    //             },
-    //             err => {
-    //                 console.log(err);
-    //             }
-    //         )
-    //     }
-    // }
+        if (comment && commentID) {
+            comment.text = event.newText;
+            this.postService.editPost(commentID, comment).then(
+                () => {
+                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
+                        .then(
+                            response => {
+                                if (response.val()) {
+                                    this.comments =  Object.values(response.val()) as Array<Comment>;
+                                    this.commentsNames = Object.keys(response.val());
+                                }
+                            }
+                        );
+                },
+                err => console.log(err)
+            );
+        }
+    }
 }
