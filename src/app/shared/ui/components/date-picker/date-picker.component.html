@@ -3,6 +3,12 @@
     (selectedOption)="getMonth($event)"
     [defaultSelectedOption]="month"
 ></app-dropdown>
+<app-dropdown
+    [options]="years"
+    (selectedOption)="getYear($event)"
+    [defaultSelectedOption]="yearIndex"
+></app-dropdown>
+
 <table>
     <thead>
         <tr>

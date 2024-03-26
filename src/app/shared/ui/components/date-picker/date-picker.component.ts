@@ -24,10 +24,12 @@ export class DatePickerComponent implements OnInit {
 
     month = new Date().getMonth();
 
+    year = new Date().getFullYear();
+
     public selectedDay$ = new BehaviorSubject('');
 
     ngOnInit(): void {
-        this.generateDates(2023, this.month);
+        this.generateDates(this.year, this.month);
     }
 
     generateDates(year: number, month: number) {
@@ -91,9 +93,27 @@ export class DatePickerComponent implements OnInit {
     getMonth(event: string) {
         this.months.forEach((value, index) => {
             if (event === value) {
-                this.generateDates(2023, index);
+                this.generateDates(this.year, index);
+                this.month = index;
             }
         })
+    }
 
+    get years() {
+        const years = [];
+
+        for (let i = 2015; i <= this.year; i++) {
+            years.push(i.toString());
+        }
+
+        return years;
+    }
+
+    get yearIndex() {
+        return this.years.length - 1;
+    }
+
+    getYear(event: number) {
+        this.generateDates(event, this.month);
     }
 }

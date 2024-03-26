@@ -99,7 +99,6 @@ export class DropdownComponent implements OnInit {
         const isDesktop = this.deviceService.isDesktop();
         let pageWidth = 0;
         let pageHeight = 0;
-        console.log(isDesktop);
 
         if (isDesktop) {
             pageWidth = window.innerWidth;

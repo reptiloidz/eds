@@ -6,8 +6,8 @@ export function usernameValidator(): ValidatorFn {
 
         if (!value) return null;
 
-        const usernameValid = /^$/.test(value);
+        const usernameValid = /[^\dA-Za-z]/.test(value);
 
-        return usernameValid ? null : { usernameInvalid: true }
+        return usernameValid ? { usernameInvalid: true } : null
     }
 }
