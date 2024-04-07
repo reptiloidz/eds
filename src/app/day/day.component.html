@@ -39,9 +39,11 @@
        >
         <figcaption>
             <a [href]="item.hdurl" download>
-                <svg class="icon icon--md">
-                    <use xlink:href="assets/sprite/sprite.svg#download"></use>
-                </svg>
+                <svg
+                    app-shared-svg
+                    class="icon icon--md"
+                    icon="download"
+                ></svg>
                 Download image
             </a>
             <button

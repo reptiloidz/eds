@@ -25,6 +25,7 @@ import { AboutPageComponent } from './about-page/about-page.component';
 import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
 import { getDatabase, provideDatabase } from '@angular/fire/database';
 import { environment } from 'src/environments/prod.env';
+import { SvgModule } from './shared/ui/components/svg/svg.module';
 
 const firebaseAppConfig = {
     apiKey: environment.firebaseKey,
@@ -61,8 +62,8 @@ const firebaseAppConfig = {
         LazyLoadImageModule,
         provideFirebaseApp(() => initializeApp(firebaseAppConfig)),
         provideDatabase(() => getDatabase()),
+        SvgModule,
     ],
-    providers: [],
     bootstrap: [AppComponent]
 })
 export class AppModule { }

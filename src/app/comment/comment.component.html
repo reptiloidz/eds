@@ -3,7 +3,7 @@
 
 <form
     *ngIf="canEdit"
-    [formGroup]="form"
+    [formGroup]="commentForm"
 >
     <app-text-input
         formControlName="comment"
@@ -15,7 +15,7 @@
         class="btn"
         type="button"
         (click)="onEdit()"
-        [disabled]="!form.controls['comment'].value"
+        [disabled]="!commentForm.controls['comment'].value"
     >
         Save
     </button>
@@ -55,6 +55,30 @@
         </svg>
     </button>
 </ng-container>
+<button
+    class="btn"
+    type="button"
+    (click)="toggleReply()"
+>
+    {{ replyFormVisible ? 'Cancel' : 'Reply' }}
+</button>
+<form
+    *ngIf="replyFormVisible"
+    [formGroup]="replyForm"
+>
+    <app-text-input
+        formControlName="replyControl"
+        type="text"
+        placeholder="Reply"
+    ></app-text-input>
+    <button
+        class="btn"
+        type="button"
+        (click)="sendReply()"
+    >
+        Send
+    </button>
+</form>
 <hr>
 
 <app-popup

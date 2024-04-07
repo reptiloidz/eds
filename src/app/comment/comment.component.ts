@@ -1,4 +1,4 @@
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Comment, User } from '../shared/interface';
 
@@ -13,12 +13,14 @@ export class CommentComponent implements OnInit {
     @Output() deleteHandler = new EventEmitter();
     @Output() editHandler = new EventEmitter();
 
-    form: FormGroup;
+    commentForm: FormGroup;
+    replyForm: FormGroup;
     canEdit = false;
     popupIsOpen = false;
+    replyFormVisible = false;
 
     ngOnInit() {
-        this.form = new FormGroup({
+        this.commentForm = new FormGroup({
             comment: new FormControl()
         });
     }
@@ -30,7 +32,7 @@ export class CommentComponent implements OnInit {
     onEdit() {
         const data = {
             comment: this.comment,
-            newText: this.form.controls['comment'].value
+            newText: this.commentForm.controls['comment'].value
         };
 
         this.editHandler.emit(data);
@@ -43,5 +45,17 @@ export class CommentComponent implements OnInit {
 
     togglePopup() {
         this.popupIsOpen = !this.popupIsOpen;
+    }
+
+    toggleReply() {
+        this.replyFormVisible = !this.replyFormVisible;
+
+        this.replyForm = new FormGroup({
+            replyControl: new FormControl('', [Validators.required])
+        });
+    }
+
+    sendReply() {
+
     }
 }
