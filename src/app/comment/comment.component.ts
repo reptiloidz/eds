@@ -12,6 +12,7 @@ export class CommentComponent implements OnInit {
 
     @Output() deleteHandler = new EventEmitter();
     @Output() editHandler = new EventEmitter();
+    @Output() replyHandler = new EventEmitter();
 
     commentForm: FormGroup;
     replyForm: FormGroup;
@@ -24,6 +25,8 @@ export class CommentComponent implements OnInit {
             comment: new FormControl()
         });
     }
+
+    //#region Edit methods
 
     onDelete() {
         this.deleteHandler.emit(this.comment);
@@ -47,6 +50,8 @@ export class CommentComponent implements OnInit {
         this.popupIsOpen = !this.popupIsOpen;
     }
 
+    //#region Reply methods
+
     toggleReply() {
         this.replyFormVisible = !this.replyFormVisible;
 
@@ -56,6 +61,11 @@ export class CommentComponent implements OnInit {
     }
 
     sendReply() {
+        const data = {
+            comment: this.comment,
+            reply: this.replyForm.controls['replyControl'].value
+        }
 
+        this.replyHandler.emit(data);
     }
 }

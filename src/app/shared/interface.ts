@@ -45,6 +45,7 @@ export interface Comment {
     pictureUrl: string | undefined,
     reaction?: boolean | null,
     replies?: Array<string> | null,
+    isReply?: boolean,
 }
 
 export interface CommentsNames {

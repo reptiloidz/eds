@@ -95,4 +95,22 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             )
         }
     }
+
+    onReply(event: any) {
+        // this.comment = {
+        //     date: + new Date(),
+        //     pictureDate: this.picture?.date,
+        //     author: this.user?.displayName,
+        //     text: this.commentInput.value,
+        //     id: uniqid(),
+        //     pictureUrl: this.picture?.url,
+        // };
+
+        // this.postService.addNewPost(event).then(
+        //     () => this.onChange.emit(),
+        //     err => console.log(err)
+        // );
+
+        console.log(event);
+    }
 }
