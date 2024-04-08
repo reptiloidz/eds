@@ -3,9 +3,23 @@
 // ===============================================
 
 
+$strokes: '[stroke-opacity], [stroke-width], [stroke-linecap], [stroke-linejoin], [stroke-dasharray], [stroke-miterlimit], [stroke-dashoffset]';
+
 .icon {
-    /* stylelint-disable-next-line value-keyword-case */
-    fill: currentColor;
+    --icon-cl: initial;
+
+    stroke: currentColor;
+    color: var(--icon-cl);
+
+    &:not(.icon--cl) {
+		[fill] {
+			fill: currentColor;
+		}
+	}
+
+    #{$strokes} {
+		stroke: currentColor;
+	}
 
     &--sm {
         width: 18px;

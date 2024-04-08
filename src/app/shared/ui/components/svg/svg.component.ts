@@ -1,11 +1,11 @@
-import { Component, ElementRef, Input, OnInit, Renderer2 } from "@angular/core";
+import { Component, ElementRef, Input, Renderer2 } from "@angular/core";
 
 @Component({
     selector: '[app-shared-svg]',
     templateUrl: './svg.component.html'
 })
 
-export class SvgComponent implements OnInit {
+export class SvgComponent {
 
     constructor(
         private elementRef: ElementRef<SVGElement>,
@@ -23,12 +23,6 @@ export class SvgComponent implements OnInit {
     }
 
     useElem: HTMLElement | null = null;
-
-    ngOnInit() {
-        // const useElem = this.renderer.createElement('use');
-        // this.renderer.setAttribute(useElem, 'xlink:href', `assets/sprite/sprite.svg#${this.icon}`);
-        // this.elementRef.nativeElement.append(useElem);
-    }
 
     addSvg() {
         this.useElem?.remove();

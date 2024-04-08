@@ -14,13 +14,10 @@
         (click)="onPassSwitch()"
         [disabled]="!value"
     >
-        <svg class="icon icon--md">
-            <ng-container *ngIf="isPassVisible; else invisible">
-                <use xlink:href="assets/sprite/sprite.svg#moon"></use>
-            </ng-container>
-            <ng-template #invisible>
-                <use xlink:href="assets/sprite/sprite.svg#sun"></use>
-            </ng-template>
-        </svg>
+        <svg
+            class="icon icon--md"
+            app-shared-svg
+            [icon]="isPassVisible ? 'moon' : 'sun'"
+        ></svg>
     </button>
 </div>

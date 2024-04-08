@@ -14,9 +14,11 @@
             title="edit"
             (click)="enableNameInput()"
         >
-            <svg class="icon icon--sm">
-                <use xlink:href="assets/sprite/sprite.svg#pen"></use>
-            </svg>
+            <svg
+                class="icon icon--sm"
+                app-shared-svg
+                icon="pen"
+            ></svg>
         </button>
         <ng-container *ngIf="!name.disabled">
             <button
@@ -53,9 +55,11 @@
             title="edit"
             (click)="enableEmailInput()"
         >
-            <svg class="icon icon--sm">
-                <use xlink:href="assets/sprite/sprite.svg#pen"></use>
-            </svg>
+            <svg
+                class="icon icon--sm"
+                app-shared-svg
+                icon="pen"
+            ></svg>
         </button>
         <ng-container *ngIf="!email.disabled">
             <button
@@ -92,9 +96,11 @@
             title="edit"
             (click)="enablePassInput()"
         >
-            <svg class="icon icon--sm">
-                <use xlink:href="assets/sprite/sprite.svg#pen"></use>
-            </svg>
+            <svg
+                class="icon icon--sm"
+                app-shared-svg
+                icon="pen"
+            ></svg>
         </button>
 
         <ng-container *ngIf="!pass.disabled">
