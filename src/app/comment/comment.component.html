@@ -85,8 +85,12 @@
 </form>
 
 <ng-container *ngIf="comment.replies">
+    <p>Replies:</p>
     <ng-container *ngFor="let reply of comment.replies">
-        <p>{{ reply }}</p>
+        <div style="padding-left: 20px; padding-bottom: 4px;">
+            <p>{{ reply.text }}</p>
+            <p>{{ reply.author }} {{reply.date | date:'dd/MM/yyyy'}}</p>
+        </div>
     </ng-container>
 </ng-container>
 <hr>

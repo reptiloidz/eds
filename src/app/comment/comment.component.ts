@@ -63,7 +63,8 @@ export class CommentComponent implements OnInit {
     sendReply() {
         const data = {
             comment: this.comment,
-            reply: this.replyForm.controls['replyControl'].value
+            reply: this.replyForm.controls['replyControl'].value,
+            replyAuthor: this.user?.displayName,
         }
 
         this.replyHandler.emit(data);

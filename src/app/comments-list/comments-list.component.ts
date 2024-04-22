@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Comment, CommentsNames, DailySpacePicture, User } from '../shared/interface';
+import { Comment, CommentsNames, DailySpacePicture, Reply, User } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
@@ -97,20 +97,33 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     }
 
     onReply(event: any) {
-        // this.comment = {
-        //     date: + new Date(),
-        //     pictureDate: this.picture?.date,
-        //     author: this.user?.displayName,
-        //     text: this.commentInput.value,
-        //     id: uniqid(),
-        //     pictureUrl: this.picture?.url,
-        // };
+        const post = Object.entries(this.commentsNames).find(
+            item => item[1].id === event.comment.id
+        );
 
-        // this.postService.addNewPost(event).then(
-        //     () => this.onChange.emit(),
-        //     err => console.log(err)
-        // );
+        if (post) {
+            const postId = post[0];
+            const reply: Reply = {
+                text: event.reply,
+                author: event.replyAuthor,
+                date: + new Date(),
+            }
 
-        console.log(event);
+            if (!post[1].replies) {
+                post[1].replies = [];
+            }
+
+            post[1].replies.push(reply);
+
+            console.log(postId, post, reply);
+            this.postService.editPost(postId, post[1]).then(
+                () => {
+                   this.onChange.emit()
+                },
+                err => {
+                    console.log(err);
+                }
+            )
+        }
     }
 }

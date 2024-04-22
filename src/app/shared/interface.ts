@@ -44,8 +44,14 @@ export interface Comment {
     id: string | null | undefined,
     pictureUrl: string | undefined,
     reaction?: boolean | null,
-    replies?: Array<string> | null,
-    isReply?: boolean,
+    replies?: Array<Reply> | null,
+}
+
+export interface Reply {
+    author: string,
+    text: string,
+    replies?: Array<Reply>,
+    date: number,
 }
 
 export interface CommentsNames {
