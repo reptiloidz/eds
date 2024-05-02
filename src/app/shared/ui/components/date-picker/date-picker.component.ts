@@ -102,7 +102,7 @@ export class DatePickerComponent implements OnInit {
     get years() {
         const years = [];
 
-        for (let i = 2015; i <= this.year; i++) {
+        for (let i = 2015; i <= new Date().getFullYear(); i++) {
             years.push(i.toString());
         }
 
@@ -115,5 +115,6 @@ export class DatePickerComponent implements OnInit {
 
     getYear(event: number) {
         this.generateDates(event, this.month);
+        this.year = event;
     }
 }

@@ -115,7 +115,6 @@ export class CommentsListComponent implements OnInit, OnDestroy {
 
             post[1].replies.push(reply);
 
-            console.log(postId, post, reply);
             this.postService.editPost(postId, post[1]).then(
                 () => {
                    this.onChange.emit()
