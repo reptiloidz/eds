@@ -149,13 +149,13 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             idToken: localStorage.getItem('fb-token')
         }
 
-        const getNames = this.authService.getNames().subscribe(
+        this.authService.getNames().then(
             result => Object.entries(result).forEach(([key, value]) => {
                 if ((value as User).displayName === this.user?.displayName) {
                     this.authService.deleteName(key).subscribe()
                 }
             })
-        );
+        )
 
         const delAccount = this.accountService.deleteAccount(user).subscribe(
             () => {
@@ -164,7 +164,6 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             }
         );
 
-        this.subscribes.add(getNames);
         this.subscribes.add(delAccount);
     }
 

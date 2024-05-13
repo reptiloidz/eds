@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CommentsNames, DailySpacePicture, ImageLikes } from '../shared/interface';
+import { CommentsNames, DailySpacePicture } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { PostsSorting } from '../services/posts.enum';
 import { LikeService } from '../services/like.service';
@@ -25,7 +25,6 @@ export class DayComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private postService: PostService,
         private router: Router,
-        private likeService: LikeService,
     ) {}
 
     ngOnInit(): void {

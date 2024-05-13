@@ -1,8 +1,9 @@
 import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
+import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable, tap } from "rxjs";
 import { User, firebaseAuthResponse } from "../shared/interface";
 import { environment } from "src/environments/prod.env";
+import { Database, get, push, query, ref } from "@angular/fire/database";
 
 @Injectable({
     providedIn: 'root'
@@ -13,6 +14,8 @@ export class AuthService {
     constructor(
         private http: HttpClient
     ) {}
+
+    private db = inject(Database);
 
     readonly authorized$ = new BehaviorSubject<boolean>(false);
     readonly idToken$ = new BehaviorSubject<string | null>(null);
@@ -60,15 +63,12 @@ export class AuthService {
         );
     }
 
-    addNewName(name: any): Observable<any> {
-        return this.http.post(
-            'https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json',
-            name
-        );
+    addNewName(name: any) {
+        return push(ref(this.db, 'users'), name);
     }
 
-    getNames(): Observable<any> {
-        return this.http.get('https://blog-962bb-default-rtdb.europe-west1.firebasedatabase.app/users.json');
+    getNames() {
+        return get(query(ref(this.db, 'users')));
     }
 
     resetPass(user: Pick<User, 'email'>): Observable<any> {

@@ -51,8 +51,8 @@ export class SignupPageComponent implements OnInit {
             }
         );
 
-        this.authService.getNames().subscribe(
-            response => this.names = response
+        this.authService.getNames().then(
+            response => this.names = response as any
         );
     }
 
@@ -72,8 +72,7 @@ export class SignupPageComponent implements OnInit {
                     displayName: this.form.controls['name'].value
                 }
 
-                this.authService.addNewName({displayName: this.form.controls['name'].value})
-                    .subscribe();
+                this.authService.addNewName({displayName: this.form.controls['name'].value});
 
                 this.accountService.updateProfile(newUser).subscribe({
                     next: () => {

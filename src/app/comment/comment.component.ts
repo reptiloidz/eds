@@ -26,8 +26,6 @@ export class CommentComponent implements OnInit {
         });
     }
 
-    //#region Edit methods
-
     onDelete() {
         this.deleteHandler.emit(this.comment);
     }
@@ -49,8 +47,6 @@ export class CommentComponent implements OnInit {
     togglePopup() {
         this.popupIsOpen = !this.popupIsOpen;
     }
-
-    //#region Reply methods
 
     toggleReply() {
         this.replyFormVisible = !this.replyFormVisible;
