@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 import { AccountService } from '../services/account.service';
 import { passValidator } from '../shared/validators/passValidator';
 import { usernameValidator } from '../shared/validators/usernameValidator';
+import { UserCredential } from "@angular/fire/auth"
 
 @Component({
     selector: 'app-signup-page',
@@ -65,35 +66,59 @@ export class SignupPageComponent implements OnInit {
         this.error = null;
         this.loading = true;
 
-        this.authService.signup(user).subscribe({
-            next: response => {
-                const newUser: User = {
-                    idToken: response.idToken,
-                    displayName: this.form.controls['name'].value
-                }
+        // this.authService.signup(user).then( (response: UserCredential) => {
 
-                this.authService.addNewName({displayName: this.form.controls['name'].value});
+        //     if (response) {
+        //         const newUser: User = {
+        //             idToken: response.user.stsTokenManager.accessToken,
+        //             displayName: this.form.controls['name'].value
+        //         }
 
-                this.accountService.updateProfile(newUser).subscribe({
-                    next: () => {
-                        this.form.reset();
-                        this.loading = false;
-                        this.router.navigate(['/']);
-                    },
-                    error: error => {
-                        console.log(error);
-                        this.loading = false;
-                    }
-                });
-            },
-            error: error => {
-                if(error.error.error.message === 'EMAIL_EXISTS') {
-                    this.error = 'User with this email already exists';
-                }
+        //         this.authService.addNewName({displayName: this.form.controls['name'].value});
 
-                this.loading = false;
-            }
-        });
+        //         this.accountService.updateProfile(newUser).subscribe({
+        //             next: () => {
+        //                 this.form.reset();
+        //                 this.loading = false;
+        //                 this.router.navigate(['/']);
+        //             },
+        //             error: error => {
+        //                 console.log(error);
+        //                 this.loading = false;
+        //             }
+        //         });
+        //     }
+        // })
+
+        // this.authService.signup(user).subscribe({
+        //     next: response => {
+        //         const newUser: User = {
+        //             idToken: response.idToken,
+        //             displayName: this.form.controls['name'].value
+        //         }
+
+        //         this.authService.addNewName({displayName: this.form.controls['name'].value});
+
+        //         this.accountService.updateProfile(newUser).subscribe({
+        //             next: () => {
+        //                 this.form.reset();
+        //                 this.loading = false;
+        //                 this.router.navigate(['/']);
+        //             },
+        //             error: error => {
+        //                 console.log(error);
+        //                 this.loading = false;
+        //             }
+        //         });
+        //     },
+        //     error: error => {
+        //         if(error.error.error.message === 'EMAIL_EXISTS') {
+        //             this.error = 'User with this email already exists';
+        //         }
+
+        //         this.loading = false;
+        //     }
+        // });
     }
 
     checkAvailableName() {

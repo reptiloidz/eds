@@ -63,3 +63,9 @@ export interface ImageLikes {
     likes: number,
     dislikes: number,
 }
+
+export interface UserCredential {
+    operationType: '',
+    providerId: string | null,
+    user: User,
+}

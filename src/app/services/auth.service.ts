@@ -1,9 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, tap } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { User, firebaseAuthResponse } from "../shared/interface";
 import { environment } from "src/environments/prod.env";
 import { Database, get, push, query, ref } from "@angular/fire/database";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential } from "@angular/fire/auth"
 
 @Injectable({
     providedIn: 'root'
@@ -16,6 +17,7 @@ export class AuthService {
     ) {}
 
     private db = inject(Database);
+    private auth = getAuth();
 
     readonly authorized$ = new BehaviorSubject<boolean>(false);
     readonly idToken$ = new BehaviorSubject<string | null>(null);
@@ -33,9 +35,9 @@ export class AuthService {
 
     private setToken(response: firebaseAuthResponse | any) {
         if (response) {
-            const expDate = new Date(new Date().getTime() + (+response.expiresIn) * 1000);
+            const expDate = new Date(new Date().getTime() + (+response.stsTokenManager.expirationTime) * 1000);
 
-            localStorage.setItem('fb-token', response.idToken);
+            localStorage.setItem('fb-token', response.stsTokenManager.accessToken);
             localStorage.setItem('fb-token-exp', expDate.toString());
         } else {
             localStorage.clear();
@@ -43,24 +45,28 @@ export class AuthService {
         }
     }
 
-    login(user: User): Observable<any> {
+    login(user: User) {
         user.returnSecureToken = true;
-        return this.http.post(
-            `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${environment.firebaseKey}`,
-            user
-        ).pipe(
-            tap(this.setToken)
-        );
+
+        return signInWithEmailAndPassword(
+            this.auth,
+            user.email as string,
+            user.password as string
+        ).then(userCredential => {
+            this.setToken(userCredential.user);
+        });
     }
 
-    signup(user: User): Observable<any> {
+    signup(user: User): Promise<UserCredential | void> {
         user.returnSecureToken = true;
-        return this.http.post(
-            `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${environment.firebaseKey}`,
-            user
-        ).pipe(
-            tap(this.setToken)
-        );
+
+        return createUserWithEmailAndPassword(
+            this.auth,
+            user.email as string,
+            user.password as string
+        ).then(userCredential => {
+            this.setToken(userCredential);
+        });
     }
 
     addNewName(name: any) {

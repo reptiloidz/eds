@@ -56,19 +56,16 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             password: this.loginForm.controls['password'].value
         }
 
-        this.subscription = this.authService.login(user).subscribe({
-            next: () => {
-                this.loginForm.reset();
-                this.router.navigate(['/']);
-            },
-            error: error => {
-                this.error = error;
+        this.authService.login(user).then( () => {
+            this.loginForm.reset();
+            this.router.navigate(['/']);
+        }).catch( error => {
+            this.error = error;
 
-                if(error.status === 400) {
-                    this.errorMessage = 'Wrong email or password'
-                } else {
-                    this.errorMessage = 'We are sorry. Try later...'
-                }
+            if(error.status === 400) {
+                this.errorMessage = 'Wrong email or password'
+            } else {
+                this.errorMessage = 'We are sorry. Try later...'
             }
         });
     }
