@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { User, firebaseAuthResponse } from "../shared/interface";
+import { User } from "../shared/interface";
 import { environment } from "src/environments/prod.env";
 import { Database, get, push, query, ref } from "@angular/fire/database";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential } from "@angular/fire/auth"
@@ -33,39 +33,37 @@ export class AuthService {
         return this.authorized$.getValue();
     }
 
-    private setToken(response: firebaseAuthResponse | any) {
-        if (response) {
-            const expDate = new Date(new Date().getTime() + (+response.stsTokenManager.expirationTime) * 1000);
+    private setToken(response: UserCredential) {
+        response.user.getIdTokenResult()
+        response.user.getIdTokenResult().then(result => {
+            const expDate = new Date(new Date().getTime() + (+result.authTime));
 
-            localStorage.setItem('fb-token', response.stsTokenManager.accessToken);
+            localStorage.setItem('fb-token', result.token);
             localStorage.setItem('fb-token-exp', expDate.toString());
-        } else {
-            localStorage.clear();
-            this.authorized$.next(false);
-        }
+
+            return result;
+        });
     }
 
     login(user: User) {
-        user.returnSecureToken = true;
-
         return signInWithEmailAndPassword(
             this.auth,
             user.email as string,
             user.password as string
         ).then(userCredential => {
-            this.setToken(userCredential.user);
+            this.setToken(userCredential);
+            console.log(userCredential);
         });
     }
 
-    signup(user: User): Promise<UserCredential | void> {
-        user.returnSecureToken = true;
-
+    signup(user: User) {
         return createUserWithEmailAndPassword(
             this.auth,
             user.email as string,
             user.password as string
-        ).then(userCredential => {
-            this.setToken(userCredential);
+        ).then( response => {
+            this.setToken(response);
+            console.log(response.user);
         });
     }
 
@@ -94,6 +92,7 @@ export class AuthService {
     }
 
     logout() {
-        this.setToken(null);
+        this.authorized$.next(false);
+        localStorage.clear();
     }
 }

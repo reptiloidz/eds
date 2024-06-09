@@ -3,6 +3,7 @@ import { User, Users } from "../shared/interface";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "src/environments/prod.env";
 import { BehaviorSubject, tap } from "rxjs";
+import { updateProfile } from "@angular/fire/auth";
 
 @Injectable({
     providedIn: 'root'
@@ -15,15 +16,17 @@ export class AccountService {
         private http: HttpClient
     ) {}
 
-    updateProfile(user: User) {
-        return this.http.post(
-            `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseKey}`,
-            user
-        ).pipe(
-            tap(response => {
-                this.user$.next(response);
-            })
-        )
+    updateProfile(user) {
+        // return this.http.post(
+        //     `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseKey}`,
+        //     user
+        // ).pipe(
+        //     tap(response => {
+        //         this.user$.next(response);
+        //     })
+        // )
+
+        return updateProfile(user, {})
     }
 
     getProfile(user: User) {

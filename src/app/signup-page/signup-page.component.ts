@@ -66,29 +66,32 @@ export class SignupPageComponent implements OnInit {
         this.error = null;
         this.loading = true;
 
-        // this.authService.signup(user).then( (response: UserCredential) => {
+        this.authService.signup(user).then( (response) => {
 
-        //     if (response) {
-        //         const newUser: User = {
-        //             idToken: response.user.stsTokenManager.accessToken,
-        //             displayName: this.form.controls['name'].value
-        //         }
+            console.log(response);
+            // console.log(response.user.getIdTokenResult());
 
-        //         this.authService.addNewName({displayName: this.form.controls['name'].value});
+            // if (response) {
+            //     const newUser: User = {
+            //         idToken: response.user.accessToken,
+            //         displayName: this.form.controls['name'].value
+            //     }
 
-        //         this.accountService.updateProfile(newUser).subscribe({
-        //             next: () => {
-        //                 this.form.reset();
-        //                 this.loading = false;
-        //                 this.router.navigate(['/']);
-        //             },
-        //             error: error => {
-        //                 console.log(error);
-        //                 this.loading = false;
-        //             }
-        //         });
-        //     }
-        // })
+            //     this.authService.addNewName({displayName: this.form.controls['name'].value});
+
+            //     this.accountService.updateProfile(newUser).subscribe({
+            //         next: () => {
+            //             this.form.reset();
+            //             this.loading = false;
+            //             this.router.navigate(['/']);
+            //         },
+            //         error: error => {
+            //             console.log(error);
+            //             this.loading = false;
+            //         }
+            //     });
+            // }
+        })
 
         // this.authService.signup(user).subscribe({
         //     next: response => {
