@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { AccountService } from '../services/account.service';
-import { User, Users } from '../shared/interface';
-import { distinctUntilChanged } from 'rxjs';
 import { Router } from '@angular/router';
+import { User } from '../shared/interface';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -14,7 +13,6 @@ export class HeaderComponent implements OnInit {
 
     constructor(
         public authService: AuthService,
-        private accountService: AccountService,
         private router: Router,
     ) {}
 
@@ -22,32 +20,16 @@ export class HeaderComponent implements OnInit {
         this.authService.authorized$.pipe(
             distinctUntilChanged()
         ).subscribe(
-            value => {
-                if (value) {
-                    this.accountService.getProfile({'idToken': localStorage.getItem('fb-token')}).subscribe({
-                        next: response => {
-                            this.accountService.user$.next((response as Users).users[0]);
-                        },
-                        error: error => {
-                            console.log(error);
-                        }
-                    });
-                } else {
-                    this.accountService.user$.next(null);
-                }
+            () => {
+                this.user = this.authService.user;
             }
-        );
-
-        this.accountService.user$.pipe(
-            distinctUntilChanged()
-        ).subscribe(
-            user => this.user = user
-        );
+        )
     }
 
     logOut() {
         this.authService.logout();
         this.router.navigate(['']);
+        this.user = null;
     }
 
     getPictureByDate(date: Date) {

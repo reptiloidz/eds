@@ -73,22 +73,22 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     changeName() {
-        const newName: User = {
-            idToken: localStorage.getItem('fb-token'),
-            displayName: this.name.value
-        }
+        // const newName: User = {
+        //     idToken: localStorage.getItem('fb-token'),
+        //     displayName: this.name.value
+        // }
 
-        const changeNameSubscribe = this.accountService.updateProfile(newName).subscribe({
-            next: response => {
-                this.user = response;
-                this.name.disable();
-            },
-            error: error => {
-                console.log(error);
-            }
-        });
+        // const changeNameSubscribe = this.accountService.updateProfile(newName).subscribe({
+        //     next: response => {
+        //         this.user = response;
+        //         this.name.disable();
+        //     },
+        //     error: error => {
+        //         console.log(error);
+        //     }
+        // });
 
-        this.subscribes.add(changeNameSubscribe);
+        // this.subscribes.add(changeNameSubscribe);
     }
 
     enableEmailInput() {
@@ -96,20 +96,20 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     changeEmail() {
-        const newEmail: User = {
-            idToken: localStorage.getItem('fb-token'),
-            email: this.email.value
-        }
+        // const newEmail: User = {
+        //     idToken: localStorage.getItem('fb-token'),
+        //     email: this.email.value
+        // }
 
-        const changeEmailSub = this.accountService.updateEmail(newEmail).subscribe({
-            next: response => {
-                this.user = response;
-                this.email.disable();
-            },
-            error: error => console.log(error)
-        });
+        // const changeEmailSub = this.accountService.updateEmail(newEmail).subscribe({
+        //     next: response => {
+        //         this.user = response;
+        //         this.email.disable();
+        //     },
+        //     error: error => console.log(error)
+        // });
 
-        this.subscribes.add(changeEmailSub);
+        // this.subscribes.add(changeEmailSub);
     }
 
     enablePassInput() {
@@ -117,27 +117,27 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     changePass() {
-        const newPass: User = {
-            idToken: localStorage.getItem('fb-token'),
-            password: this.pass.value
-        }
+        // const newPass: User = {
+        //     idToken: localStorage.getItem('fb-token'),
+        //     password: this.pass.value
+        // }
 
-        const changePassSub = this.accountService.updatePass(newPass).subscribe({
-            next: () => {
-                this.pass.disable();
-                this.pass.reset();
-                this.authService.logout();
-                this.router.navigate(['/login']);
-            },
-            error: error => {
-                if(error.error.error.message === 'TOKEN_EXPIRED') {
-                    this.user = null;
-                    this.router.navigate(['/login']);
-                }
-            }
-        });
+        // const changePassSub = this.accountService.updatePass(newPass).subscribe({
+        //     next: () => {
+        //         this.pass.disable();
+        //         this.pass.reset();
+        //         this.authService.logout();
+        //         this.router.navigate(['/login']);
+        //     },
+        //     error: error => {
+        //         if(error.error.error.message === 'TOKEN_EXPIRED') {
+        //             this.user = null;
+        //             this.router.navigate(['/login']);
+        //         }
+        //     }
+        // });
 
-        this.subscribes.add(changePassSub);
+        // this.subscribes.add(changePassSub);
     }
 
     switchPopup() {
@@ -149,22 +149,25 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
             idToken: localStorage.getItem('fb-token')
         }
 
-        this.authService.getNames().then(
-            result => Object.entries(result).forEach(([key, value]) => {
-                if ((value as User).displayName === this.user?.displayName) {
-                    this.authService.deleteName(key).subscribe()
-                }
-            })
-        )
+        if (this.user?.displayName) {
+            this.authService.getName('displayName', this.user.displayName).then(
+                result => Object.entries(result).forEach(([key, value]) => {
+                    if ((value as User).displayName === this.user?.displayName) {
+                        this.authService.deleteName(key).subscribe();
+                    }
+                })
+            )
+        }
 
-        const delAccount = this.accountService.deleteAccount(user).subscribe(
-            () => {
-                this.authService.logout();
-                this.router.navigate(['']);
-            }
-        );
 
-        this.subscribes.add(delAccount);
+        // const delAccount = this.accountService.deleteAccount(user).subscribe(
+        //     () => {
+        //         this.authService.logout();
+        //         this.router.navigate(['']);
+        //     }
+        // );
+
+        // this.subscribes.add(delAccount);
     }
 
     onDelete(index: number) {

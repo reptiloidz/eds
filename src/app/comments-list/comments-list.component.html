@@ -2,7 +2,7 @@
     <input type="text" [formControl]="commentInput">
     <button
         class="btn"
-        [disabled]="!authService.token || commentInput.errors"
+        [disabled]="!authService.user || commentInput.errors"
         type="submit"
     >
         comment

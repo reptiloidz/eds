@@ -4,7 +4,7 @@ import { Comment, CommentsNames, DailySpacePicture, Reply, User } from '../share
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { AccountService } from '../services/account.service';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import * as uniqid from 'uniqid';
 
 @Component({
@@ -31,13 +31,19 @@ export class CommentsListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.commentInput = new FormControl('', Validators.required);
-        this.subscribes = this.accountService.user$.subscribe(
-            user => this.user = user
-        );
+        this.authService.authorized$.pipe(
+            distinctUntilChanged()
+        ).subscribe(
+            () => {
+                this.user = this.authService.user;
+            }
+        )
     }
 
     ngOnDestroy(): void {
-        this.subscribes.unsubscribe();
+        if (this.subscribes) {
+            this.subscribes.unsubscribe();
+        }
     }
 
     post() {

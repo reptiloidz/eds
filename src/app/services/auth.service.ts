@@ -3,8 +3,9 @@ import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { User } from "../shared/interface";
 import { environment } from "src/environments/prod.env";
-import { Database, get, push, query, ref } from "@angular/fire/database";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, UserCredential } from "@angular/fire/auth"
+import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth"
+import { AccountService } from "./account.service";
 
 @Injectable({
     providedIn: 'root'
@@ -13,7 +14,8 @@ import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, Us
 export class AuthService {
 
     constructor(
-        private http: HttpClient
+        private http: HttpClient,
+        private accountService: AccountService
     ) {}
 
     private db = inject(Database);
@@ -22,27 +24,12 @@ export class AuthService {
     readonly authorized$ = new BehaviorSubject<boolean>(false);
     readonly idToken$ = new BehaviorSubject<string | null>(null);
 
-    get token(): boolean {
-        const expDate = new Date(localStorage.getItem('fb-token-exp') as string);
-
-        if (new Date() > expDate) {
-            this.logout();
+    get user(): User | null {
+        if (this.authorized$.getValue()) {
+            return this.auth.currentUser;
+        } else {
+            return null;
         }
-
-        this.authorized$.next(!!localStorage.getItem('fb-token'));
-        return this.authorized$.getValue();
-    }
-
-    private setToken(response: UserCredential) {
-        response.user.getIdTokenResult()
-        response.user.getIdTokenResult().then(result => {
-            const expDate = new Date(new Date().getTime() + (+result.authTime));
-
-            localStorage.setItem('fb-token', result.token);
-            localStorage.setItem('fb-token-exp', expDate.toString());
-
-            return result;
-        });
     }
 
     login(user: User) {
@@ -50,20 +37,21 @@ export class AuthService {
             this.auth,
             user.email as string,
             user.password as string
-        ).then(userCredential => {
-            this.setToken(userCredential);
-            console.log(userCredential);
+        ).then(() => {
+            this.authorized$.next(true);
         });
     }
 
-    signup(user: User) {
+    signup(user: User, displayName: string) {
         return createUserWithEmailAndPassword(
             this.auth,
             user.email as string,
-            user.password as string
+            user.password as string,
         ).then( response => {
-            this.setToken(response);
-            console.log(response.user);
+            this.accountService.updateProfile(response.user, {displayName}).then(() => {
+                this.authorized$.next(true);
+            }, error => console.log(error));
+            return response;
         });
     }
 
@@ -71,8 +59,8 @@ export class AuthService {
         return push(ref(this.db, 'users'), name);
     }
 
-    getNames() {
-        return get(query(ref(this.db, 'users')));
+    getName(orderBy: string, name: string) {
+        return get(query(ref(this.db, 'users'), orderByChild(orderBy), equalTo(name)));
     }
 
     resetPass(user: Pick<User, 'email'>): Observable<any> {
@@ -92,7 +80,9 @@ export class AuthService {
     }
 
     logout() {
-        this.authorized$.next(false);
-        localStorage.clear();
+        signOut(this.auth).then(() => {
+            this.authorized$.next(false);
+            localStorage.clear();
+        });
     }
 }
