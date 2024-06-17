@@ -20,18 +20,6 @@ export class AccountService {
         return updateProfile(user, data)
     }
 
-    // getProfile(user: User) {
-    //     return this.http.post(
-    //         `https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${environment.firebaseKey}`,
-    //         user
-    //     ).pipe(
-    //         tap(response => {
-    //             const data = response as Users;
-    //             this.user$.next(data.users[0]);
-    //         })
-    //     )
-    // }
-
     // updateEmail(user: User) {
     //     return this.http.post(
     //         `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${environment.firebaseKey}`,

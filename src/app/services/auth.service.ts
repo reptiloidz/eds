@@ -2,9 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { User } from "../shared/interface";
-import { environment } from "src/environments/prod.env";
 import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
-import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "@angular/fire/auth"
+import { Auth, createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "@angular/fire/auth"
 import { AccountService } from "./account.service";
 
 @Injectable({
@@ -19,8 +18,8 @@ export class AuthService {
     ) {}
 
     private db = inject(Database);
-    private auth = getAuth();
 
+    readonly auth = getAuth();
     readonly authorized$ = new BehaviorSubject<boolean>(false);
     readonly idToken$ = new BehaviorSubject<string | null>(null);
 
@@ -63,14 +62,8 @@ export class AuthService {
         return get(query(ref(this.db, 'users'), orderByChild(orderBy), equalTo(name)));
     }
 
-    resetPass(user: Pick<User, 'email'>): Observable<any> {
-        return this.http.post(
-            `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${environment.firebaseKey}`,
-            {
-                ...user,
-                requestType: 'PASSWORD_RESET'
-            }
-        );
+    resetPass(auth: Auth, email: string) {
+        return sendPasswordResetEmail(auth, email);
     }
 
     deleteName(id: any): Observable<any> {

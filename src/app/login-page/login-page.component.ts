@@ -75,36 +75,27 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.resetForm.reset();
     }
 
-
-
     submitReset() {
-        const user: Pick<User, 'email'> = {
-            email: this.resetForm.controls['resetEmail'].value
-        }
+        this.authService.resetPass(
+            this.authService.auth,
+            this.resetForm.controls['resetEmail'].value
+        ).then( () => {
+            this.resetFormIsSended = true;
+            this.resetError = null;
+            this.resetForm.reset();
 
-        this.authService.resetPass(user).subscribe({
-            next: () => {
-                this.resetFormIsSended = true;
-                this.resetError = null;
-                this.resetForm.reset();
+            setTimeout(() => {
+                this.resetFormIsSended = !this.resetFormIsSended;
+            }, 10000);
+        },
+            error => {
+                if (error.error.error.message === 'EMAIL_NOT_FOUND') {
+                this.resetError = error;
 
                 setTimeout(() => {
-                    this.resetFormIsSended = !this.resetFormIsSended;
-                }, 10000);
-            },
-            error: err => {
-                if (err.error.error.message === 'EMAIL_NOT_FOUND') {
-                    this.resetError = err;
-
-                    setTimeout(() => {
-                        this.resetError = null;
-                    }, 5000);
-                }
+                    this.resetError = null;
+                }, 5000);
             }
         });
-    }
-
-    onTest() {
-        console.log(this.loginForm);
     }
 }

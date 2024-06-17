@@ -38,20 +38,17 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.subscribes = this.accountService.user$.subscribe(
-            user => {
-                this.user = user;
-                this.postService.getPosts(PostsSorting.byAuthor, (user?.displayName as string))
-                    .then(
-                        response => {
-                            if (response.val()) {
-                                this.comments =  Object.values(response.val()) as Array<Comment>;
-                                this.commentsNames = Object.keys(response.val());
-                            }
-                        }
-                    );
-            }
-        );
+        this.user = this.authService.user;
+
+        this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
+            .then(
+                response => {
+                    if (response.val()) {
+                        this.comments =  Object.values(response.val()) as Array<Comment>;
+                        this.commentsNames = Object.keys(response.val());
+                    }
+                }
+            );
     }
 
     ngOnDestroy(): void {
