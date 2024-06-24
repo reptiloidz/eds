@@ -1,5 +1,5 @@
-import { Subscription } from 'rxjs';
-import { Comment, User } from '../shared/interface';
+import { Subscription, } from 'rxjs';
+import { Comment } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { PostService } from '../services/posts.service';
 import { PostsSorting } from '../services/posts.enum';
+import { User } from '@angular/fire/auth';
 
 @Component({
     selector: 'app-profile-page',
@@ -15,12 +16,14 @@ import { PostsSorting } from '../services/posts.enum';
 })
 export class ProfilePageComponent implements OnInit, OnDestroy {
     subscribes!: Subscription;
-    user: User | null = null;
-    newUserData: User | null = null;
+    user: User | null;
+    // newUserData: User | null = null;
     idToken: string | null = null;
     popup = false;
     comments: Array<Comment>;
     commentsNames: Array<string>;
+    nameExist: string | null;
+    error = false;
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -38,8 +41,9 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.user = this.authService.user;
-
+        this.authService.authState().then(() => {
+            this.user = this.authService.user;
+        });
         this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
             .then(
                 response => {
@@ -52,7 +56,7 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        this.subscribes.unsubscribe();
+        // this.subscribes.unsubscribe();
     }
 
     cancelEdit() {
@@ -70,22 +74,43 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     changeName() {
-        // const newName: User = {
-        //     idToken: localStorage.getItem('fb-token'),
-        //     displayName: this.name.value
-        // }
+        const newName = this.name.value;
+        console.log(newName);
 
-        // const changeNameSubscribe = this.accountService.updateProfile(newName).subscribe({
-        //     next: response => {
-        //         this.user = response;
-        //         this.name.disable();
-        //     },
-        //     error: error => {
-        //         console.log(error);
-        //     }
-        // });
+        if (this.name.value) {
+            this.authService.getName('displayName', this.name.value).then(
+                response => {
+                    if (response.val()) {
+                        this.nameExist = 'This name already exist';
+                        setTimeout(() => {
+                            this.nameExist = null;
+                        }, 3000);
+                        this.error = false;
+                        return;
+                    } else if (this.user) {
+                        this.authService.updateProfile(this.user, { newName }).then(() => {
+                            this.error = false;
+                            this.name.disable();
+                            this.authService.authState().then(() => {
+                                this.user = this.authService.user;
+                            });
+                            this.authService.addNewName({displayName: newName});
+                            console.log(this.authService.user);
+                            this.authService.logout();
+                        },
+                        error => {
+                            this.error = true;
+                            console.log(error);
+                        });
+                    }
+                },
+                error => {
+                    this.error = true;
+                    console.log(error);
+                }
+            )
 
-        // this.subscribes.add(changeNameSubscribe);
+        }
     }
 
     enableEmailInput() {
@@ -93,20 +118,12 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     changeEmail() {
-        // const newEmail: User = {
-        //     idToken: localStorage.getItem('fb-token'),
-        //     email: this.email.value
-        // }
-
-        // const changeEmailSub = this.accountService.updateEmail(newEmail).subscribe({
-        //     next: response => {
-        //         this.user = response;
-        //         this.email.disable();
-        //     },
-        //     error: error => console.log(error)
-        // });
-
-        // this.subscribes.add(changeEmailSub);
+        if (this.user && this.email.value) {
+            this.accountService.updateEmail(this.user, this.email.value).then(() => {
+                // this.router.navigate(['/login']);
+                this.authService.logout();
+            });
+        }
     }
 
     enablePassInput() {
@@ -142,19 +159,19 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     delProfile() {
-        const user: User = {
-            idToken: localStorage.getItem('fb-token')
-        }
+        // const user: User = {
+        //     idToken: localStorage.getItem('fb-token')
+        // }
 
-        if (this.user?.displayName) {
-            this.authService.getName('displayName', this.user.displayName).then(
-                result => Object.entries(result).forEach(([key, value]) => {
-                    if ((value as User).displayName === this.user?.displayName) {
-                        this.authService.deleteName(key).subscribe();
-                    }
-                })
-            )
-        }
+        // if (this.user?.displayName) {
+        //     this.authService.getName('displayName', this.user.displayName).then(
+        //         result => Object.entries(result).forEach(([key, value]) => {
+        //             if ((value as User).displayName === this.user?.displayName) {
+        //                 this.authService.deleteName(key).subscribe();
+        //             }
+        //         })
+        //     )
+        // }
 
 
         // const delAccount = this.accountService.deleteAccount(user).subscribe(
@@ -193,25 +210,35 @@ export class ProfilePageComponent implements OnInit, OnDestroy {
     }
 
     onEdit(event: any, index: number) {
-        const commentID = this.commentsNames[index];
-        const comment = this.comments[index];
+        // const commentID = this.commentsNames[index];
+        // const comment = this.comments[index];
 
-        if (comment && commentID) {
-            comment.text = event.newText;
-            this.postService.editPost(commentID, comment).then(
-                () => {
-                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
-                        .then(
-                            response => {
-                                if (response.val()) {
-                                    this.comments =  Object.values(response.val()) as Array<Comment>;
-                                    this.commentsNames = Object.keys(response.val());
-                                }
-                            }
-                        );
-                },
-                err => console.log(err)
-            );
+        // if (comment && commentID) {
+        //     comment.text = event.newText;
+        //     this.postService.editPost(commentID, comment).then(
+        //         () => {
+        //             this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
+        //                 .then(
+        //                     response => {
+        //                         if (response.val()) {
+        //                             this.comments =  Object.values(response.val()) as Array<Comment>;
+        //                             this.commentsNames = Object.keys(response.val());
+        //                         }
+        //                     }
+        //                 );
+        //         },
+        //         err => console.log(err)
+        //     );
+        // }
+    }
+
+    test() {
+        const test = 'testname';
+        if (this.authService.user) {
+            this.authService.updateProfile(this.authService.user, {test}).then( () => {
+                console.log(this.authService.user);
+            });
         }
+
     }
 }

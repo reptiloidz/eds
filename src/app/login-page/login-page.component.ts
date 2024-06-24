@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, HostBinding } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../services/auth.service';
-import { User } from '../shared/interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -41,6 +40,8 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.resetForm = new FormGroup({
             resetEmail: new FormControl('', [Validators.required, Validators.email])
         });
+
+        console.log(this.authService.anticipated$.getValue());
     }
 
     ngOnDestroy(): void {
@@ -51,12 +52,10 @@ export class LoginPageComponent implements OnInit, OnDestroy {
 
     submit() {
 
-        const user: User = {
-            email: this.loginForm.controls['email'].value,
-            password: this.loginForm.controls['password'].value
-        }
+        const email = this.loginForm.controls['email'].value;
+        const password = this.loginForm.controls['password'].value;
 
-        this.authService.login(user).then( () => {
+        this.authService.login(email, password).then( () => {
             this.loginForm.reset();
             this.router.navigate(['/']);
         }).catch( error => {

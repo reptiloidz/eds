@@ -1,10 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
-import { User } from "../shared/interface";
 import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
-import { Auth, createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut } from "@angular/fire/auth"
-import { AccountService } from "./account.service";
+import { Auth, createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, User } from "@angular/fire/auth"
 
 @Injectable({
     providedIn: 'root'
@@ -13,43 +11,41 @@ import { AccountService } from "./account.service";
 export class AuthService {
 
     constructor(
-        private http: HttpClient,
-        private accountService: AccountService
+        private http: HttpClient
     ) {}
 
     private db = inject(Database);
-
     readonly auth = getAuth();
-    readonly authorized$ = new BehaviorSubject<boolean>(false);
-    readonly idToken$ = new BehaviorSubject<string | null>(null);
+    readonly anticipated$ = new BehaviorSubject(false);
 
-    get user(): User | null {
-        if (this.authorized$.getValue()) {
-            return this.auth.currentUser;
-        } else {
-            return null;
-        }
+    authState(): Promise<void> {
+        return this.auth.authStateReady();
     }
 
-    login(user: User) {
+    get user(): User | null {
+        return this.auth.currentUser;
+    }
+
+    login(email: string, password: string) {
         return signInWithEmailAndPassword(
             this.auth,
-            user.email as string,
-            user.password as string
+            email,
+            password
         ).then(() => {
-            this.authorized$.next(true);
+            this.anticipated$.next(true);
         });
     }
 
-    signup(user: User, displayName: string) {
+    signup(email: string, password: string, displayName: string) {
         return createUserWithEmailAndPassword(
             this.auth,
-            user.email as string,
-            user.password as string,
+            email,
+            password,
         ).then( response => {
-            this.accountService.updateProfile(response.user, {displayName}).then(() => {
-                this.authorized$.next(true);
-            }, error => console.log(error));
+            this.updateProfile(response.user, {displayName}).then(
+                error => console.log(error)
+            );
+            this.anticipated$.next(true);
             return response;
         });
     }
@@ -72,10 +68,12 @@ export class AuthService {
         );
     }
 
+    updateProfile(user: User, data: any) {
+        return updateProfile(user, data)
+    }
+
     logout() {
-        signOut(this.auth).then(() => {
-            this.authorized$.next(false);
-            localStorage.clear();
-        });
+        signOut(this.auth);
+        this.anticipated$.next(false);
     }
 }

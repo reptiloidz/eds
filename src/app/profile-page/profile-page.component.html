@@ -120,7 +120,14 @@
 
         </ng-container>
     </div>
+    <p *ngIf="nameExist">
+        {{ nameExist }}
+    </p>
 </div>
+
+<p *ngIf="error">
+    Something went wrong :(
+</p>
 
 <button
     class="btn"
@@ -131,6 +138,7 @@
     Delete account
 </button>
 <br>
+<button (click)="test()">test</button>
 
 <ng-container *ngFor="let comment of comments; index as i;">
     <a

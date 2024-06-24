@@ -19,7 +19,7 @@
             </li>
             <li
                 class="header__nav-item"
-                *ngIf="!authService.user; else logOutTemplate"
+                *ngIf="!user; else logOutTemplate"
             >
                 <a
                     class="btn"
@@ -40,7 +40,7 @@
             </ng-template>
             <li
                 class="header__nav-item"
-                *ngIf="!authService.user"
+                *ngIf="!user"
             >
                 <a
                     class="btn"
@@ -51,13 +51,13 @@
             </li>
             <li
                 class="header__nav-item"
-                *ngIf="authService.user"
+                *ngIf="user"
             >
                 <a
                     class="btn"
                     [routerLink]="['profile']"
                 >
-                    {{ authService.user.displayName }}
+                    {{ user.displayName }}
                 </a>
             </li>
         </ul>

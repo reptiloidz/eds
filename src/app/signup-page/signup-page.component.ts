@@ -50,11 +50,8 @@ export class SignupPageComponent implements OnInit {
     }
 
     submit() {
-        const user: User = {
-            email: this.form.controls['email'].value,
-            password: this.form.controls['password'].value
-        }
-
+        const email = this.form.controls['email'].value;
+        const password = this.form.controls['password'].value;
         const displayName = this.form.controls['name'].value;
 
         this.error = null;
@@ -70,7 +67,7 @@ export class SignupPageComponent implements OnInit {
                         }
                     });
                 } else {
-                    this.authService.signup(user, displayName).then(
+                    this.authService.signup(email, password, displayName).then(
                         () => {
                             this.authService.addNewName({displayName: displayName});
                             this.form.reset();
