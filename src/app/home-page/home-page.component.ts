@@ -36,10 +36,10 @@ export class HomePageComponent implements OnInit, OnDestroy {
         this.loading = true;
 
         const today = new Date();
-        const fiveDaysEgo = new Date(+today - ((8.64e+7) * 4));
+        const sixDaysEgo = new Date(+today - ((8.64e+7) * 5));
 
         const endDate = `${today.getFullYear()}-${today.getUTCMonth() + 1}-${today.getUTCDate()}`;
-        const startDate = `${fiveDaysEgo.getFullYear()}-${fiveDaysEgo.getUTCMonth() + 1}-${fiveDaysEgo.getUTCDate()}`;
+        const startDate = `${sixDaysEgo.getFullYear()}-${sixDaysEgo.getUTCMonth() + 1}-${sixDaysEgo.getUTCDate()}`;
 
         this.picturesListSub = this.nasaService.getLastFivePictures(startDate, endDate).subscribe({
             next: response => {

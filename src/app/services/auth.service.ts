@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
-import { Auth, createUserWithEmailAndPassword, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updateProfile, User } from "@angular/fire/auth"
+import { Auth, createUserWithEmailAndPassword, deleteUser, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword, updateProfile, User } from "@angular/fire/auth"
 
 @Injectable({
     providedIn: 'root'
@@ -70,6 +70,14 @@ export class AuthService {
 
     updateProfile(user: User, data: any) {
         return updateProfile(user, data)
+    }
+
+    updatePassword(user: User, newPassword: string) {
+        return updatePassword(user, newPassword);
+    }
+
+    deleteUser(user: User) {
+        return deleteUser(user);
     }
 
     logout() {

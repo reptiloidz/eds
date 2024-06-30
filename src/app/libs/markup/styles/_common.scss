@@ -12,11 +12,11 @@ html {
 
 body {
     padding: 0 20px;
-    color: var(--gray-200);
     background-color: var(--dark-gray);
-    font-family: Play, sans-serif;
-    font-weight: normal;
+    color: var(--gray-200);
+    font-family: 'Play', sans-serif;
     font-size: 16px;
+    font-weight: 400;
 
     // background-image:
     //     linear-gradient(
@@ -36,15 +36,15 @@ input {
     border: 1px solid var(--white);
 
     &:disabled {
-        color: var(--gray-500);
         border-color: var(--gray-500);
+        color: var(--gray-500);
     }
 }
 
 hr {
     height: 1px;
-    background-color: var(--white);
     margin: 8px 0;
+    background-color: var(--white);
 }
 
 table {
@@ -70,6 +70,10 @@ table {
     justify-content: space-between;
 }
 
+.flex-jc-center {
+    justify-content: center;
+}
+
 .h-100p {
     height: 100%;
 }
@@ -84,4 +88,9 @@ table {
 
 .ml-auto {
     margin-left: auto;
+}
+
+.my-auto {
+    margin-top: auto;
+    margin-bottom: auto;
 }

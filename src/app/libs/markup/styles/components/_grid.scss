@@ -1,0 +1,51 @@
+// ===============================================
+// GRID SYSTEM
+// ===============================================
+
+
+.row {
+    display: grid;
+}
+
+@for $i from 2 through  12 {
+    @each $name, $size in $breakpoint {
+        .#{$name}\:row--cols-#{$i} {
+            @include media-breakpoint-up($name) {
+                grid-template-columns: repeat($i, 1fr);
+            }
+        }
+
+        @if $i % 2 == 0 {
+            .#{$name}\:row--g-#{($i * 2)} {
+                @include media-breakpoint-up($name) {
+                    gap: #{$i * 2}px;
+                }
+            }
+            .#{$name}\:row--gx-#{($i * 2)} {
+                @include media-breakpoint-up($name) {
+                    column-gap: #{$i * 2}px;
+                }
+            }
+            .#{$name}\:row--gy-#{($i * 2)} {
+                @include media-breakpoint-up($name) {
+                    row-gap: #{$i * 2}px;
+                }
+            }
+        }
+    }
+
+    @if $i % 2 == 0 {
+        .row--g-#{($i * 2)} {
+            gap: #{$i * 2}px;
+        }
+        .row--gx-#{($i * 2)} {
+            column-gap: #{$i * 2}px;
+        }
+        .row--gy-#{($i * 2)} {
+            row-gap: #{$i * 2}px;
+        }
+    }
+    .row--cols-#{$i} {
+        grid-template-columns: repeat($i, 1fr);
+    }
+}
