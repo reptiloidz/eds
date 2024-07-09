@@ -2,7 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
 import { BehaviorSubject, Observable } from "rxjs";
 import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
-import { Auth, createUserWithEmailAndPassword, deleteUser, getAuth, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword, updateProfile, User } from "@angular/fire/auth"
+import { Auth, createUserWithEmailAndPassword, deleteUser, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword, updateProfile, User } from "@angular/fire/auth"
 
 @Injectable({
     providedIn: 'root'
@@ -26,6 +26,29 @@ export class AuthService {
         return this.auth.currentUser;
     }
 
+    private anticipated() {
+        localStorage.setItem('firebase-anticipated', 'true');
+    }
+
+    test() {
+        this.auth.authStateReady().then(() => {
+            if (this.user) {
+                this.anticipated$.next(true);
+            } else {
+                this.anticipated$.next(false);
+            }
+
+        });
+        console.log(this.user, 'from service');
+        return this.anticipated$;
+    }
+
+    test2() {
+        return onAuthStateChanged(this.auth, () => {
+            console.log(this.user);
+        })
+    }
+
     login(email: string, password: string) {
         return signInWithEmailAndPassword(
             this.auth,
@@ -33,6 +56,7 @@ export class AuthService {
             password
         ).then(() => {
             this.anticipated$.next(true);
+            this.anticipated();
         });
     }
 

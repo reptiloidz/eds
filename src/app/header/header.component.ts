@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../shared/interface';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -16,12 +17,13 @@ export class HeaderComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.authService.authState().then(() => {
+        this.authService.test().subscribe(()=> {
+            distinctUntilChanged();
             this.user = this.authService.user;
         });
-        console.log(this.user, 'from header');
 
-        console.log(this.authService.anticipated$.getValue());
+        this.authService.test2();
+
     }
 
     logOut() {
