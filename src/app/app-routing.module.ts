@@ -14,7 +14,7 @@ const routes: Routes = [
     { path: '', component: HomePageComponent },
     { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
     { path: 'signup', component: SignupPageComponent, canActivate: [LoginGuard] },
-    { path: 'profile', component: ProfilePageComponent, canActivate: [AuthGuard] },
+    { path: 'profile', component: ProfilePageComponent },
     { path: 'about', component: AboutPageComponent },
     { path: 'day/:date', component: DayComponent, resolve: { day: DayResolver } }
 ];

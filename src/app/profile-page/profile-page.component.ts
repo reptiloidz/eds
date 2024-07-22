@@ -21,6 +21,7 @@ export class ProfilePageComponent implements OnInit {
     commentsNames: Array<string>;
     nameExist: string | null;
     error = false;
+    filter: any;
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -38,9 +39,8 @@ export class ProfilePageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.authService.authState().then(() => {
-            this.user = this.authService.user;
-        });
+        this.user = this.authService.user;
+
         this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
             .then(
                 response => {
@@ -197,5 +197,19 @@ export class ProfilePageComponent implements OnInit {
                 err => console.log(err)
             );
         }
+    }
+
+    sort() {
+        this.comments.sort((a, b) => {
+            if (a.date < b.date) {
+                return 1;
+            }
+
+            if (a.date > b.date) {
+                return -1;
+            }
+
+            return 0;
+        })
     }
 }

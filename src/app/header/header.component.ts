@@ -9,7 +9,7 @@ import { distinctUntilChanged } from 'rxjs';
     templateUrl: './header.component.html'
 })
 export class HeaderComponent implements OnInit {
-    user: User | null = null;
+    _user: User | null = null;
 
     constructor(
         public authService: AuthService,
@@ -17,19 +17,24 @@ export class HeaderComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.authService.test().subscribe(()=> {
-            distinctUntilChanged();
-            this.user = this.authService.user;
-        });
+        // this.authService.test().subscribe(()=> {
+        //     distinctUntilChanged();
+        //     this.user = this.authService.user;
+        // });
 
-        this.authService.test2();
+        // this.authService.test2();
 
+        this._user = this.authService.user;
+    }
+
+    get user() {
+        return this._user = this.authService.user;
     }
 
     logOut() {
         this.authService.logout();
         this.router.navigate(['']);
-        this.user = null;
+        // this.user = null;
     }
 
     getPictureByDate(date: Date) {
