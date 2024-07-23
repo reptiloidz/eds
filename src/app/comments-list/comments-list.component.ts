@@ -26,14 +26,11 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     constructor(
         public authService: AuthService,
         private postService: PostService,
-        private accountService: AccountService
     ) {}
 
     ngOnInit(): void {
         this.commentInput = new FormControl('', Validators.required);
-        this.authService.authState().then(() => {
-            this.user = this.authService.user;
-        });
+        this.user = this.authService.user;
     }
 
     ngOnDestroy(): void {

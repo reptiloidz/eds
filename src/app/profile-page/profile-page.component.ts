@@ -14,7 +14,6 @@ import { User } from '@angular/fire/auth';
     templateUrl: './profile-page.component.html'
 })
 export class ProfilePageComponent implements OnInit {
-    user: User | null;
     idToken: string | null = null;
     popup = false;
     comments: Array<Comment>;
@@ -22,7 +21,7 @@ export class ProfilePageComponent implements OnInit {
     nameExist: string | null;
     error = false;
     filter: any;
-    sortOptions = ['New first', 'Old first', 'By replies'];
+    _user: User | null = null;
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -39,24 +38,22 @@ export class ProfilePageComponent implements OnInit {
         private postService: PostService,
     ) {}
 
-    ngOnInit(): void {
-        this.user = this.authService.user;
-        // this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+    get user() {
+        return this._user = this.authService.user;
     }
 
-    getPosts(orderBy: string, equal: string) {
-        console.log(orderBy, equal);
-        this.postService.getPosts(orderBy, equal)
-            .then(
-                response => {
-                    if (response.val()) {
-                        this.comments =  Object.values(response.val()) as Array<Comment>;
-                        this.commentsNames = Object.keys(response.val());
-
-                        console.log(this.comments, this.commentsNames);
+    ngOnInit(): void {
+        this.authService.authReady().then(currentUser => {
+            this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string)
+                .then(
+                    response => {
+                        if (response.val()) {
+                            this.comments =  Object.values(response.val()) as Array<Comment>;
+                            this.commentsNames = Object.keys(response.val());
+                        }
                     }
-                }
-            );
+                );
+        })
     }
 
     cancelEdit() {
@@ -90,9 +87,7 @@ export class ProfilePageComponent implements OnInit {
                         this.authService.updateProfile(this.user, { displayName }).then(() => {
                             this.error = false;
                             this.name.disable();
-                            this.authService.authState().then(() => {
-                                this.user = this.authService.user;
-                            });
+                            this._user = this.authService.user;
                             this.authService.addNewName({displayName: displayName});
                             console.log(this.authService.user);
                             this.authService.logout();
@@ -137,7 +132,7 @@ export class ProfilePageComponent implements OnInit {
                 this.authService.logout();
                 this.router.navigate(['/login']);
             }, error => {
-                this.user = null;
+                this._user = null;
                 console.log(error);
                 this.router.navigate(['/login']);
             });

@@ -7,8 +7,7 @@ export const LoginGuard: CanActivateFn = (): Observable<boolean> | Promise<boole
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    console.log(authService.user, 'from guard');
-    if (!authService.anticipated$.getValue()) {
+    if (!authService.authenticated) {
         return true;
     } else {
         router.navigate(['/']);

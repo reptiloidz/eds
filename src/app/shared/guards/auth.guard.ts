@@ -7,7 +7,7 @@ export const AuthGuard: CanActivateFn = (): Observable<boolean> | Promise<boolea
     const authService = inject(AuthService);
     const router = inject(Router);
 
-    if (authService.anticipated$.getValue()) {
+    if (authService.authenticated) {
         return true;
     } else {
         router.navigate(['login']);

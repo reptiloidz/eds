@@ -40,8 +40,6 @@ export class LoginPageComponent implements OnInit, OnDestroy {
         this.resetForm = new FormGroup({
             resetEmail: new FormControl('', [Validators.required, Validators.email])
         });
-
-        console.log(this.authService.anticipated$.getValue());
     }
 
     ngOnDestroy(): void {

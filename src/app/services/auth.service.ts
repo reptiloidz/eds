@@ -1,8 +1,19 @@
 import { HttpClient } from "@angular/common/http";
 import { inject, Injectable } from "@angular/core";
-import { BehaviorSubject, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Database, equalTo, get, orderByChild, push, query, ref } from "@angular/fire/database";
-import { Auth, createUserWithEmailAndPassword, deleteUser, getAuth, onAuthStateChanged, sendPasswordResetEmail, signInWithEmailAndPassword, signOut, updatePassword, updateProfile, User } from "@angular/fire/auth"
+import {
+    Auth,
+    createUserWithEmailAndPassword,
+    deleteUser,
+    getAuth,
+    sendPasswordResetEmail,
+    signInWithEmailAndPassword,
+    signOut,
+    updatePassword,
+    updateProfile,
+    User
+} from "@angular/fire/auth"
 
 @Injectable({
     providedIn: 'root'
@@ -16,37 +27,18 @@ export class AuthService {
 
     private db = inject(Database);
     readonly auth = getAuth();
-    readonly anticipated$ = new BehaviorSubject(false);
-
-    authState(): Promise<void> {
-        return this.auth.authStateReady();
-    }
 
     get user(): User | null {
         return this.auth.currentUser;
     }
-
-    private anticipated() {
-        localStorage.setItem('firebase-anticipated', 'true');
+    get authenticated(): boolean {
+        return localStorage.getItem('firebase-anticipated') ? true : false;
     }
 
-    test() {
-        this.auth.authStateReady().then(() => {
-            if (this.user) {
-                this.anticipated$.next(true);
-            } else {
-                this.anticipated$.next(false);
-            }
-
+    authReady() {
+        return this.auth.authStateReady().then(() => {
+            return this.auth.currentUser;
         });
-        console.log(this.user, 'from service');
-        return this.anticipated$;
-    }
-
-    test2() {
-        return onAuthStateChanged(this.auth, () => {
-            console.log(this.user);
-        })
     }
 
     login(email: string, password: string) {
@@ -55,8 +47,7 @@ export class AuthService {
             email,
             password
         ).then(() => {
-            this.anticipated$.next(true);
-            this.anticipated();
+            localStorage.setItem('firebase-anticipated', 'true');
         });
     }
 
@@ -69,7 +60,7 @@ export class AuthService {
             this.updateProfile(response.user, {displayName}).then(
                 error => console.log(error)
             );
-            this.anticipated$.next(true);
+            localStorage.setItem('firebase-anticipated', 'true');
             return response;
         });
     }
@@ -106,6 +97,6 @@ export class AuthService {
 
     logout() {
         signOut(this.auth);
-        this.anticipated$.next(false);
+        localStorage.removeItem('firebase-anticipated');
     }
 }

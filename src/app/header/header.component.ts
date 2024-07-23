@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../shared/interface';
-import { distinctUntilChanged } from 'rxjs';
 
 @Component({
     selector: 'app-header',
@@ -17,13 +16,6 @@ export class HeaderComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        // this.authService.test().subscribe(()=> {
-        //     distinctUntilChanged();
-        //     this.user = this.authService.user;
-        // });
-
-        // this.authService.test2();
-
         this._user = this.authService.user;
     }
 
@@ -34,7 +26,6 @@ export class HeaderComponent implements OnInit {
     logOut() {
         this.authService.logout();
         this.router.navigate(['']);
-        // this.user = null;
     }
 
     getPictureByDate(date: Date) {
