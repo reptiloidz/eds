@@ -1,4 +1,4 @@
-import { Comment } from '../shared/interface';
+import { Comment, Reply } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -195,11 +195,13 @@ export class ProfilePageComponent implements OnInit {
             case 'Old first':
                 sortBy = PostsSorting.byDate;
                 break;
-            case 'By replies':
-                sortBy = PostsSorting.byDate;
-                break;
-            default:
-                sortBy = PostsSorting.byDate;
+            case 'byReplies':
+                this.comments = this.comments
+                    .filter( item => item.replies )
+                    .sort( (a,b) => {
+                        return (a.replies as Array<Reply>).length < (b.replies as Array<Reply>).length ? 1 : -1;
+                    })
+                    .concat(this.comments.filter(item => !!item.replies === false ));
                 break;
         }
 
