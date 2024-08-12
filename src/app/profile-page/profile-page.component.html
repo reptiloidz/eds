@@ -138,12 +138,11 @@
     Delete account
 </button>
 <br>
+<app-dropdown
+    [options]="sortOptions"
+    (selectedOption)="sort($event)"
+></app-dropdown>
 
-<select [(ngModel)]="filter" (change)="sort()" class="btn">
-    <option value="newFirst" selected>New first</option>
-    <option value="oldFirst">Old first </option>
-    <option value="byReplies">By replies</option>
-</select>
 <ng-container *ngFor="let comment of comments; index as i;">
     <a
         class="d-flex flex-column"

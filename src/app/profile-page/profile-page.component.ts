@@ -22,6 +22,7 @@ export class ProfilePageComponent implements OnInit {
     nameExist: string | null;
     error = false;
     filter: any;
+    sortOptions = ['New first', 'Old first', 'By replies'];
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -40,13 +41,19 @@ export class ProfilePageComponent implements OnInit {
 
     ngOnInit(): void {
         this.user = this.authService.user;
+        // this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+    }
 
-        this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
+    getPosts(orderBy: string, equal: string) {
+        console.log(orderBy, equal);
+        this.postService.getPosts(orderBy, equal)
             .then(
                 response => {
                     if (response.val()) {
                         this.comments =  Object.values(response.val()) as Array<Comment>;
                         this.commentsNames = Object.keys(response.val());
+
+                        console.log(this.comments, this.commentsNames);
                     }
                 }
             );
@@ -157,17 +164,7 @@ export class ProfilePageComponent implements OnInit {
         if (post) {
             this.postService.delPost(post).then(
                 () => {
-                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
-                        .then(
-                            response => {
-                                if (response.val()) {
-                                    this.comments =  Object.values(response.val()) as Array<Comment>;
-                                    this.commentsNames = Object.keys(response.val());
-                                } else {
-                                    this.comments = [];
-                                }
-                            }
-                        );
+                    this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
                 },
                 err => {
                     console.log(err);
@@ -184,32 +181,33 @@ export class ProfilePageComponent implements OnInit {
             comment.text = event.newText;
             this.postService.editPost(commentID, comment).then(
                 () => {
-                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string))
-                        .then(
-                            response => {
-                                if (response.val()) {
-                                    this.comments =  Object.values(response.val()) as Array<Comment>;
-                                    this.commentsNames = Object.keys(response.val());
-                                }
-                            }
-                        );
+                    this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
                 },
                 err => console.log(err)
             );
         }
     }
 
-    sort() {
-        this.comments.sort((a, b) => {
-            if (a.date < b.date) {
-                return 1;
-            }
+    sort(event: string) {
+        console.log(event);
 
-            if (a.date > b.date) {
-                return -1;
-            }
+        let sortBy;
 
-            return 0;
-        })
+        switch (event) {
+            case 'New first':
+                sortBy = PostsSorting.byDate;
+                break;
+            case 'Old first':
+                sortBy = PostsSorting.byDate;
+                break;
+            case 'By replies':
+                sortBy = PostsSorting.byDate;
+                break;
+            default:
+                sortBy = PostsSorting.byDate;
+                break;
+        }
+
+        this.getPosts(sortBy, (this.user?.displayName as string));
     }
 }
