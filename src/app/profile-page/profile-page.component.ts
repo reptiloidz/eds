@@ -22,6 +22,7 @@ export class ProfilePageComponent implements OnInit {
     error = false;
     filter: any;
     _user: User | null = null;
+    sortOptions = ['New first', 'Old first', 'byReplies'];
 
     name = new FormControl({value: '', disabled: true}, [Validators.required]);
     email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
@@ -159,7 +160,7 @@ export class ProfilePageComponent implements OnInit {
         if (post) {
             this.postService.delPost(post).then(
                 () => {
-                    this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
                 },
                 err => {
                     console.log(err);
@@ -176,7 +177,7 @@ export class ProfilePageComponent implements OnInit {
             comment.text = event.newText;
             this.postService.editPost(commentID, comment).then(
                 () => {
-                    this.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
                 },
                 err => console.log(err)
             );
@@ -205,6 +206,9 @@ export class ProfilePageComponent implements OnInit {
                 break;
         }
 
-        this.getPosts(sortBy, (this.user?.displayName as string));
+        if (sortBy) {
+            this.postService.getPosts(sortBy, (this.user?.displayName as string));
+        }
+
     }
 }
