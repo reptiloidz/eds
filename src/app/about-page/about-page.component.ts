@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, HostBinding, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostBinding, HostListener, ViewChild } from '@angular/core';
 
 @Component({
 	selector: 'app-about-page',
@@ -19,12 +19,23 @@ export class AboutPageComponent implements AfterViewInit {
 		this.aboutCanvas.nativeElement.height = this.aboutCanvas.nativeElement.offsetHeight;
 		this.context = this.aboutCanvas.nativeElement.getContext('webgl') as WebGL2RenderingContext;
 
+		this.draw();
+	}
+
+	draw() {
 		const vertexShaderSource = `
-			attribute vec4 a_position;
+			attribute vec2 a_position;
+
+			uniform vec2 u_resolution;
 
 			void main() {
-			gl_Position = a_position;
-    	}`;
+				vec2 zeroToOne = a_position / u_resolution;
+				vec2 zeroToTwo = zeroToOne * 2.0;
+				vec2 clipSpace = zeroToTwo - 1.0;
+
+				gl_Position = vec4(clipSpace * vec2(1, -1), 0, 1);
+			}
+		`;
 		const fragmentShaderSource = `
 			precision mediump float;
 
@@ -32,22 +43,24 @@ export class AboutPageComponent implements AfterViewInit {
 				gl_FragColor = vec4(1, 0, 0.5, 1);
 			}
 		`;
-
 		const vertexShader = this.createShader(this.context, this.context.VERTEX_SHADER, vertexShaderSource);
 		const fragmentShader = this.createShader(this.context, this.context.FRAGMENT_SHADER, fragmentShaderSource);
 
 		const program = this.createProgram(this.context, vertexShader, fragmentShader);
 		const positionAttributeLocation = this.context.getAttribLocation(program, "a_position");
+		const resolutionUniformLocation = this.context.getUniformLocation(program, "u_resolution");
 		const positionBuffer = this.context.createBuffer();
 		this.context.bindBuffer(this.context.ARRAY_BUFFER, positionBuffer);
 
+
+
 		const positions = [
-			0, 0,
-			0, 0.5,
-			0.7, 0,
-			0, 0,
-			0, -0.5,
-			-0.7, 0,
+			10, 20,
+			80, 20,
+			10, 30,
+			10, 30,
+			80, 20,
+			80, 30,
 		];
 		this.context.bufferData(this.context.ARRAY_BUFFER, new Float32Array(positions), this.context.STATIC_DRAW);
 
@@ -56,9 +69,6 @@ export class AboutPageComponent implements AfterViewInit {
 		this.context.clear(this.context.COLOR_BUFFER_BIT);
 		this.context.useProgram(program);
 		this.context.enableVertexAttribArray(positionAttributeLocation);
-		// Привязываем буфер положений
-		this.context.bindBuffer(this.context.ARRAY_BUFFER, positionBuffer);
-
 		// Указываем атрибуту, как получать данные от positionBuffer (ARRAY_BUFFER)
 		const size = 2;          // 2 компоненты на итерацию
 		const type = this.context.FLOAT;   // наши данные - 32-битные числа с плавающей точкой
@@ -66,54 +76,11 @@ export class AboutPageComponent implements AfterViewInit {
 		const stride = 0;        // 0 = перемещаться на size * sizeof(type) каждую итерацию для получения следующего положения
 		const offset = 0;        // начинать с начала буфера
 		this.context.vertexAttribPointer(positionAttributeLocation, size, type, normalize, stride, offset);
-
+		this.context.uniform2f(resolutionUniformLocation, this.aboutCanvas.nativeElement.width, this.aboutCanvas.nativeElement.height);
 		const primitiveType = this.context.TRIANGLES;
 		const offset2 = 0;
 		const count = 6;
 		this.context.drawArrays(primitiveType, offset2, count);
-
-
-		// const maxX = this.aboutCanvas.nativeElement.offsetWidth;
-		// const maxY = this.aboutCanvas.nativeElement.offsetHeight;
-
-		// setInterval(() => {
-		//     const coordX = Math.floor(Math.random() * maxX);
-		//     const coordY = Math.floor(Math.random() * maxY);
-		//     const ellipseRadius = Math.floor(Math.random() * 30);
-		//     this.context.fillStyle = `rgba(
-		//         ${Math.floor(Math.random() * 255)},
-		//         ${Math.floor(Math.random() * 255)},
-		//         ${Math.floor(Math.random() * 255)},
-		//         .8
-		//     )`;
-		//     this.context.beginPath();
-		//     this.context.ellipse(
-		//         Math.floor(Math.random() * maxX),
-		//         Math.floor(Math.random() * maxY),
-		//         ellipseRadius,
-		//         ellipseRadius,
-		//         Math.PI / 4, 0, 2 * Math.PI
-		//     );
-		//     this.context.fill();
-
-		//     console.log(coordX, coordY);
-		// }, 300);
-
-		// this.context.fillStyle = `rgba(
-		//     ${Math.floor(Math.random() * 255)},
-		//     ${Math.floor(Math.random() * 255)},
-		//     ${Math.floor(Math.random() * 255)},
-		//     .8
-		// )`;
-		// this.context.beginPath();
-		// this.context.ellipse(
-		//     100,
-		//     100,
-		//     100,
-		//     100,
-		//     Math.PI / 4, 0, 2 * Math.PI
-		// );
-		// this.context.fill();
 	}
 
 	createShader(gl: WebGL2RenderingContext, type: number, source: string) {
@@ -134,5 +101,38 @@ export class AboutPageComponent implements AfterViewInit {
 		console.log(gl.getProgramInfoLog(program));
 		return program;
 		// gl.deleteProgram(program);
+	}
+
+	resizeCanvasToDisplaySize(canvas: ElementRef<HTMLCanvasElement>, multiplier?: number) {
+		multiplier = multiplier || 1;
+		const width  = canvas.nativeElement.clientWidth  * multiplier | 0;
+		const height = canvas.nativeElement.clientHeight * multiplier | 0;
+		if (canvas.nativeElement.width !== width ||  canvas.nativeElement.height !== height) {
+			canvas.nativeElement.width  = width;
+			canvas.nativeElement.height = height;
+			return true;
+		}
+		return false;
+	}
+
+	resize(canvas: ElementRef<HTMLCanvasElement>) {
+		// получаем размер HTML-элемента canvas
+		const displayWidth  = canvas.nativeElement.clientWidth;
+		const displayHeight = canvas.nativeElement.clientHeight;
+
+		// проверяем, отличается ли размер canvas
+		if (canvas.nativeElement.width  != displayWidth ||
+			canvas.nativeElement.height != displayHeight) {
+
+			// подгоняем размер буфера отрисовки под размер HTML-элемента
+			canvas.nativeElement.width  = displayWidth;
+			canvas.nativeElement.height = displayHeight;
+		}
+	}
+
+	@HostListener('window:resize', ['$event'])
+	onResize() {
+		this.resize(this.aboutCanvas);
+		this.draw();
 	}
 }
