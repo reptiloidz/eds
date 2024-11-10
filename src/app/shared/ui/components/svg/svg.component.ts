@@ -17,6 +17,8 @@ export class SvgComponent {
         return this._icon;
     }
 
+    @Input() title?: string;
+
     set icon(value: string | null) {
         this._icon = value;
         this.addSvg();
@@ -25,10 +27,17 @@ export class SvgComponent {
     useElem: HTMLElement | null = null;
 
     addSvg() {
+        const svgElement: SVGElement = this.elementRef?.nativeElement;
+        const childElements: Element[] = Object.values(svgElement.children);
+
         this.useElem?.remove();
         this.useElem = null;
+
+        childElements
+			.filter(element => element?.tagName?.toLowerCase() !== 'title')
+			.forEach(element => element?.remove());
         this.useElem = this.renderer.createElement('use');
-        this.renderer.setAttribute(this.useElem, 'xlink:href', `assets/sprite/sprite.svg#${this.icon}`);
+        this.renderer.setAttribute(this.useElem, 'href', `assets/sprite/sprite.svg#${this.icon}`);
         if (this.useElem) {
             this.elementRef.nativeElement.append(this.useElem);
         }

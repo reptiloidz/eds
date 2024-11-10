@@ -14,7 +14,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
     error: Error;
     date: any;
 
-    @HostBinding('class') class = 'd-flex flex-column h-100p'
+    @HostBinding('class') class = 'd-flex flex-column'
 
     constructor(
         private nasaService: NasaService,

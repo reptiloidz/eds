@@ -1,10 +1,19 @@
 <div class="row md:row--cols-2 lg:row--cols-2 xl:row--cols-3 row--g-8 lg:row--gx-12 my-auto">
     <ng-container *ngFor="let item of picturesList">
         <a
+            *ngIf="item.media_type !== 'other'"
             class="card"
             [routerLink]="['day/' + item.date]"
+            style="--card-bg-img: url({{item.url}});"
         >
-            <ng-container *ngIf="item.media_type === 'video'; else imageTemplate">
+            <!-- [ngStyle]="{
+                '--card-bg-img: url({{item.url}});' : item.media_type === 'image',
+                '--card-bg-img: url(/assets/loader.png);' : item.media_type === 'video',
+            }" -->
+            <span class="card__description">
+                {{ item.date }}
+            </span>
+            <!-- <ng-container *ngIf="item.media_type === 'video'; else imageTemplate">
                 <iframe
                     width="100%"
                     [src]="item.url | sanitizer"
@@ -25,7 +34,7 @@
                 <figcaption class="card__caption">
                     {{ item.date }}
                 </figcaption>
-            </ng-template>
+            </ng-template> -->
         </a>
     </ng-container>
 </div>
