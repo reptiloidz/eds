@@ -49,7 +49,9 @@ export class ProfilePageComponent implements OnInit {
                 .then(
                     response => {
                         if (response.val()) {
-                            this.comments =  Object.values(response.val()) as Array<Comment>;
+                            this.comments =  (Object.values(response.val()) as Array<Comment>).sort((a, b) => {
+                                return a.date < b.date ? 1 : -1;
+                            });
                             this.commentsNames = Object.keys(response.val());
                         }
                     }
@@ -185,16 +187,16 @@ export class ProfilePageComponent implements OnInit {
     }
 
     sort(event: string) {
-        console.log(event);
-
-        let sortBy;
-
         switch (event) {
             case 'New first':
-                sortBy = PostsSorting.byDate;
+                this.comments.sort( (a, b) => {
+                    return a.date < b.date ? 1 : -1;
+                });
                 break;
             case 'Old first':
-                sortBy = PostsSorting.byDate;
+                this.comments.sort( (a, b) => {
+                    return a.date > b.date ? 1 : -1;
+                });
                 break;
             case 'byReplies':
                 this.comments = this.comments
@@ -205,10 +207,5 @@ export class ProfilePageComponent implements OnInit {
                     .concat(this.comments.filter(item => !!item.replies === false ));
                 break;
         }
-
-        if (sortBy) {
-            this.postService.getPosts(sortBy, (this.user?.displayName as string));
-        }
-
     }
 }

@@ -1,5 +1,5 @@
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit, HostBinding } from '@angular/core';
 import { Comment, User } from '../shared/interface';
 
 @Component({
@@ -13,6 +13,8 @@ export class CommentComponent implements OnInit {
     @Output() deleteHandler = new EventEmitter();
     @Output() editHandler = new EventEmitter();
     @Output() replyHandler = new EventEmitter();
+
+    @HostBinding('class') class = 'comment';
 
     commentForm: FormGroup;
     replyForm: FormGroup;

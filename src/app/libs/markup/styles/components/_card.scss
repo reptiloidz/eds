@@ -48,4 +48,11 @@
         text-align: center;
         backdrop-filter: blur(6px);
     }
+
+    &__badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        font-size: 20px;
+    }
 }

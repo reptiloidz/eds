@@ -130,7 +130,7 @@
 </p>
 
 <button
-    class="btn"
+    class="btn mb-24"
     style="color: red;"
     type="button"
     (click)="switchPopup()"
@@ -139,30 +139,34 @@
 </button>
 <br>
 <app-dropdown
+    class="d-block mb-24"
     [options]="sortOptions"
     (selectedOption)="sort($event)"
 ></app-dropdown>
 
 <ng-container *ngFor="let comment of comments; index as i;">
-    <a
-        class="d-flex flex-column"
-        [routerLink]="['/day/' + comment.pictureDate]"
-    >
-        <img
-            [src]="comment.pictureUrl"
-            alt=""
-            aria-hidden="true"
-            width="200"
-            height="150"
+    <div class="d-flex mb-24">
+        <a
+            class="d-flex flex-column"
+            [routerLink]="['/day/' + comment.pictureDate]"
         >
-        {{ comment.pictureDate }}
-    </a>
-    <app-comment
-        [comment]="comment"
-        [user]="user"
-        (deleteHandler)="onDelete(i)"
-        (editHandler)="onEdit($event, i)"
-    ></app-comment>
+            <img
+                [src]="comment.pictureUrl"
+                alt=""
+                aria-hidden="true"
+                width="200"
+                height="150"
+            >
+            {{ comment.pictureDate }}
+        </a>
+        <app-comment
+            class="mt-auto ml-24"
+            [comment]="comment"
+            [user]="user"
+            (deleteHandler)="onDelete(i)"
+            (editHandler)="onEdit($event, i)"
+        ></app-comment>
+    </div>
 </ng-container>
 <app-popup [opened]="popup" (onClose)="switchPopup()">
     <ng-template #content>

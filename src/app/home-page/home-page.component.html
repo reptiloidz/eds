@@ -4,37 +4,21 @@
             *ngIf="item.media_type !== 'other'"
             class="card"
             [routerLink]="['day/' + item.date]"
-            style="--card-bg-img: url({{item.url}});"
+            [ngStyle]="{
+                '--card-bg-img' : item.media_type === 'image' ?
+                    'url(' + item.url + ')' :
+                    'url(assets/loader.png)'
+            }"
         >
-            <!-- [ngStyle]="{
-                '--card-bg-img: url({{item.url}});' : item.media_type === 'image',
-                '--card-bg-img: url(/assets/loader.png);' : item.media_type === 'video',
-            }" -->
+            <span
+                class="card__badge"
+                *ngIf="item.media_type === 'video'"
+            >
+                Youtube video
+            </span>
             <span class="card__description">
                 {{ item.date }}
             </span>
-            <!-- <ng-container *ngIf="item.media_type === 'video'; else imageTemplate">
-                <iframe
-                    width="100%"
-                    [src]="item.url | sanitizer"
-                    [title]="item.explanation"
-                    frameborder="0"
-                    allowfullscreen
-                ></iframe>
-                <span class="card__caption">{{ item.date }}</span>
-            </ng-container>
-
-            <ng-template #imageTemplate>
-                <figure>
-                    <img
-                        [src]="item.url"
-                        [alt]="item.explanation"
-                    >
-                </figure>
-                <figcaption class="card__caption">
-                    {{ item.date }}
-                </figcaption>
-            </ng-template> -->
         </a>
     </ng-container>
 </div>

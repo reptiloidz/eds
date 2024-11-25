@@ -1,36 +1,59 @@
-<p *ngIf="!canEdit">{{ comment.text }}</p>
-<p *ngIf="!canEdit">{{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}</p>
-
-<form
-    *ngIf="canEdit"
-    [formGroup]="commentForm"
->
-    <app-text-input
-        formControlName="comment"
-        type="text"
-        [placeholder]="comment.text"
-    ></app-text-input>
-
-    <button
-        class="btn"
-        type="button"
-        (click)="onEdit()"
-        [disabled]="!commentForm.controls['comment'].value"
+<div>
+    <p
+        class="comment__text"
+        *ngIf="!canEdit"
     >
-        Save
-    </button>
-    <button
-        class="btn"
-        type="button"
-        (click)="editSwitch()"
+        {{ comment.text }}
+    </p>
+    <p
+        class="comment__author"
+        *ngIf="!canEdit"
     >
-        Cancel
-    </button>
-</form>
-<div class="d-flex">
-    <ng-container *ngIf="user?.displayName === comment.author && !canEdit">
+        {{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}
+    </p>
+
+    <form
+        *ngIf="canEdit"
+        [formGroup]="commentForm"
+        class="comment__form"
+    >
+        <app-text-input
+            formControlName="comment"
+            type="text"
+            [placeholder]="comment.text"
+        ></app-text-input>
+
         <button
             class="btn"
+            type="button"
+            (click)="onEdit()"
+            [disabled]="!commentForm.controls['comment'].value"
+        >
+            Save
+        </button>
+        <button
+            class="btn"
+            type="button"
+            (click)="editSwitch()"
+        >
+            Cancel
+        </button>
+    </form>
+
+    <ng-container *ngIf="comment.replies">
+        <p>Replies:</p>
+        <ng-container *ngFor="let reply of comment.replies">
+            <div style="padding-left: 20px; padding-bottom: 4px;">
+                <p>{{ reply.text }}</p>
+                <p>{{ reply.author }} {{reply.date | date:'dd/MM/yyyy'}}</p>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>
+<div class="comment__controls">
+    <ng-container *ngIf="user?.displayName === comment.author && !canEdit">
+        <button
+            class="comment__btn"
             type="button"
             (click)="editSwitch()"
             title="Edit"
@@ -43,7 +66,7 @@
             ></svg>
         </button>
         <button
-            class="btn"
+            class="comment__btn"
             type="button"
             (click)="togglePopup()"
             title="Delete"
@@ -57,8 +80,8 @@
         </button>
     </ng-container>
     <button
-        *ngIf="user"
-        class="btn"
+        *ngIf="user && !canEdit"
+        class="comment__btn"
         type="button"
         (click)="toggleReply()"
     >
@@ -83,17 +106,6 @@
         Send
     </button>
 </form>
-
-<ng-container *ngIf="comment.replies">
-    <p>Replies:</p>
-    <ng-container *ngFor="let reply of comment.replies">
-        <div style="padding-left: 20px; padding-bottom: 4px;">
-            <p>{{ reply.text }}</p>
-            <p>{{ reply.author }} {{reply.date | date:'dd/MM/yyyy'}}</p>
-        </div>
-    </ng-container>
-</ng-container>
-<hr>
 
 <app-popup
     [opened]="popupIsOpen"
