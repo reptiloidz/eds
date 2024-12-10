@@ -3,7 +3,6 @@ import { AuthService } from '../services/auth.service';
 import { Comment, CommentsNames, DailySpacePicture, Reply, User } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
-import { AccountService } from '../services/account.service';
 import { Subscription } from 'rxjs';
 import * as uniqid from 'uniqid';
 
@@ -106,12 +105,12 @@ export class CommentsListComponent implements OnInit, OnDestroy {
                 text: event.reply,
                 author: event.replyAuthor,
                 date: + new Date(),
+                is_read: false
             }
 
             if (!post[1].replies) {
                 post[1].replies = [];
             }
-            console.log(post[1].replies);
 
             (post[1].replies as Array<any>).push(reply);
 

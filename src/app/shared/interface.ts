@@ -52,6 +52,7 @@ export interface Reply {
     text: string,
     replies?: Array<Reply>,
     date: number,
+    is_read: boolean,
 }
 
 export interface CommentsNames {
