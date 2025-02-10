@@ -1,3 +1,5 @@
+import { UserInfo } from "@angular/fire/auth"
+
 export interface DailySpacePicture {
     copyright: string,
     date: string,
@@ -7,20 +9,6 @@ export interface DailySpacePicture {
     service_version: string
     title: string,
     url: string,
-}
-
-export interface User {
-    email?: string | null | undefined,
-    idToken?: string | null,
-    password?: string | null | undefined,
-    displayName?: string | null | undefined,
-    photoUrl?: string,
-    returnSecureToken?: boolean,
-    refreshToken?: string,
-    expiresIn?: string,
-    localId?: string,
-    registered?: boolean,
-    requestType?: string
 }
 
 export interface firebaseAuthResponse {
@@ -36,21 +24,23 @@ export interface Users {
     users: [User]
 }
 
+export interface User extends UserInfo {}
+
 export interface Comment {
     pictureDate: string | undefined,
     date: number,
-    author: string | null | undefined,
+    author: User | null,
     text: string,
-    id: string | null | undefined,
+    id: string,
     pictureUrl: string | undefined,
     reaction?: boolean | null,
-    replies?: Array<Reply> | null,
 }
 
 export interface Reply {
-    author: string,
+    author: User | null,
+    id: string,
+    comment_id: string,
     text: string,
-    replies?: Array<Reply>,
     date: number,
     is_read: boolean,
 }

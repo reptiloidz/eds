@@ -3,7 +3,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommentsNames, DailySpacePicture } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { PostsSorting } from '../services/posts.enum';
-import { LikeService } from '../services/like.service';
 
 @Component({
     selector: 'app-day',
@@ -79,14 +78,5 @@ export class DayComponent implements OnInit {
     onNext(): void {
         this.calculateDates();
         this.router.navigate([`day/${this.next}`]);
-    }
-
-    addLike() {
-        // this.postService.editPost()
-        console.log(this.item);
-    }
-
-    addDislike() {
-        console.log(this.item);
     }
 }

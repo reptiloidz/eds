@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Comment, CommentsNames, DailySpacePicture, Reply, User } from '../shared/interface';
+import { Comment, CommentsNames, DailySpacePicture, User } from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -29,7 +29,10 @@ export class CommentsListComponent implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.commentInput = new FormControl('', Validators.required);
-        this.user = this.authService.user;
+
+        this.authService.authReady().then(currentUser => {
+            this.user = currentUser;
+        });
     }
 
     ngOnDestroy(): void {
@@ -39,21 +42,31 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     }
 
     post() {
-        this.comment = {
-            date: + new Date(),
-            pictureDate: this.picture?.date,
-            author: this.user?.displayName,
-            text: this.commentInput.value,
-            id: uniqid(),
-            pictureUrl: this.picture?.url,
-        };
-
-        this.postService.addNewPost(this.comment).then(
-            () => {
-                this.commentInput.reset();
-                this.onChange.emit();
-            }
-        );
+        console.log(this.user);
+        if (this.user) {
+            this.comment = {
+                date: + new Date(),
+                pictureDate: this.picture?.date,
+                author: {
+                    displayName: this.user.displayName,
+                    email: this.user.email,
+                    phoneNumber: this.user.phoneNumber,
+                    photoURL: this.user.photoURL,
+                    providerId: this.user.providerId,
+                    uid: this.user.uid,
+                },
+                text: this.commentInput.value,
+                id: uniqid(),
+                pictureUrl: this.picture?.url,
+            };
+            console.log(this.comment);
+            this.postService.addNewPost(this.comment).then(
+                () => {
+                    this.commentInput.reset();
+                    this.onChange.emit();
+                }
+            );
+        }
     }
 
     onDelete(comment: Comment) {
@@ -95,34 +108,13 @@ export class CommentsListComponent implements OnInit, OnDestroy {
     }
 
     onReply(event: any) {
-        const post = Object.entries(this.commentsNames).find(
-            item => item[1].id === event.comment.id
+        this.postService.addNewReply(event).then(
+            () => {
+                this.onChange.emit();
+            },
+            err => {
+                console.log(err);
+            }
         );
-
-        if (post) {
-            const postId = post[0];
-            const reply: Reply = {
-                text: event.reply,
-                author: event.replyAuthor,
-                date: + new Date(),
-                is_read: false
-            }
-
-            if (!post[1].replies) {
-                post[1].replies = [];
-            }
-
-            (post[1].replies as Array<any>).push(reply);
-
-
-            this.postService.editPost(postId, post[1]).then(
-                () => {
-                   this.onChange.emit()
-                },
-                err => {
-                    console.log(err);
-                }
-            )
-        }
     }
 }

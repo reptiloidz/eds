@@ -3,3 +3,10 @@ export enum PostsSorting {
     byAuthor = 'author',
     byDate = 'date',
 }
+
+export enum RepliesSorting {
+    isRead = 'is_read',
+    byAuthor = 'author',
+    byDate = 'date',
+    byCommentId = 'comment_id'
+}

@@ -22,7 +22,7 @@
 <div style="display: flex; width: 100%" *ngIf="item && !loading; else loadingTemplate">
     <figure
         *ngIf="item && item.media_type === 'image'; else videoTemplate"
-        style="width: 50%"
+        style="width: 70%"
     >
         <a
             [href]="item.hdurl"
@@ -46,20 +46,6 @@
                 ></svg>
                 Download image
             </a>
-            <button
-                type="button"
-                class="btn"
-                (click)="addLike()"
-            >
-                likes - 
-            </button>
-            <button
-                type="button"
-                class="btn"
-                (click)="addDislike()"
-            >
-                dislikes - 
-            </button>
             <p *ngIf="item.copyright">
                 Author: {{ item.copyright }}
             </p>
@@ -84,7 +70,7 @@
         </p>
     </ng-template>
     <app-comments-list
-        style="width: 50%"
+        style="width: 30%"
         [comments]="comments"
         [picture]="item"
         (onChange)="getComments(item.date)"

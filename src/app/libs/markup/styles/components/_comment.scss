@@ -16,10 +16,16 @@
 
 	&__controls {
 		display: flex;
+		align-items: start;
 		margin-left: 24px;
 	}
 
 	&__form {
 		display: flex;
+	}
+
+	&__btn {
+		margin-left: 8px;
+		cursor: pointer;
 	}
 }

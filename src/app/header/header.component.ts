@@ -22,18 +22,18 @@ export class HeaderComponent implements OnInit {
 
     ngOnInit() {
         this._user = this.authService.user;
-        this.authService.authReady().then( currentUser => {
-            this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string).then(
-                result => {
-                    if (result && result.val()) {
-                        const data = Object.fromEntries(
-                            Object.entries(result.val() as Array<Comment>).filter(item => item[1].replies)
-                        );
-                        console.log(data);
-                    }
-                }
-            )
-        });
+        // this.authService.authReady().then( currentUser => {
+        //     this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string).then(
+        //         result => {
+        //             if (result && result.val()) {
+        //                 const data = Object.fromEntries(
+        //                     Object.entries(result.val() as Array<Comment>).filter(item => item[1].replies)
+        //                 );
+        //                 console.log(data);
+        //             }
+        //         }
+        //     )
+        // });
     }
 
     get user() {

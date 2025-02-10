@@ -199,12 +199,12 @@ export class ProfilePageComponent implements OnInit {
                 });
                 break;
             case 'byReplies':
-                this.comments = this.comments
-                    .filter( item => item.replies )
-                    .sort( (a,b) => {
-                        return (a.replies as Array<Reply>).length < (b.replies as Array<Reply>).length ? 1 : -1;
-                    })
-                    .concat(this.comments.filter(item => !!item.replies === false ));
+                // this.comments = this.comments
+                //     .filter( item => item.replies )
+                //     .sort( (a,b) => {
+                //         return (a.replies as Array<Reply>).length < (b.replies as Array<Reply>).length ? 1 : -1;
+                //     })
+                //     .concat(this.comments.filter(item => !!item.replies === false ));
                 break;
         }
     }

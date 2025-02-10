@@ -9,7 +9,7 @@
         class="comment__author"
         *ngIf="!canEdit"
     >
-        {{ comment.author }} {{comment.date | date:'dd/MM/yyyy'}}
+        {{ comment.author?.displayName }} {{comment.date | date:'dd/MM/yyyy hh:mm a z'}}
     </p>
 
     <form
@@ -40,18 +40,18 @@
         </button>
     </form>
 
-    <ng-container *ngIf="comment.replies">
+    <ng-container *ngIf="replies">
         <p>Replies:</p>
-        <ng-container *ngFor="let reply of comment.replies">
+        <ng-container *ngFor="let reply of replies">
             <div style="padding-left: 20px; padding-bottom: 4px;">
                 <p>{{ reply.text }}</p>
-                <p>{{ reply.author }} {{reply.date | date:'dd/MM/yyyy'}}</p>
+                <p style="font-size: 12px;">{{ reply.author?.displayName }} {{reply.date | date:'dd/MM/yyyy hh:mm a z'}}</p>
             </div>
         </ng-container>
     </ng-container>
 </div>
 <div class="comment__controls">
-    <ng-container *ngIf="user?.displayName === comment.author && !canEdit">
+    <ng-container *ngIf="user?.uid === comment.author?.uid && !canEdit">
         <button
             class="comment__btn"
             type="button"
