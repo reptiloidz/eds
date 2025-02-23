@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { passValidator } from '../shared/validators/passValidator';
 import { AuthService } from '../services/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PostService } from '../services/posts.service';
 import { PostsSorting } from '../services/posts.enum';
 import { User } from '@angular/fire/auth';
@@ -37,6 +37,7 @@ export class ProfilePageComponent implements OnInit {
         private authService: AuthService,
         private router: Router,
         private postService: PostService,
+        private activatedRoute: ActivatedRoute,
     ) {}
 
     get user() {
@@ -44,19 +45,29 @@ export class ProfilePageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.authService.authReady().then(currentUser => {
-            this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string)
-                .then(
-                    response => {
-                        if (response.val()) {
-                            this.comments =  (Object.values(response.val()) as Array<Comment>).sort((a, b) => {
-                                return a.date < b.date ? 1 : -1;
-                            });
-                            this.commentsNames = Object.keys(response.val());
-                        }
-                    }
-                );
-        })
+        // this.authService.authReady().then(currentUser => {
+        //     this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string)
+        //         .then(
+        //             response => {
+        //                 if (response.val()) {
+        //                     this.comments =  (Object.values(response.val()) as Array<Comment>).sort((a, b) => {
+        //                         return a.date < b.date ? 1 : -1;
+        //                     });
+        //                     this.commentsNames = Object.keys(response.val());
+        //                 }
+        //             }
+        //         );
+        // });
+
+        this.activatedRoute.data.subscribe({
+            next: data => {
+                console.log(data['profile']);
+            },
+            error: error => {
+                console.log(error);
+            }
+        }
+        )
     }
 
     cancelEdit() {
