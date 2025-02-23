@@ -5,7 +5,7 @@
         </a>
     </li>
     <li>
-        <a [routerLink]="['profile']">
+        <a [routerLink]="['profile']" [queryParams]="{'id': user?.uid}">
             Your profile
         </a>
     </li>

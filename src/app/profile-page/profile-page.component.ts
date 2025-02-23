@@ -1,4 +1,4 @@
-import { Comment, Reply } from '../shared/interface';
+import { Comment } from '../shared/interface';
 import { AccountService } from './../services/account.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -45,8 +45,8 @@ export class ProfilePageComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        // this.authService.authReady().then(currentUser => {
-        //     this.postService.getPosts(PostsSorting.byAuthor, ((currentUser as User).displayName) as string)
+        // if (this.idToken) {
+        //     this.postService.getPosts(PostsSorting.byAuthor, this.idToken as string)
         //         .then(
         //             response => {
         //                 if (response.val()) {
@@ -57,17 +57,29 @@ export class ProfilePageComponent implements OnInit {
         //                 }
         //             }
         //         );
-        // });
+        // }
 
-        this.activatedRoute.data.subscribe({
-            next: data => {
-                console.log(data['profile']);
-            },
-            error: error => {
-                console.log(error);
+        this.activatedRoute.queryParams.subscribe(data => {
+            this.idToken = data['id'];
+            if (this.idToken) {
+                this.postService.getPosts('author/uid', this.idToken as string)
+                    .then(
+                        response => {
+                            console.log(this.idToken, 'from response');
+                            if (response.val()) {
+                                this.comments =  (Object.values(response.val()) as Array<Comment>).sort((a, b) => {
+                                    return a.date < b.date ? 1 : -1;
+                                });
+                                this.commentsNames = Object.keys(response.val());
+                            }
+                        }
+                    );
             }
-        }
-        )
+        });
+    }
+
+    get currentUser(): boolean {
+        return this.user?.uid === this.idToken;
     }
 
     cancelEdit() {

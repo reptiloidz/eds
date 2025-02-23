@@ -1,148 +1,149 @@
-<div class="input-group">
-    <label>
-        Name:
-    </label>
-    <div class="d-flex">
-        <app-text-input
-            [formControl]="name"
-            [disabled]="name.disabled"
-            [placeholder]="user?.displayName"
-        ></app-text-input>
-        <button
-            *ngIf="name.disabled"
-            class="btn"
-            title="edit"
-            (click)="enableNameInput()"
-        >
-            <svg
-                class="icon icon--sm"
-                app-shared-svg
-                icon="pen"
-            ></svg>
-        </button>
-        <ng-container *ngIf="!name.disabled">
+<ng-container *ngIf="currentUser">
+    <div class="input-group">
+        <label>
+            Name:
+        </label>
+        <div class="d-flex">
+            <app-text-input
+                [formControl]="name"
+                [disabled]="name.disabled"
+                [placeholder]="user?.displayName"
+            ></app-text-input>
             <button
+                *ngIf="name.disabled"
                 class="btn"
-                (click)="cancelEdit()"
+                title="edit"
+                (click)="enableNameInput()"
             >
-                Cancel
+                <svg
+                    class="icon icon--sm"
+                    app-shared-svg
+                    icon="pen"
+                ></svg>
             </button>
-            <button
-                class="btn"
-                [disabled]="name.errors"
-                (click)="changeName()"
-            >
-                Save
-            </button>
-        </ng-container>
+            <ng-container *ngIf="!name.disabled">
+                <button
+                    class="btn"
+                    (click)="cancelEdit()"
+                >
+                    Cancel
+                </button>
+                <button
+                    class="btn"
+                    [disabled]="name.errors"
+                    (click)="changeName()"
+                >
+                    Save
+                </button>
+            </ng-container>
+        </div>
     </div>
-</div>
 
-<div class="input-group">
-    <label>
-        Email:
-    </label>
-    <div class="d-flex">
-        <app-text-input
-            [formControl]="email"
-            [disabled]="email.disabled"
-            [placeholder]="user?.email"
-            type="email"
-        ></app-text-input>
-        <button
-            *ngIf="email.disabled"
-            class="btn"
-            title="edit"
-            (click)="enableEmailInput()"
-        >
-            <svg
-                class="icon icon--sm"
-                app-shared-svg
-                icon="pen"
-            ></svg>
-        </button>
-        <ng-container *ngIf="!email.disabled">
+    <div class="input-group">
+        <label>
+            Email:
+        </label>
+        <div class="d-flex">
+            <app-text-input
+                [formControl]="email"
+                [disabled]="email.disabled"
+                [placeholder]="user?.email"
+                type="email"
+            ></app-text-input>
             <button
+                *ngIf="email.disabled"
                 class="btn"
-                (click)="cancelEdit()"
+                title="edit"
+                (click)="enableEmailInput()"
             >
-                Cancel
+                <svg
+                    class="icon icon--sm"
+                    app-shared-svg
+                    icon="pen"
+                ></svg>
             </button>
-            <button
-                class="btn"
-                [disabled]="email.errors"
-                (click)="changeEmail()"
-            >
-                Save
-            </button>
-        </ng-container>
+            <ng-container *ngIf="!email.disabled">
+                <button
+                    class="btn"
+                    (click)="cancelEdit()"
+                >
+                    Cancel
+                </button>
+                <button
+                    class="btn"
+                    [disabled]="email.errors"
+                    (click)="changeEmail()"
+                >
+                    Save
+                </button>
+            </ng-container>
+        </div>
     </div>
-</div>
-<div class="input-group">
-    <label>
-        Password:
-    </label>
-    <div class="d-flex">
-        <app-text-input
-            [formControl]="pass"
-            [disabled]="pass.disabled"
-            placeholder="......"
-            type="password"
-            [passSwitch]="!pass.disabled"
-        ></app-text-input>
-        <button
-            *ngIf="pass.disabled"
-            class="btn"
-            title="edit"
-            (click)="enablePassInput()"
-        >
-            <svg
-                class="icon icon--sm"
-                app-shared-svg
-                icon="pen"
-            ></svg>
-        </button>
-
-        <ng-container *ngIf="!pass.disabled">
+    <div class="input-group">
+        <label>
+            Password:
+        </label>
+        <div class="d-flex">
+            <app-text-input
+                [formControl]="pass"
+                [disabled]="pass.disabled"
+                placeholder="......"
+                type="password"
+                [passSwitch]="!pass.disabled"
+            ></app-text-input>
             <button
+                *ngIf="pass.disabled"
                 class="btn"
-                (click)="cancelEdit()"
+                title="edit"
+                (click)="enablePassInput()"
             >
-                Cancel
-            </button>
-            <button
-                class="btn"
-                [disabled]="pass.errors"
-                (click)="changePass()"
-            >
-                Save
+                <svg
+                    class="icon icon--sm"
+                    app-shared-svg
+                    icon="pen"
+                ></svg>
             </button>
 
-        </ng-container>
+            <ng-container *ngIf="!pass.disabled">
+                <button
+                    class="btn"
+                    (click)="cancelEdit()"
+                >
+                    Cancel
+                </button>
+                <button
+                    class="btn"
+                    [disabled]="pass.errors"
+                    (click)="changePass()"
+                >
+                    Save
+                </button>
+            </ng-container>
+        </div>
+        <p *ngIf="nameExist">
+            {{ nameExist }}
+        </p>
     </div>
-    <p *ngIf="nameExist">
-        {{ nameExist }}
+
+    <p *ngIf="error">
+        Something went wrong :(
     </p>
-</div>
 
-<p *ngIf="error">
-    Something went wrong :(
-</p>
-
-<button
-    class="btn mb-24"
-    style="color: red;"
-    type="button"
-    (click)="switchPopup()"
->
-    Delete account
-</button>
+    <button
+        class="btn mb-24"
+        style="color: red;"
+        type="button"
+        (click)="switchPopup()"
+    >
+        Delete account
+    </button>
+</ng-container>
 <br>
-<app-dropdown
+<!-- <app-dropdown
     class="d-block mb-24"
     [options]="sortOptions"
     (selectedOption)="sort($event)"
-></app-dropdown>
+></app-dropdown> -->
 
 <ng-container *ngFor="let comment of comments; index as i;">
     <div class="d-flex mb-24">
