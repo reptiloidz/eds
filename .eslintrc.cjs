@@ -5,6 +5,7 @@ module.exports = {
     plugins: ['@typescript-eslint'],
     root: true,
     rules: {
+        semi: "error",
         "@typescript-eslint/no-explicit-any": 0
     }
 };

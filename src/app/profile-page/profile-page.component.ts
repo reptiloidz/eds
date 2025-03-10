@@ -11,7 +11,7 @@ import { User } from '@angular/fire/auth';
 
 @Component({
     selector: 'app-profile-page',
-    templateUrl: './profile-page.component.html'
+    templateUrl: './profile-page.component.html',
 })
 export class ProfilePageComponent implements OnInit {
     idToken: string | null = null;
@@ -24,12 +24,17 @@ export class ProfilePageComponent implements OnInit {
     _user: User | null = null;
     sortOptions = ['New first', 'Old first', 'byReplies'];
 
-    name = new FormControl({value: '', disabled: true}, [Validators.required]);
-    email = new FormControl({value: '', disabled: true}, [Validators.required, Validators.email]);
-    pass = new FormControl({value: '', disabled: true}, [
+    name = new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+    ]);
+    email = new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+        Validators.email,
+    ]);
+    pass = new FormControl({ value: '', disabled: true }, [
         Validators.required,
         Validators.minLength(6),
-        passValidator()
+        passValidator(),
     ]);
 
     constructor(
@@ -41,7 +46,7 @@ export class ProfilePageComponent implements OnInit {
     ) {}
 
     get user() {
-        return this._user = this.authService.user;
+        return (this._user = this.authService.user);
     }
 
     ngOnInit(): void {
@@ -62,18 +67,19 @@ export class ProfilePageComponent implements OnInit {
         this.activatedRoute.queryParams.subscribe(data => {
             this.idToken = data['id'];
             if (this.idToken) {
-                this.postService.getPosts('author/uid', this.idToken as string)
-                    .then(
-                        response => {
-                            console.log(this.idToken, 'from response');
-                            if (response.val()) {
-                                this.comments =  (Object.values(response.val()) as Array<Comment>).sort((a, b) => {
-                                    return a.date < b.date ? 1 : -1;
-                                });
-                                this.commentsNames = Object.keys(response.val());
-                            }
+                this.postService
+                    .getPosts('author/uid', this.idToken as string)
+                    .then(response => {
+                        console.log(this.idToken, 'from response');
+                        if (response.val()) {
+                            this.comments = (
+                                Object.values(response.val()) as Array<Comment>
+                            ).sort((a, b) => {
+                                return a.date < b.date ? 1 : -1;
+                            });
+                            this.commentsNames = Object.keys(response.val());
                         }
-                    );
+                    });
             }
         });
     }
@@ -110,26 +116,31 @@ export class ProfilePageComponent implements OnInit {
                         this.error = false;
                         return;
                     } else if (this.user) {
-                        this.authService.updateProfile(this.user, { displayName }).then(() => {
-                            this.error = false;
-                            this.name.disable();
-                            this._user = this.authService.user;
-                            this.authService.addNewName({displayName: displayName});
-                            console.log(this.authService.user);
-                            this.authService.logout();
-                        },
-                        error => {
-                            this.error = true;
-                            console.log(error);
-                        });
+                        this.authService
+                            .updateProfile(this.user, { displayName })
+                            .then(
+                                () => {
+                                    this.error = false;
+                                    this.name.disable();
+                                    this._user = this.authService.user;
+                                    this.authService.addNewName({
+                                        displayName: displayName,
+                                    });
+                                    console.log(this.authService.user);
+                                    this.authService.logout();
+                                },
+                                error => {
+                                    this.error = true;
+                                    console.log(error);
+                                },
+                            );
                     }
                 },
                 error => {
                     this.error = true;
                     console.log(error);
-                }
-            )
-
+                },
+            );
         }
     }
 
@@ -139,10 +150,12 @@ export class ProfilePageComponent implements OnInit {
 
     changeEmail() {
         if (this.user && this.email.value) {
-            this.accountService.updateEmail(this.user, this.email.value).then(() => {
-                this.authService.logout();
-                this.router.navigate(['/login']);
-            });
+            this.accountService
+                .updateEmail(this.user, this.email.value)
+                .then(() => {
+                    this.authService.logout();
+                    this.router.navigate(['/login']);
+                });
         }
     }
 
@@ -151,19 +164,21 @@ export class ProfilePageComponent implements OnInit {
     }
 
     changePass() {
-        if(this.user && this.pass.value) {
-            this.authService.updatePassword(this.user, this.pass.value).then( () => {
-                this.pass.disable();
-                this.pass.reset();
-                this.authService.logout();
-                this.router.navigate(['/login']);
-            }, error => {
-                this._user = null;
-                console.log(error);
-                this.router.navigate(['/login']);
-            });
+        if (this.user && this.pass.value) {
+            this.authService.updatePassword(this.user, this.pass.value).then(
+                () => {
+                    this.pass.disable();
+                    this.pass.reset();
+                    this.authService.logout();
+                    this.router.navigate(['/login']);
+                },
+                error => {
+                    this._user = null;
+                    console.log(error);
+                    this.router.navigate(['/login']);
+                },
+            );
         }
-
     }
 
     switchPopup() {
@@ -172,7 +187,7 @@ export class ProfilePageComponent implements OnInit {
 
     delProfile() {
         if (this.user) {
-            this.authService.deleteUser(this.user).then( () => {
+            this.authService.deleteUser(this.user).then(() => {
                 this.authService.logout();
                 this.router.navigate(['']);
             });
@@ -185,11 +200,14 @@ export class ProfilePageComponent implements OnInit {
         if (post) {
             this.postService.delPost(post).then(
                 () => {
-                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+                    this.postService.getPosts(
+                        PostsSorting.byAuthor,
+                        this.user?.displayName as string,
+                    );
                 },
                 err => {
                     console.log(err);
-                }
+                },
             );
         }
     }
@@ -202,9 +220,12 @@ export class ProfilePageComponent implements OnInit {
             comment.text = event.newText;
             this.postService.editPost(commentID, comment).then(
                 () => {
-                    this.postService.getPosts(PostsSorting.byAuthor, (this.user?.displayName as string));
+                    this.postService.getPosts(
+                        PostsSorting.byAuthor,
+                        this.user?.displayName as string,
+                    );
                 },
-                err => console.log(err)
+                err => console.log(err),
             );
         }
     }
@@ -212,12 +233,12 @@ export class ProfilePageComponent implements OnInit {
     sort(event: string) {
         switch (event) {
             case 'New first':
-                this.comments.sort( (a, b) => {
+                this.comments.sort((a, b) => {
                     return a.date < b.date ? 1 : -1;
                 });
                 break;
             case 'Old first':
-                this.comments.sort( (a, b) => {
+                this.comments.sort((a, b) => {
                     return a.date > b.date ? 1 : -1;
                 });
                 break;
