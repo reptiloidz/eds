@@ -5,12 +5,14 @@
     >
         {{ comment.text }}
     </p>
-    <p
+    <a
         class="comment__author"
         *ngIf="!canEdit"
+        [routerLink]="['/profile']"
+        [queryParams]="{'id': comment.author?.uid}"
     >
         {{ comment.author?.displayName }} {{comment.date | date:'dd/MM/yyyy hh:mm a z'}}
-    </p>
+    </a>
 
     <form
         *ngIf="canEdit"
@@ -45,7 +47,7 @@
         <ng-container *ngFor="let reply of replies">
             <div style="padding-left: 20px; padding-bottom: 4px;">
                 <p>{{ reply.text }}</p>
-                <a [routerLink]="['/profile', reply.author?.uid]">{{ reply.author?.displayName }}</a>
+                <a [routerLink]="['/profile']" [queryParams]="{'id': reply.author?.uid}">{{ reply.author?.displayName }}</a>
                 <p style="font-size: 12px;">{{ reply.author?.displayName }} {{reply.date | date:'dd/MM/yyyy hh:mm a z'}}</p>
             </div>
         </ng-container>

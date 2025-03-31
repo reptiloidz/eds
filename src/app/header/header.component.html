@@ -8,8 +8,25 @@
     <nav class="header__nav">
         <ul class="header__nav-list">
             <li class="header__nav-item">
+                <button
+                    class="btn"
+                    (click)="switchLanguage('en')"
+                >
+                    EN
+                </button>
+            </li>
+            <li class="header__nav-item">
+                <button
+                    class="btn"
+                    (click)="switchLanguage('ru')"
+                >
+                    RU
+                </button>
+            </li>
+            <li class="header__nav-item">
+                {{selectDayText}}
                 <app-dropdown
-                    value="Select Day"
+                    value="Header.SELECTDAY"
                     triggerClass="btn"
                 >
                     <app-date-picker
@@ -25,7 +42,7 @@
                     class="btn"
                     [routerLink]="['login']"
                 >
-                    Log in
+                    {{ 'Header.LOGIN' | translate}}
                 </a>
             </li>
             <ng-template #logOutTemplate>
@@ -34,7 +51,7 @@
                         class="btn"
                         (click)="logOut()"
                     >
-                        Log out
+                        {{ 'Header.LOGOUT' | translate}}
                     </button>
                 </li>
             </ng-template>
@@ -46,7 +63,7 @@
                     class="btn"
                     [routerLink]="['signup']"
                 >
-                    Sign up
+                    {{ 'Header.SIGNUP' | translate}}
                 </a>
             </li>
             <li
@@ -55,7 +72,8 @@
             >
                 <a
                     class="btn"
-                    [routerLink]="['profile']"
+                    [routerLink]="['profile/']"
+                    [queryParams]="{'id': _user?.uid}"
                 >
                     {{ user.displayName }}
                 </a>

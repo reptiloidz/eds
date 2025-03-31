@@ -5,19 +5,22 @@ import { AuthService } from '../services/auth.service';
 import { Router } from '@angular/router';
 import { User } from '../shared/interface';
 import { PostsSorting } from '../services/posts.enum';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-header',
-    templateUrl: './header.component.html'
+    templateUrl: './header.component.html',
 })
 export class HeaderComponent implements OnInit {
     _user: User | null = null;
     replies: any;
+    selectDayText: string;
 
     constructor(
         public authService: AuthService,
         private router: Router,
         private postService: PostService,
+        private translate: TranslateService,
     ) {}
 
     ngOnInit() {
@@ -34,10 +37,13 @@ export class HeaderComponent implements OnInit {
         //         }
         //     )
         // });
+
+        this.translate.setDefaultLang('en');
+        this.translate.use('en');
     }
 
     get user() {
-        return this._user = this.authService.user;
+        return (this._user = this.authService.user);
     }
 
     logOut() {
@@ -58,5 +64,8 @@ export class HeaderComponent implements OnInit {
         const dateString = `${date.getFullYear()}-${month}-${date.getDate()}`;
         this.router.navigate([`day/${dateString}`]);
     }
-}
 
+    switchLanguage(language: string) {
+        this.translate.use(language);
+    }
+}

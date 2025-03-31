@@ -1,0 +1,8 @@
+{
+    "Header": {
+        "SELECTDAY": "Select day",
+        "LOGIN": "Log in",
+        "LOGOUT": "Log out",
+        "SIGNUP": "Sign up"
+    }
+}

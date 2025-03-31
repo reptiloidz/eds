@@ -1,6 +1,18 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+} from '@angular/core';
 import { AuthService } from '../services/auth.service';
-import { Comment, CommentsNames, DailySpacePicture, User } from '../shared/interface';
+import {
+    Comment,
+    CommentsNames,
+    DailySpacePicture,
+    User,
+} from '../shared/interface';
 import { PostService } from '../services/posts.service';
 import { FormControl, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -8,9 +20,8 @@ import * as uniqid from 'uniqid';
 
 @Component({
     selector: 'app-comments-list',
-    templateUrl: './comments-list.component.html'
+    templateUrl: './comments-list.component.html',
 })
-
 export class CommentsListComponent implements OnInit, OnDestroy {
     @Input() comments: Array<any>;
     @Input() picture: DailySpacePicture | undefined;
@@ -45,7 +56,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
         console.log(this.user);
         if (this.user) {
             this.comment = {
-                date: + new Date(),
+                date: +new Date(),
                 pictureDate: this.picture?.date,
                 author: {
                     displayName: this.user.displayName,
@@ -60,18 +71,16 @@ export class CommentsListComponent implements OnInit, OnDestroy {
                 pictureUrl: this.picture?.url,
             };
             console.log(this.comment);
-            this.postService.addNewPost(this.comment).then(
-                () => {
-                    this.commentInput.reset();
-                    this.onChange.emit();
-                }
-            );
+            this.postService.addNewPost(this.comment).then(() => {
+                this.commentInput.reset();
+                this.onChange.emit();
+            });
         }
     }
 
     onDelete(comment: Comment) {
         const post = Object.entries(this.commentsNames).find(
-            item => item[1].id === comment.id
+            item => item[1].id === comment.id,
         );
 
         if (post) {
@@ -81,29 +90,29 @@ export class CommentsListComponent implements OnInit, OnDestroy {
                 },
                 err => {
                     console.log(err);
-                }
+                },
             );
         }
     }
 
     onEdit(event: any) {
         const post = Object.entries(this.commentsNames).find(
-            item => item[1].id === event.comment.id
+            item => item[1].id === event.comment.id,
         );
 
         if (post) {
             const postId = post[0];
-            post[1].date = + new Date();
+            post[1].date = +new Date();
             post[1].text = event.newText;
 
             this.postService.editPost(postId, post[1]).then(
                 () => {
-                   this.onChange.emit()
+                    this.onChange.emit();
                 },
                 err => {
                     console.log(err);
-                }
-            )
+                },
+            );
         }
     }
 
@@ -114,7 +123,7 @@ export class CommentsListComponent implements OnInit, OnDestroy {
             },
             err => {
                 console.log(err);
-            }
+            },
         );
     }
 }

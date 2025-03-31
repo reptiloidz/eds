@@ -1,46 +1,6 @@
 <ng-container *ngIf="currentUser">
     <div class="input-group">
         <label>
-            Name:
-        </label>
-        <div class="d-flex">
-            <app-text-input
-                [formControl]="name"
-                [disabled]="name.disabled"
-                [placeholder]="user?.displayName"
-            ></app-text-input>
-            <button
-                *ngIf="name.disabled"
-                class="btn"
-                title="edit"
-                (click)="enableNameInput()"
-            >
-                <svg
-                    class="icon icon--sm"
-                    app-shared-svg
-                    icon="pen"
-                ></svg>
-            </button>
-            <ng-container *ngIf="!name.disabled">
-                <button
-                    class="btn"
-                    (click)="cancelEdit()"
-                >
-                    Cancel
-                </button>
-                <button
-                    class="btn"
-                    [disabled]="name.errors"
-                    (click)="changeName()"
-                >
-                    Save
-                </button>
-            </ng-container>
-        </div>
-    </div>
-
-    <div class="input-group">
-        <label>
             Email:
         </label>
         <div class="d-flex">

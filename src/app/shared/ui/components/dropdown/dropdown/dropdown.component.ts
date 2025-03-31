@@ -7,12 +7,14 @@ import {
     HostBinding,
     HostListener,
     Input,
+    OnDestroy,
     OnInit,
     Output,
-    ViewChild
+    ViewChild,
 } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 
 @Component({
     selector: 'app-dropdown',
@@ -20,17 +22,22 @@ import { BehaviorSubject } from 'rxjs';
     animations: [
         trigger('toggleDrop', [
             transition('void => *', [
-                style({ opacity: 0,  }),
-                animate('.5s', style({ opacity: 1, transform: 'translateY(0)' })),
+                style({ opacity: 0 }),
+                animate(
+                    '.5s',
+                    style({ opacity: 1, transform: 'translateY(0)' }),
+                ),
             ]),
             transition('* => void', [
-                animate('.5s', style({ opacity: 0, transform: 'translateY(-20px)' })),
+                animate(
+                    '.5s',
+                    style({ opacity: 0, transform: 'translateY(-20px)' }),
+                ),
             ]),
-        ])
-    ]
+        ]),
+    ],
 })
-export class DropdownComponent implements OnInit {
-
+export class DropdownComponent implements OnInit, OnDestroy {
     @HostBinding('class') class = 'drop';
 
     @Input('options') options: Array<string> = [];
@@ -49,6 +56,7 @@ export class DropdownComponent implements OnInit {
     public _selectedValue = new BehaviorSubject('');
 
     listOpened = false;
+    subscriptions: Subscription;
 
     @ViewChild('dropList') dropList: ElementRef<HTMLElement> | undefined;
     @ViewChild('dropTrigger') dropTrigger: ElementRef<HTMLElement>;
@@ -56,27 +64,42 @@ export class DropdownComponent implements OnInit {
     constructor(
         private eRef: ElementRef,
         private changeDetector: ChangeDetectorRef,
-        private deviceService: DeviceDetectorService
+        private deviceService: DeviceDetectorService,
+        private translate: TranslateService,
     ) {}
 
     ngOnInit(): void {
         if (!this.value) {
             this._selectedValue.next(
-                this.defaultSelectedOption ? this.options[this.defaultSelectedOption] : this.options[0]
+                this.defaultSelectedOption
+                    ? this.options[this.defaultSelectedOption]
+                    : this.options[0],
             );
         } else {
-            this._selectedValue.next(this.value);
+            const translateSub = this.translate.onLangChange.subscribe(() => {
+                this.translate
+                    .get(this.value as string)
+                    .subscribe((res: string) => {
+                        this._selectedValue.next(res);
+                    });
+            });
+            this.subscriptions.add(translateSub);
         }
 
-        this._selectedValue.subscribe(resolve => {
+        const selecedValSub = this._selectedValue.subscribe(resolve => {
             this.selectedOption.emit(resolve);
         });
+        this.subscriptions.add(selecedValSub);
+    }
+
+    ngOnDestroy(): void {
+        this.subscriptions.unsubscribe();
     }
 
     setValue(value: string) {
         this._selectedValue.next(value);
 
-        if(this.listOpened) {
+        if (this.listOpened) {
             this.toggleDrop();
         }
     }
@@ -95,7 +118,9 @@ export class DropdownComponent implements OnInit {
     }
 
     setPosition() {
-        const triggerHeight = getComputedStyle(this.dropTrigger?.nativeElement).height;
+        const triggerHeight = getComputedStyle(
+            this.dropTrigger?.nativeElement,
+        ).height;
         const isDesktop = this.deviceService.isDesktop();
         let pageWidth = 0;
         let pageHeight = 0;
@@ -109,7 +134,8 @@ export class DropdownComponent implements OnInit {
         }
 
         if (this.dropList) {
-            const elPosition = this.dropList?.nativeElement.getBoundingClientRect();
+            const elPosition =
+                this.dropList?.nativeElement.getBoundingClientRect();
             const offsetX = pageWidth - elPosition.x - elPosition.width;
             const offsetY = pageHeight - elPosition.bottom - elPosition.height;
 
