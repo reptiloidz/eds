@@ -1,17 +1,17 @@
 <ul class="footer__nav">
     <li>
         <a [routerLink]="['about']">
-            About
+            {{ 'Footer.ABOUT' | translate}}
         </a>
     </li>
     <li>
         <a [routerLink]="['profile']" [queryParams]="{'id': user?.uid}">
-            Your profile
+            {{ 'Footer.YOURPROFILE' | translate}}
         </a>
     </li>
     <li>
         <a href="#">
-            Contacts
+            {{ 'Footer.CONTACTS' | translate}}
         </a>
     </li>
 </ul>

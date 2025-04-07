@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { User } from '../shared/interface';
 import { PostsSorting } from '../services/posts.enum';
 import { TranslateService } from '@ngx-translate/core';
+import { Langs } from '../shared/enums/languages.enum';
 
 @Component({
     selector: 'app-header',
@@ -15,6 +16,10 @@ export class HeaderComponent implements OnInit {
     _user: User | null = null;
     replies: any;
     selectDayText: string;
+    languages = Object.values(Langs).filter(v =>
+        isNaN(Number(v)),
+    ) as Array<string>;
+    defaultLanguage: string;
 
     constructor(
         public authService: AuthService,
@@ -38,8 +43,9 @@ export class HeaderComponent implements OnInit {
         //     )
         // });
 
-        this.translate.setDefaultLang('en');
-        this.translate.use('en');
+        console.log(Langs);
+
+        // const localLanguage = localStorage.getItem('EDS.defaultLanguage');
     }
 
     get user() {
@@ -63,9 +69,20 @@ export class HeaderComponent implements OnInit {
 
         const dateString = `${date.getFullYear()}-${month}-${date.getDate()}`;
         this.router.navigate([`day/${dateString}`]);
+        console.log('getpic');
     }
 
     switchLanguage(language: string) {
+        // this.defaultLanguage = localStorage.getItem('EDS.defaultLanguage')
+        //     ? (localStorage.getItem('EDS.defaultLanguage') as string)
+        //     : 'en';
+        // console.log(this.defaultLanguage);
+        // if (this.defaultLanguage) {
+        //     this.translate.use(this.defaultLanguage);
+        // } else {
+        //     localStorage.setItem('EDS.defaultLanguage', language);
+        // }
         this.translate.use(language);
+        console.log('opa');
     }
 }

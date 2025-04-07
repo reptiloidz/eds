@@ -8,20 +8,11 @@
     <nav class="header__nav">
         <ul class="header__nav-list">
             <li class="header__nav-item">
-                <button
-                    class="btn"
-                    (click)="switchLanguage('en')"
-                >
-                    EN
-                </button>
-            </li>
-            <li class="header__nav-item">
-                <button
-                    class="btn"
-                    (click)="switchLanguage('ru')"
-                >
-                    RU
-                </button>
+                <app-dropdown
+                    [options]="languages"
+                    triggerClass="btn"
+                    (selectedOption)="switchLanguage($event)"
+                ></app-dropdown>
             </li>
             <li class="header__nav-item">
                 {{selectDayText}}

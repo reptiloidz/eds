@@ -1,5 +1,6 @@
 import { style, transition, trigger, animate } from '@angular/animations';
 import {
+    ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
     ElementRef,
@@ -36,12 +37,13 @@ import { BehaviorSubject, Subscription } from 'rxjs';
             ]),
         ]),
     ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DropdownComponent implements OnInit, OnDestroy {
     @HostBinding('class') class = 'drop';
 
     @Input('options') options: Array<string> = [];
-    @Input('defaultSelectedOption') defaultSelectedOption = 0;
+    @Input('defaultSelectedOption') defaultSelectedOption: number | null = null;
     @Input('value') value: string | null = null;
     @Input('triggerClass') triggerClass: string;
 
@@ -56,7 +58,7 @@ export class DropdownComponent implements OnInit, OnDestroy {
     public _selectedValue = new BehaviorSubject('');
 
     listOpened = false;
-    subscriptions: Subscription;
+    subscriptions: Subscription = new Subscription();
 
     @ViewChild('dropList') dropList: ElementRef<HTMLElement> | undefined;
     @ViewChild('dropTrigger') dropTrigger: ElementRef<HTMLElement>;

@@ -4,5 +4,10 @@
         "LOGIN": "Log in",
         "LOGOUT": "Log out",
         "SIGNUP": "Sign up"
+    },
+    "Footer": {
+        "ABOUT": "About",
+        "YOURPROFILE": "Your profile",
+        "CONTACTS": "Contacts"
     }
 }
