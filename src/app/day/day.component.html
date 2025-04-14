@@ -2,22 +2,24 @@
     class="btn"
     type="button"
     (click)="onPrevious()"
+    [title]="'Day.PREVIOUS' | translate"
 >
-    prev
+    ←
 </button>
 <a
     class="btn"
     routerLink=""
 >
-    Home
+    {{ 'Day.HOME' | translate}}
 </a>
 <button
     class="btn"
     type="button"
     [disabled]="isLast"
     (click)="onNext()"
+    [title]="'Day.NEXT' | translate"
 >
-    next
+    →
 </button>
 <div style="display: flex; width: 100%" *ngIf="item && !loading; else loadingTemplate">
     <figure

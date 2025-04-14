@@ -13,7 +13,7 @@
             <button
                 *ngIf="email.disabled"
                 class="btn"
-                title="edit"
+                [title]="'Profile.EDIT' | translate"
                 (click)="enableEmailInput()"
             >
                 <svg
@@ -27,21 +27,21 @@
                     class="btn"
                     (click)="cancelEdit()"
                 >
-                    Cancel
+                    {{ 'Profile.CANCEL' | translate }}
                 </button>
                 <button
                     class="btn"
                     [disabled]="email.errors"
                     (click)="changeEmail()"
                 >
-                    Save
+                    {{ 'Profile.SAVE' | translate }}
                 </button>
             </ng-container>
         </div>
     </div>
     <div class="input-group">
         <label>
-            Password:
+            {{ 'Profile.PASSWORD' | translate }}
         </label>
         <div class="d-flex">
             <app-text-input
@@ -54,7 +54,7 @@
             <button
                 *ngIf="pass.disabled"
                 class="btn"
-                title="edit"
+                [title]="'Profile.EDIT' | translate"
                 (click)="enablePassInput()"
             >
                 <svg
@@ -69,14 +69,14 @@
                     class="btn"
                     (click)="cancelEdit()"
                 >
-                    Cancel
+                    {{ 'Profile.CANCEL' | translate }}
                 </button>
                 <button
                     class="btn"
                     [disabled]="pass.errors"
                     (click)="changePass()"
                 >
-                    Save
+                    {{ 'Profile.SAVE' | translate }}
                 </button>
             </ng-container>
         </div>
@@ -86,7 +86,7 @@
     </div>
 
     <p *ngIf="error">
-        Something went wrong :(
+        {{ 'Profile.ERROR' | translate }}
     </p>
 
     <button
@@ -95,7 +95,7 @@
         type="button"
         (click)="switchPopup()"
     >
-        Delete account
+        {{ 'Profile.DELETE' | translate }}
     </button>
 </ng-container>
 <br>
@@ -131,7 +131,7 @@
 </ng-container>
 <app-popup [opened]="popup" (onClose)="switchPopup()">
     <ng-template #content>
-        <h3>Are you shure?</h3>
+        <h3>{{ 'Profile.SURE' | translate }}</h3>
     </ng-template>
     <ng-template #controls>
         <button
@@ -139,14 +139,14 @@
             type="button"
             (click)="delProfile()"
         >
-            Yes
+            {{ 'Profile.YES' | translate }}
         </button>
         <button
             class="btn"
             type="button"
             (click)="switchPopup()"
         >
-            No
+            {{ 'Profile.NO' | translate }}
         </button>
     </ng-template>
 </app-popup>

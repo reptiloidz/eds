@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
     languages = Object.values(Langs).filter(v =>
         isNaN(Number(v)),
     ) as Array<string>;
-    defaultLanguage: string;
+    defaultLanguage: string | null;
 
     constructor(
         public authService: AuthService,
@@ -43,9 +43,15 @@ export class HeaderComponent implements OnInit {
         //     )
         // });
 
-        console.log(Langs);
+        this.defaultLanguage = localStorage.getItem('EDS.defaultLanguage');
 
-        // const localLanguage = localStorage.getItem('EDS.defaultLanguage');
+        if (this.defaultLanguage) {
+            this.languages = this.languages.filter(item => {
+                return item !== this.defaultLanguage;
+            });
+
+            this.languages.unshift(this.defaultLanguage);
+        }
     }
 
     get user() {
@@ -69,20 +75,11 @@ export class HeaderComponent implements OnInit {
 
         const dateString = `${date.getFullYear()}-${month}-${date.getDate()}`;
         this.router.navigate([`day/${dateString}`]);
-        console.log('getpic');
     }
 
     switchLanguage(language: string) {
-        // this.defaultLanguage = localStorage.getItem('EDS.defaultLanguage')
-        //     ? (localStorage.getItem('EDS.defaultLanguage') as string)
-        //     : 'en';
-        // console.log(this.defaultLanguage);
-        // if (this.defaultLanguage) {
-        //     this.translate.use(this.defaultLanguage);
-        // } else {
-        //     localStorage.setItem('EDS.defaultLanguage', language);
-        // }
         this.translate.use(language);
-        console.log('opa');
+
+        localStorage.setItem('EDS.defaultLanguage', language);
     }
 }

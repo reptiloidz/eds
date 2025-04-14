@@ -9,5 +9,36 @@
         "ABOUT": "About",
         "YOURPROFILE": "Your profile",
         "CONTACTS": "Contacts"
+    },
+    "Day": {
+        "PREVIOUS": "Previous",
+        "HOME": "Home",
+        "NEXT": "Next"
+    },
+    "CommentList": {
+        "COMMENT": "Leave comment"
+    },
+    "Comment": {
+        "SAVE": "Save",
+        "CANCEL": "Cancel",
+        "REPLIES": "Replies:",
+        "EDIT": "Edit",
+        "DELETE": "Delete",
+        "REPLY": "Reply",
+        "SEND": "Send",
+        "SURE": "Are you sure?",
+        "YES": "Yes",
+        "NO": "No"
+    },
+    "Profile": {
+        "EDIT": "Edit",
+        "CANCEL": "Cancel",
+        "SAVE": "Save",
+        "PASSWORD": "Password",
+        "ERROR": "Something went wrong :(",
+        "DELETE": "Delete account",
+        "SURE": "Are you sure?",
+        "YES": "Yes",
+        "NO": "No"
     }
 }

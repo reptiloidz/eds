@@ -5,7 +5,10 @@
         </a>
     </li>
     <li>
-        <a [routerLink]="['profile']" [queryParams]="{'id': user?.uid}">
+        <a
+            [routerLink]="user?.uid ? ['profile'] : ['/login']"
+            [queryParams]="{'id': user?.uid}"
+        >
             {{ 'Footer.YOURPROFILE' | translate}}
         </a>
     </li>

@@ -12,16 +12,22 @@ import { AboutPageComponent } from './about-page/about-page.component';
 const routes: Routes = [
     { path: '', component: HomePageComponent },
     { path: 'login', component: LoginPageComponent, canActivate: [LoginGuard] },
-    { path: 'signup', component: SignupPageComponent, canActivate: [LoginGuard] },
+    {
+        path: 'signup',
+        component: SignupPageComponent,
+        canActivate: [LoginGuard],
+    },
     { path: 'profile', component: ProfilePageComponent },
     { path: 'about', component: AboutPageComponent },
-    { path: 'day/:date', component: DayComponent, resolve: { day: DayResolver } }
+    {
+        path: 'day/:date',
+        component: DayComponent,
+        resolve: { day: DayResolver },
+    },
 ];
 
 @NgModule({
-    imports: [
-        RouterModule.forRoot(routes)
-    ],
-    exports: [RouterModule]
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

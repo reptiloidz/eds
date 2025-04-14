@@ -31,19 +31,19 @@
             (click)="onEdit()"
             [disabled]="!commentForm.controls['comment'].value"
         >
-            Save
+            {{ 'Comment.SAVE' | translate}}
         </button>
         <button
             class="btn"
             type="button"
             (click)="editSwitch()"
         >
-            Cancel
+            {{ 'Comment.CANCEL' | translate}}
         </button>
     </form>
 
     <ng-container *ngIf="replies">
-        <p>Replies:</p>
+        <p>{{ 'Comment.REPLIES' | translate}}</p>
         <ng-container *ngFor="let reply of replies">
             <div style="padding-left: 20px; padding-bottom: 4px;">
                 <p>{{ reply.text }}</p>
@@ -59,7 +59,7 @@
             class="comment__btn"
             type="button"
             (click)="editSwitch()"
-            title="Edit"
+            [title]="'Comment.EDIT' | translate"
         >
             <svg
                 class="icon icon--md"
@@ -72,7 +72,7 @@
             class="comment__btn"
             type="button"
             (click)="togglePopup()"
-            title="Delete"
+            [title]="'Comment.DELETE' | translate"
         >
             <svg
                 class="icon icon--md"
@@ -88,7 +88,10 @@
         type="button"
         (click)="toggleReply()"
     >
-        {{ replyFormVisible ? 'Cancel' : 'Reply' }}
+        {{ replyFormVisible ?
+            ('Comment.CANCEL' | translate) :
+            ('Comment.REPLY' | translate)
+        }}
     </button>
 </div>
 <form
@@ -99,14 +102,14 @@
     <app-text-input
         formControlName="replyControl"
         type="text"
-        placeholder="Reply"
+        [placeholder]="'Comment.REPLY' | translate"
     ></app-text-input>
     <button
         class="btn"
         type="button"
         (click)="sendReply()"
     >
-        Send
+        {{ 'Comment.SEND' | translate}}
     </button>
 </form>
 
@@ -115,7 +118,7 @@
     (onClose)="togglePopup()"
 >
     <ng-template #content>
-        <h2>Are you shure?</h2>
+        <h2>{{ 'Comment.SURE' | translate }}</h2>
     </ng-template>
     <ng-template #controls>
         <button
@@ -123,14 +126,14 @@
             type="button"
             (click)="onDelete()"
         >
-            Yes
+            {{ 'Comment.YES' | translate }}
         </button>
         <button
             class="btn"
             type="button"
             (click)="togglePopup()"
         >
-            No
+            {{ 'Comment.NO' | translate }}
         </button>
     </ng-template>
 </app-popup>
