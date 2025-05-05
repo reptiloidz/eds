@@ -113,7 +113,29 @@
             ⏳
         </ng-template>
     </button>
+
+    <p class="divider my-24">
+        or
+    </p>
 </form>
+
+<button
+    class="gsi-material-button"
+    (click)="loginWithGoogle()"
+    type="button"
+>
+    <div class="gsi-material-button-state"></div>
+    <div class="gsi-material-button-content-wrapper">
+        <div class="gsi-material-button-icon">
+            <svg
+                app-shared-svg
+                icon="google"
+            ></svg>
+        </div>
+        <span class="gsi-material-button-contents">Sign in with Google</span>
+        <span style="display: none;">Sign in with Google</span>
+    </div>
+</button>
 <p *ngIf="error">
     {{ error }}
 </p>

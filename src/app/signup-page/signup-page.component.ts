@@ -9,7 +9,7 @@ import { usernameValidator } from '../shared/validators/usernameValidator';
 
 @Component({
     selector: 'app-signup-page',
-    templateUrl: './signup-page.component.html'
+    templateUrl: './signup-page.component.html',
 })
 export class SignupPageComponent implements OnInit {
     form: FormGroup;
@@ -25,27 +25,31 @@ export class SignupPageComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.form = new FormGroup({
-            email: new FormControl('', [Validators.required, Validators.email]),
-            name: new FormControl('', [
-                Validators.required,
-                Validators.maxLength(30),
-                Validators.minLength(3),
-                usernameValidator()
-            ]),
-            password: new FormControl('', [
-                Validators.required,
-                Validators.minLength(6),
-                passValidator()
-            ]),
-            confirmPass: new FormControl('', [
-                Validators.required,
-                Validators.minLength(6)
-            ])
+        this.form = new FormGroup(
+            {
+                email: new FormControl('', [
+                    Validators.required,
+                    Validators.email,
+                ]),
+                name: new FormControl('', [
+                    Validators.required,
+                    Validators.maxLength(30),
+                    Validators.minLength(3),
+                    usernameValidator(),
+                ]),
+                password: new FormControl('', [
+                    Validators.required,
+                    Validators.minLength(6),
+                    passValidator(),
+                ]),
+                confirmPass: new FormControl('', [
+                    Validators.required,
+                    Validators.minLength(6),
+                ]),
             },
             {
-                validators: passwordMismatchValidator
-            }
+                validators: passwordMismatchValidator,
+            },
         );
     }
 
@@ -69,28 +73,36 @@ export class SignupPageComponent implements OnInit {
                 } else {
                     this.authService.signup(email, password, displayName).then(
                         () => {
-                            this.authService.addNewName({displayName: displayName});
+                            this.authService.addNewName({
+                                displayName: displayName,
+                            });
                             this.form.reset();
                             this.loading = false;
                             this.router.navigate(['/']);
                         },
                         error => {
                             if (error.code === 'auth/email-already-in-use') {
-                                this.error = 'User with this email already exists';
+                                this.error =
+                                    'User with this email already exists';
                             } else {
                                 this.error = error.message;
                             }
                             this.loading = false;
-                        }
+                        },
                     );
-
                 }
             },
             error => {
                 this.error = error;
                 this.loading = false;
                 console.log(error);
-            }
+            },
         );
+    }
+
+    loginWithGoogle() {
+        this.authService
+            .signUpWithGoogle()
+            .then(() => this.router.navigate(['/']));
     }
 }

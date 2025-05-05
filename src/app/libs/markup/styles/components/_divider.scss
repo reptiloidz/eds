@@ -1,0 +1,29 @@
+// ===============================================
+// DIVIDER
+// ===============================================
+
+
+.divider {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+    &::before,
+    &::after {
+        content: '';
+        display: block;
+        width: 100%;
+        height: 1px;
+        background-color: var(--white);
+    }
+
+    &::before {
+        margin-right: 12px;
+    }
+
+    &::after {
+        margin-left: 12px;
+    }
+}

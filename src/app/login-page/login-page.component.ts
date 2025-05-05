@@ -8,7 +8,7 @@ import { passValidator } from '../shared/validators/passValidator';
 
 @Component({
     selector: 'app-login-page',
-    templateUrl: './login-page.component.html'
+    templateUrl: './login-page.component.html',
 })
 export class LoginPageComponent implements OnInit, OnDestroy {
     loginForm: FormGroup;
@@ -33,38 +33,43 @@ export class LoginPageComponent implements OnInit, OnDestroy {
             password: new FormControl('', [
                 Validators.required,
                 Validators.minLength(6),
-                passValidator()
-            ])
+                passValidator(),
+            ]),
         });
 
         this.resetForm = new FormGroup({
-            resetEmail: new FormControl('', [Validators.required, Validators.email])
+            resetEmail: new FormControl('', [
+                Validators.required,
+                Validators.email,
+            ]),
         });
     }
 
     ngOnDestroy(): void {
-        if(this.subscription) {
+        if (this.subscription) {
             this.subscription.unsubscribe();
         }
     }
 
     submit() {
-
         const email = this.loginForm.controls['email'].value;
         const password = this.loginForm.controls['password'].value;
 
-        this.authService.login(email, password).then( () => {
-            this.loginForm.reset();
-            this.router.navigate(['/']);
-        }).catch( error => {
-            this.error = error;
+        this.authService
+            .login(email, password)
+            .then(() => {
+                this.loginForm.reset();
+                this.router.navigate(['/']);
+            })
+            .catch(error => {
+                this.error = error;
 
-            if(error.status === 400) {
-                this.errorMessage = 'Wrong email or password'
-            } else {
-                this.errorMessage = 'We are sorry. Try later...'
-            }
-        });
+                if (error.status === 400) {
+                    this.errorMessage = 'Wrong email or password';
+                } else {
+                    this.errorMessage = 'We are sorry. Try later...';
+                }
+            });
     }
 
     togglePassReset() {
@@ -73,26 +78,36 @@ export class LoginPageComponent implements OnInit, OnDestroy {
     }
 
     submitReset() {
-        this.authService.resetPass(
-            this.authService.auth,
-            this.resetForm.controls['resetEmail'].value
-        ).then( () => {
-            this.resetFormIsSended = true;
-            this.resetError = null;
-            this.resetForm.reset();
-
-            setTimeout(() => {
-                this.resetFormIsSended = !this.resetFormIsSended;
-            }, 10000);
-        },
-            error => {
-                if (error.error.error.message === 'EMAIL_NOT_FOUND') {
-                this.resetError = error;
-
-                setTimeout(() => {
+        this.authService
+            .resetPass(
+                this.authService.auth,
+                this.resetForm.controls['resetEmail'].value,
+            )
+            .then(
+                () => {
+                    this.resetFormIsSended = true;
                     this.resetError = null;
-                }, 5000);
-            }
-        });
+                    this.resetForm.reset();
+
+                    setTimeout(() => {
+                        this.resetFormIsSended = !this.resetFormIsSended;
+                    }, 10000);
+                },
+                error => {
+                    if (error.error.error.message === 'EMAIL_NOT_FOUND') {
+                        this.resetError = error;
+
+                        setTimeout(() => {
+                            this.resetError = null;
+                        }, 5000);
+                    }
+                },
+            );
+    }
+
+    loginWithGoogle() {
+        this.authService
+            .signUpWithGoogle()
+            .then(() => this.router.navigate(['/']));
     }
 }
