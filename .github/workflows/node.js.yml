@@ -31,6 +31,6 @@ jobs:
       run: npm ci
     - name: Build
       env:
-        nasaKey: ${{ secrets.NASAKEY }}
-        firebaseKey: ${{ secrets.FIREBASEKEY }}
+        nasaKey: ${{ secrets.NASAKEY }} > src/keys/nasaKey.ts
+        firebaseKey: ${{ secrets.FIREBASEKEY }} > src/keys/firebaseKey.ts
       run: npm run build  --prod
