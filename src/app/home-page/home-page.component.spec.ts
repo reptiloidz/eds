@@ -9,9 +9,9 @@ import { RouterTestingModule } from '@angular/router/testing';
 class MockNasaService {
     getLastFivePictures = () => {
         return new Observable(subscriber => {
-            subscriber.next([{}, {}, {}, {}, {}])
-        })
-    }
+            subscriber.next([{}, {}, {}, {}, {}]);
+        });
+    };
 }
 
 describe('HomePageComponent', () => {
@@ -21,12 +21,9 @@ describe('HomePageComponent', () => {
     beforeEach(async () => {
         await TestBed.configureTestingModule({
             declarations: [HomePageComponent, DropdownComponent],
-            imports: [ RouterTestingModule ],
-            providers: [
-                { provide: NasaService, useClass: MockNasaService}
-            ]
-        })
-            .compileComponents();
+            imports: [RouterTestingModule],
+            providers: [{ provide: NasaService, useClass: MockNasaService }],
+        }).compileComponents();
 
         fixture = TestBed.createComponent(HomePageComponent);
         component = fixture.componentInstance;

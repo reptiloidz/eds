@@ -1,8 +1,8 @@
-import { Environment } from "./interface";
+import { Environment } from './interface';
 
-export const environment: Environment =  {
+export const environment: Environment = {
     production: false,
     nasaKey: 'DEMO_KEY',
     firebaseKey: '',
-    firebaseProjectID: ''
-}
+    firebaseProjectID: '',
+};
