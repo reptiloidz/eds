@@ -33,4 +33,4 @@ jobs:
       env:
         nasaKey: ${{ secrets.NASAKEY }}
         firebaseKey: ${{ secrets.FIREBASEKEY }}
-      run: npm run build --if-present
+      run: npm run build  --prod
