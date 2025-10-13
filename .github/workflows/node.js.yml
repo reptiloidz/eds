@@ -29,8 +29,9 @@ jobs:
         cache-dependency-path: package-lock.json
     - name: Install Packages
       run: npm ci
+    - name: Create nasaKey.ts
+      run: echo "export const nasaKey = { apiKey: '${{ secrets.NASA_KEY }}' };" > src/keys/nasaKey.ts
+    - name: Create firebaseKey.ts
+      run: echo "export const firebaseKey = { key: '${{ secrets.FIREBASE_KEY }}', projectID: ${{ secrets.FIREBASE_PROJECT_ID}} };" > src/keys/firebaseKey.ts
     - name: Build
-      env:
-        nasaKey: ${{ secrets.NASAKEY }} > src/keys/nasaKey.ts
-        firebaseKey: ${{ secrets.FIREBASEKEY }} > src/keys/firebaseKey.ts
       run: npm run build  --prod
