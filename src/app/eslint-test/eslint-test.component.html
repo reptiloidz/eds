@@ -1,0 +1,398 @@
+<div
+	nc-dark-mode
+	[ngClass]="footerClass()"
+	class="nc-footer"
+>
+	<div nc-container>
+		@if (isBannerVisible()) {
+			<div class="nc-footer__banner">
+				<div
+					nc-card-double-new
+					class="nc-card-double--banner"
+					themeColor="black"
+				>
+					<div nc-card-double-message>
+						<h3 class="nc-h2">
+							Удобное
+							<br>
+							приложение
+						</h3>
+						<p class="nc-text-lg">
+							Без спама и&nbsp;рекламы продуктов.
+							<br>
+							Управляй бизнесом прямо со&nbsp;смартфона
+						</p>
+						<p class="subheading bp:mb-32">Чтобы узнать подробности, напиши на&nbsp;почту</p>
+					</div>
+					<div
+						nc-card-double-action
+						class="d-flex gap-12"
+					>
+						<a
+							nc-button
+							size="md"
+							default="arrow"
+							routerLink="/android"
+							landingAnalyticsEvent="app_Android"
+							class="nc-link-md"
+						>
+							<svg
+								b-shared-svg
+								name="arrow-right-up"
+								class="nc-icon"
+							></svg>
+							Android
+						</a>
+						<a
+							nc-button
+							size="md"
+							default="arrow"
+							routerLink="/ios"
+							class="nc-link-md"
+						>
+							<svg
+								b-shared-svg
+								name="arrow-right-up"
+								class="nc-icon"
+							></svg>
+							iOS
+						</a>
+					</div>
+					<picture nc-card-double-picture>
+						<img
+							ngSrc="/assets/images/banner.webp"
+							alt=""
+							aria-hidden="true"
+							class="nc-card-double__img size-img"
+							fill
+							priority
+						>
+					</picture>
+				</div>
+			</div>
+		}
+		<div class="nc-footer__wrapper">
+			<div class="nc-footer__main">
+				<ul class="nc-footer__breadcrumbs">
+					@if (breadcrumbsItems(); as items) {
+						@if (!breadcrumbsRootReset()) {
+							<li class="nc-footer__breadcrumbs-item">
+								<a
+									class="nc-footer__breadcrumbs-link"
+									routerLink="/"
+								>
+									<span itemprop="name">{{ breadcrumbsRoot() }}</span>
+								</a>
+							</li>
+						}
+						@for (item of items; track $index) {
+							<li class="nc-footer__breadcrumbs-item">
+								@if ($index > 0 || !breadcrumbsRootReset()) {
+									<svg
+										b-shared-svg
+										name="right-small"
+										class="nc-icon text-disabled"
+									></svg>
+								}
+								@if (item.route !== undefined) {
+									<a
+										[routerLink]="item.route"
+										class="nc-footer__breadcrumbs-link"
+									>
+										<span itemprop="name">{{ item.label }}</span>
+									</a>
+								} @else {
+									<span
+										itemprop="name"
+										class="nc-footer__breadcrumbs-text"
+										>{{ item.label }}</span
+									>
+								}
+							</li>
+						}
+					} @else if (breadcrumbs()) {
+						@if (!breadcrumbsRootReset()) {
+							<li class="nc-footer__breadcrumbs-item">
+								<a
+									class="nc-footer__breadcrumbs-link"
+									routerLink="/"
+								>
+									<span itemprop="name">{{ breadcrumbsRoot() }}</span>
+								</a>
+							</li>
+						}
+						<li class="nc-footer__breadcrumbs-item">
+							@if (!breadcrumbsRootReset()) {
+								<svg
+									b-shared-svg
+									name="right-small"
+									class="nc-icon text-disabled"
+								></svg>
+							}
+							<span
+								itemprop="name"
+								class="nc-footer__breadcrumbs-text"
+							>
+								@if (breadcrumbsTemplate()) {
+									<ng-container [ngTemplateOutlet]="breadcrumbsTemplate()"></ng-container>
+								} @else {
+									{{ breadcrumbs() }}
+								}
+							</span>
+						</li>
+					} @else {
+						<li class="nc-footer__breadcrumbs-item">
+							<span
+								itemprop="name"
+								class="nc-footer__breadcrumbs-root"
+								>{{ breadcrumbsRoot() }}</span
+							>
+						</li>
+					}
+				</ul>
+				<ng-container [ngTemplateOutlet]="customCommonTemplate() ?? defaultCommon"></ng-container>
+			</div>
+			<ng-container [ngTemplateOutlet]="customBottomTemplate() ?? defaultBottom"></ng-container>
+		</div>
+	</div>
+</div>
+
+<ng-template #defaultNav>
+	<nav class="nc-footer__nav">
+		<div class="nc-footer__nav-item">
+			<p class="nc-footer__nav-about nc-text-md">О&nbsp;Банке</p>
+			<div>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					landingAnalyticsEvent="footer_documents"
+					routerLink="/documents"
+				>
+					<span class="nc-footer__nav-decoration">Документы и&nbsp;условия</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/promo"
+					landingAnalyticsEvent="footer_promotions"
+				>
+					<span class="nc-footer__nav-decoration">Акции</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/bank-details"
+					landingAnalyticsEvent="footer_bank_details"
+				>
+					<span class="nc-footer__nav-decoration">Реквизиты</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					href="/pricing_full.pdf"
+					target="_blank"
+					landingAnalyticsEvent="footer_tariffs"
+				>
+					<span class="nc-footer__nav-decoration">Тарифы</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/partners"
+					landingAnalyticsEvent="footer_partnership"
+				>
+					<span class="nc-footer__nav-decoration">Партнёрство</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/contacts"
+				>
+					<span class="nc-footer__nav-decoration">Контакты</span>
+				</a>
+			</div>
+		</div>
+		<div class="nc-footer__nav-item">
+			<p class="nc-footer__nav-about nc-text-md">Другое</p>
+			<div>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/open-api"
+					landingAnalyticsEvent="footer_open_api"
+				>
+					<span class="nc-footer__nav-decoration">Открытый API</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					href="/help"
+					landingAnalyticsEvent="footer_read_help"
+				>
+					<span class="nc-footer__nav-decoration">Справка</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					target="_blank"
+					href="/blog"
+					landingAnalyticsEvent="click blog from footer"
+				>
+					<span class="nc-footer__nav-decoration">Блог</span>
+				</a>
+
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/atms"
+					landingAnalyticsEvent="footer_find_atms"
+				>
+					<span class="nc-footer__nav-decoration">Банкоматы</span>
+				</a>
+				<a
+					class="nc-footer__nav-link nc-text-md"
+					routerLink="/vestabank"
+					landingAnalyticsEvent="footer_vestabank"
+				>
+					<span class="nc-footer__nav-decoration"> Для клиентов VestaBank </span>
+				</a>
+			</div>
+		</div>
+	</nav>
+</ng-template>
+
+<ng-template #defaultBottom>
+	<div class="nc-footer__bottom">
+		<div class="nc-footer__bottom-desc nc-text-sm">
+			&copy;&nbsp;2021-{{ currentYear }}. ООО &laquo;Бланк банк&raquo;, официальный сайт.
+		</div>
+		<a
+			href="https://blanc.ru/disclosure-for-regulation"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Раскрытие информации для регулятивных целей
+		</a>
+		<a
+			href="https://cbr.ru/banking_sector/credit/coinfo/?id=580000003"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Лицензия ЦБ&nbsp;РФ &#8470;&nbsp;2368 от&nbsp;06.07.2021
+		</a>
+		<a
+			href="/pko_yul_ip_blanc.pdf"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Правила комплексного обслуживания в&nbsp;Системе &laquo;Бланк&raquo;.
+		</a>
+		<a
+			href="/interest-rates"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Информация о&nbsp;процентных ставках по&nbsp;договорам банковского вклада с&nbsp;физическими лицами.
+		</a>
+		<a
+			href="https://www.cbr.ru/banking_sector/credit/coinfo/?id=580000003"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Информация о&nbsp;лицах, под контролем либо значительным влиянием которых находится Банк.
+		</a>
+		<a
+			href="https://blanc.ru/disclosure?t=COMMON"
+			target="_blank"
+			class="nc-footer__bottom-link nc-text-sm"
+		>
+			Раскрытие информации банком&nbsp;&mdash; профессиональным участником рынка ценных бумаг
+		</a>
+		<a
+			class="nc-footer__bottom-link nc-text-sm"
+			target="_blank"
+			href="/report"
+		>
+			Отчётность
+		</a>
+		<p class="nc-footer__bottom-desc nc-text-sm d-block mt-12 mr-0">
+			ООО &laquo;Бланк банк&raquo; использует файлы &laquo;cookie&raquo; с&nbsp;целью персонализации сервисов
+			и&nbsp;повышения удобства пользования веб-сайтом. Если вы&nbsp;не&nbsp;хотите, чтобы ваши пользовательские
+			данные обрабатывались, пожалуйста, ограничьте их&nbsp;использование в&nbsp;своём браузере.
+		</p>
+		<p class="nc-text-sm d-block mt-12">
+			<span class="nc-footer__bottom-desc mr-0">
+				ООО &laquo;Бланк банк&raquo; является оператором по&nbsp;обработке персональных данных, информация
+				об&nbsp;обработке персональных данных и&nbsp;сведения о&nbsp;реализуемых требованиях к&nbsp;защите
+				персональных данных отражены в&nbsp;</span
+			><a
+				class="nc-footer__bottom-link nc-text-sm mr-0"
+				target="_blank"
+				href="/policy.pdf"
+				>Политике в&nbsp;отношении обработки персональных данных</a
+			><span class="nc-footer__bottom-desc mr-0">.</span>
+		</p>
+	</div>
+</ng-template>
+
+<ng-template #defaultCommon>
+	<div class="nc-footer__common">
+		<div class="nc-footer__communication">
+			<div class="nc-footer__communication-item">
+				<p class="nc-footer__communication-text">Бесплатно по&nbsp;России</p>
+				<a
+					href="tel:88006009898"
+					class="nc-h3 nc-footer__communication-link"
+					landingAnalyticsEvent="click_phone"
+				>
+					8 800 600-98-98
+				</a>
+			</div>
+			<div class="nc-footer__communication-item nc-footer__communication-item-socials">
+				<p class="nc-footer__communication-text">Соцсети</p>
+				<div class="nc-footer__communication-socials">
+					<a
+						nc-button
+						size="sm"
+						iconSize="smIcon"
+						href="https://vk.com/bankblanc"
+						target="_blank"
+						landingAnalyticsEvent="footer_vk"
+					>
+						<svg
+							b-shared-svg
+							class="icon icon--xl"
+							name="vk-fill"
+						></svg>
+					</a>
+					<a
+						nc-button
+						size="sm"
+						iconSize="smIcon"
+						href="https://vc.ru/id971265"
+						landingAnalyticsEvent="footer_vc"
+						target="_blank"
+					>
+						<svg
+							b-shared-svg
+							class="icon icon--xl"
+							name="vc-fill"
+						></svg>
+					</a>
+					<a
+						nc-button
+						size="sm"
+						default="icons"
+						href="https://t.me/blancnews"
+						landingAnalyticsEvent="footer_telegram"
+						target="_blank"
+					>
+						<svg
+							b-shared-svg
+							class="icon icon--xl"
+							name="telegram-fill"
+						></svg>
+						Новости Бланка
+					</a>
+				</div>
+			</div>
+		</div>
+		<ng-container [ngTemplateOutlet]="customNavTemplate() ?? defaultNav"></ng-container>
+	</div>
+</ng-template>
+<a
+	href="mailto:help@blanc.ru"
+	class="link"
+>
+	help@blanc.ru
+</a>
