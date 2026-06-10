@@ -12,19 +12,19 @@ export class NasaService {
 
     getDailyPicture() {
         return this.http.get(
-            `api/planetary/apod?api_key=${environment.nasaKey}`,
+            `https://api.nasa.gov/api/planetary/apod?api_key=${environment.nasaKey}`,
         );
     }
 
     getPictureByDate(date: string): Observable<DailySpacePicture> {
         return this.http.get(
-            `api/planetary/apod?api_key=${environment.nasaKey}&date=${date}`,
+            `https://api.nasa.gov/api/planetary/apod?api_key=${environment.nasaKey}&date=${date}`,
         ) as Observable<DailySpacePicture>;
     }
 
     getLastFivePictures(startDate: string, endDate: string) {
         return this.http.get(
-            `api/planetary/apod?api_key=${environment.nasaKey}&start_date=${startDate}&end_date=${endDate}`,
+            `https://api.nasa.gov/api/planetary/apod?api_key=${environment.nasaKey}&start_date=${startDate}&end_date=${endDate}`,
         );
     }
 }

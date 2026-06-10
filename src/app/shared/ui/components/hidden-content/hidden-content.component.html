@@ -1,0 +1,84 @@
+<svg
+	#svgRef
+	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	preserveAspectRatio="xMidYMid meet"
+	[class]="svgClass"
+>
+	<ng-container *ngIf="loading === false">
+		<ng-container *ngFor="let point of points; let i = index">
+			<style>
+				.anim-{{i}} {
+					transform: translate({{point[0].x}}px, {{point[0].y}}px);
+					animation: moveTransform-{{i}} {{animSpeed}}ms infinite backwards;
+					opacity: 1;
+				}
+
+				@keyframes moveTransform-{{i}} {
+					0% {
+						animation-timing-function:
+							cubic-bezier({{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}});
+						opacity: {{opacity}};
+					}
+					20% {
+						transform: translate({{point[1].x}}px, {{point[1].y}}px);
+						animation-timing-function:
+							cubic-bezier({{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}});
+						opacity: {{opacity}};
+					}
+					40% {
+						transform: translate({{point[2].x}}px, {{point[2].y}}px);
+						animation-timing-function:
+							cubic-bezier({{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}});
+						opacity: {{opacity}};
+					}
+					60% {
+						transform: translate({{point[3].x}}px, {{point[3].y}}px);
+						animation-timing-function:
+							cubic-bezier({{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}});
+						opacity: {{opacity}};
+					}
+					80% {
+						transform: translate({{point[4].x}}px, {{point[4].y}}px);
+						animation-timing-function:
+							cubic-bezier({{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}}, {{cubicBezier}});
+						opacity: {{opacity}};
+					}
+					100% {
+						transform: translate({{point[0].x}}px, {{point[0].y}}px);
+						opacity: 1;
+					}
+				}
+
+			</style>
+			<path
+				class="anim-{{i}}"
+				fill="#ffffff"
+				d="
+					M2.3 1.15 C2.3,1.27 2.28,1.39 2.24,
+					1.51 C2.21,1.62 2.15,1.73 2.08,
+					1.83 C2.01,1.92 1.92,
+					2.01 1.83,2.08 C1.73,
+					2.15 1.62,2.21 1.51,
+					2.24 C1.39,2.28 1.27,2.3 1.15,
+					2.3 C1.03,2.3 0.91,2.28 0.79,
+					2.24 C0.68,2.21 0.57,2.15 0.47,
+					2.08 C0.38,2.01 0.29,1.92 0.22,
+					1.83 C0.15,1.73 0.09,1.62 0.06,
+					1.51 C0.02,1.39 0,1.27 0,
+					1.15 C0,1.03 0.02,0.91 0.06,
+					0.79 C0.09,0.68 0.15,0.57 0.22,
+					0.47 C0.29,0.38 0.38,0.29 0.47,
+					0.22 C0.57,0.15 0.68,0.09 0.79,
+					0.06 C0.91,0.02 1.03,0 1.15,
+					0 C1.27,0 1.39,0.02 1.51,0.06 C1.62,
+					0.09 1.73,0.15 1.83,0.22 C1.92,
+					0.29 2.01,0.38 2.08,0.47 C2.15,
+					0.57 2.21,0.68 2.24,0.79 C2.28,
+					0.91 2.3,1.03 2.3,1.15 C2.3,1.15 2.3,
+					1.15 2.3,1.15 C2.3,1.15 2.3,1.15 2.3,1.15z
+				"
+			></path>
+		</ng-container>
+	</ng-container>
+</svg>

@@ -1,3 +1,13 @@
 {
-    "cSpell.language": "en,ru"
+	"cSpell.language": "en,ru",
+	"editor.formatOnSave": true,
+	"eslint.validate": ["javascript", "javascriptreact", "typescript", "typescriptreact", "html"],
+	"eslint.workingDirectories": [{ "mode": "auto" }],
+	"prettier.requireConfig": true,
+	"prettier.prettierPath": "./node_modules/prettier",
+	"prettier.documentSelectors": ["**/*.html", "**/*.component.html"],
+	// "[html]": {
+	// 	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	// 	"editor.formatOnSave": true
+	// }
 }

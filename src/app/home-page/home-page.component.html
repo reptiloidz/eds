@@ -1,25 +1,31 @@
 <div class="row md:row--cols-2 lg:row--cols-2 xl:row--cols-3 row--g-8 lg:row--gx-12 my-auto">
-    <ng-container *ngFor="let item of picturesList">
-        <a
-            *ngIf="item.media_type !== 'other'"
-            class="card"
-            [routerLink]="['day/' + item.date]"
-            [ngStyle]="{
-                '--card-bg-img' : item.media_type === 'image' ?
-                    'url(' + item.url + ')' :
-                    'url(assets/loader.png)'
-            }"
-        >
-            <span
-                class="card__badge"
-                *ngIf="item.media_type === 'video'"
-            >
-                Youtube video
-            </span>
-            <span class="card__description">
-                {{ item.date }}
-            </span>
-        </a>
-    </ng-container>
+	<ng-container *ngFor="let item of picturesList">
+		<a
+			*ngIf="item.media_type !== 'other'"
+			class="card"
+			[routerLink]="['day/' + item.date]"
+			[ngStyle]="{
+				'--card-bg-img': item.media_type === 'image' ? 'url(' + item.url + ')' : 'url(assets/loader.png)',
+			}"
+		>
+			<span
+				class="card__badge"
+				*ngIf="item.media_type === 'video'"
+			>
+				Youtube video
+			</span>
+			<span class="asd card__description"> {{ item.date }} </span>
+		</a>
+		<br>
+	</ng-container>
+	<b-shared-hidden-content
+		class="d-flex"
+		svgClass="w-50p"
+		[animSpeed]="5000"
+	></b-shared-hidden-content>
 </div>
+<p *ngIf="loading">Loading...</p>
+<p *ngIf="loading">Loading...</p>
+<p *ngIf="loading">Loading...</p>
+<p *ngIf="loading">Loading...</p>
 <p *ngIf="loading">Loading...</p>

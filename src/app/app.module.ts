@@ -28,7 +28,8 @@ import { firebaseConfig } from 'src/environments/prod.env';
 import { SvgModule } from './shared/ui/components/svg/svg.module';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
-import * as dotenv from 'dotenv';
+import { HiddenContentComponent } from './shared/ui/components/hidden-content/hidden-content.component';
+// import * as dotenv from 'dotenv';
 
 export function HttpLoaderFactory(http: HttpClient) {
     return new TranslateHttpLoader(http);
@@ -52,6 +53,7 @@ export function HttpLoaderFactory(http: HttpClient) {
         TextInputComponent,
         FooterComponent,
         AboutPageComponent,
+        HiddenContentComponent,
     ],
     imports: [
         BrowserModule,
@@ -75,7 +77,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     bootstrap: [AppComponent],
 })
 export class AppModule {
-    constructor() {
-        dotenv.config();
-    }
+    // constructor() {
+    //     dotenv.config();
+    // }
 }
